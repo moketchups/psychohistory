@@ -38,6 +38,9 @@ from pathlib import Path
 # ── API Keys (from environment variables) ────────────────────────────────────
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
 X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
+FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
+ACLED_EMAIL = os.environ.get("ACLED_EMAIL", "")
+ACLED_KEY = os.environ.get("ACLED_KEY", "")
 
 # ── Pressure Windows ─────────────────────────────────────────────────────────
 PRESSURE_WINDOWS = [
@@ -527,6 +530,142 @@ def fetch_research():
     return results
 
 
+def fetch_gdelt():
+    """
+    Pull global event articles from GDELT DOC API per search priority.
+    Source owner: GDELT (Kalev Leetaru / Google Jigsaw partnership) — monitors
+    global news in 100+ languages. Inherits all media biases of source publications.
+    Rate limit: 1 request per 5 seconds.
+    """
+    results = {
+        "articles": [],
+        "source_owner": "GDELT (Kalev Leetaru / Google Jigsaw) — global news monitor, inherits media editorial bias",
+    }
+    seen_urls = set()
+
+    for pid, priority in SEARCH_PRIORITIES.items():
+        # Use first market term as GDELT query
+        term = priority["market_terms"][0]
+        encoded = urllib.parse.quote(term)
+        url = f"https://api.gdeltproject.org/api/v2/doc/doc?query={encoded}&mode=artlist&maxrecords=10&format=json&timespan=7d"
+        data = _api_get(url)
+        if data and "articles" in data:
+            for art in data["articles"]:
+                art_url = art.get("url", "")
+                if art_url in seen_urls:
+                    continue
+                seen_urls.add(art_url)
+                results["articles"].append({
+                    "title": art.get("title", ""),
+                    "url": art_url,
+                    "source_country": art.get("sourcecountry", ""),
+                    "language": art.get("language", ""),
+                    "domain": art.get("domain", ""),
+                    "seendate": art.get("seendate", ""),
+                    "priority": pid,
+                    "search_term": term,
+                })
+        time.sleep(12)  # GDELT rate limit: aggressive, needs 10-12s between requests
+
+    print(f"    -> {len(results['articles'])} articles across {len(SEARCH_PRIORITIES)} priorities")
+    return results
+
+
+def fetch_fred_sdt():
+    """
+    Pull Structural-Demographic Theory proxy metrics from FRED.
+    Source owner: Federal Reserve Bank of St. Louis — US government institution.
+    These measure elite overproduction, popular immiseration, and inequality.
+    """
+    if not FRED_API_KEY:
+        print("  FRED_API_KEY not set, skipping FRED SDT metrics")
+        return {"metrics": {}, "source_owner": "Federal Reserve Bank of St. Louis — US government institution"}
+
+    results = {
+        "metrics": {},
+        "source_owner": "Federal Reserve Bank of St. Louis — US government institution, reports what serves Fed mandate",
+    }
+
+    # SDT proxy series
+    series = {
+        "top1_wealth_share": {"id": "WFRBST01134", "label": "Net worth held by Top 1%", "sdt": "elite_overproduction"},
+        "bottom50_wealth_share": {"id": "WFRBSB50215", "label": "Net worth held by Bottom 50%", "sdt": "popular_immiseration"},
+        "labor_share_gdp": {"id": "LABSHPUSA156NRUG", "label": "Labor compensation share of GDP", "sdt": "popular_immiseration"},
+        "median_household_income": {"id": "MEHOINUSA672N", "label": "Real median household income", "sdt": "popular_immiseration"},
+        "gini_coefficient": {"id": "GINIALLRF", "label": "Gini ratio for families", "sdt": "inequality"},
+        "median_weekly_earnings": {"id": "LES1252881600Q", "label": "Median usual weekly real earnings", "sdt": "popular_immiseration"},
+    }
+
+    for key, s in series.items():
+        url = (f"https://api.stlouisfed.org/fred/series/observations"
+               f"?series_id={s['id']}&api_key={FRED_API_KEY}&file_type=json"
+               f"&sort_order=desc&limit=5")
+        data = _api_get(url)
+        if data and "observations" in data:
+            obs = [o for o in data["observations"] if o.get("value", ".") != "."]
+            if obs:
+                latest = obs[0]
+                results["metrics"][key] = {
+                    "label": s["label"],
+                    "value": latest.get("value", ""),
+                    "date": latest.get("date", ""),
+                    "sdt_category": s["sdt"],
+                    "series_id": s["id"],
+                }
+        time.sleep(0.5)
+
+    print(f"    -> {len(results['metrics'])} SDT metrics")
+    return results
+
+
+def fetch_world_bank():
+    """
+    Pull global structural indicators from World Bank API.
+    Source owner: World Bank — international development institution.
+    Free, no key needed. Provides global coverage FRED can't.
+    """
+    results = {
+        "indicators": {},
+        "source_owner": "World Bank — international development institution, reflects member state reporting",
+    }
+
+    # Key countries for engine tracking
+    countries = ["USA", "CHN", "ISR", "RUS", "DEU", "GBR", "BRA", "IND"]
+    indicators = {
+        "gini": "SI.POV.GINI",
+        "gdp_per_capita": "NY.GDP.PCAP.CD",
+        "top10_income_share": "SI.DST.10TH.10",
+        "bottom10_income_share": "SI.DST.FRST.10",
+        "unemployment": "SL.UEM.TOTL.ZS",
+        "inflation": "FP.CPI.TOTL.ZG",
+    }
+
+    for ind_key, ind_code in indicators.items():
+        country_str = ";".join(countries)
+        url = f"https://api.worldbank.org/v2/country/{country_str}/indicator/{ind_code}?format=json&date=2018:2024&per_page=100"
+        data = _api_get(url)
+        if data and len(data) > 1:
+            country_data = {}
+            for record in data[1]:
+                if record.get("value") is not None:
+                    cc = record.get("countryiso3code", "")
+                    if cc not in country_data:  # Take most recent
+                        country_data[cc] = {
+                            "value": record["value"],
+                            "date": record.get("date", ""),
+                            "country": record.get("country", {}).get("value", ""),
+                        }
+            results["indicators"][ind_key] = {
+                "code": ind_code,
+                "countries": country_data,
+            }
+        time.sleep(0.5)
+
+    total_points = sum(len(v.get("countries", {})) for v in results["indicators"].values())
+    print(f"    -> {len(results['indicators'])} indicators, {total_points} data points across {len(countries)} countries")
+    return results
+
+
 # ── Tagging Engine ────────────────────────────────────────────────────────────
 
 def tag_event(event):
@@ -590,35 +729,48 @@ def run_pipeline():
     all_events = []
 
     # ── Layer 2: Managed data collection ─────────────────────────────────
-    print("[1/7] Tavily deep web search...")
+    print("[1/11] Tavily deep web search...")
     tavily_results = fetch_tavily(TAVILY_QUERIES, max_per_query=3)
     all_events.extend(tavily_results)
     print(f"  -> {len(tavily_results)} results")
 
-    print("[2/7] GNews headlines...")
+    print("[2/11] GNews headlines...")
     gnews_results = fetch_gnews()
     all_events.extend(gnews_results)
     print(f"  -> {len(gnews_results)} results")
 
-    print("[3/7] RSS feeds...")
+    print("[3/11] RSS feeds...")
     rss_results = fetch_rss(RSS_FEEDS)
     all_events.extend(rss_results)
     print(f"  -> {len(rss_results)} results")
 
-    print("[4/7] Market indicators...")
+    print("[4/11] Market indicators...")
     market_data = fetch_market_data()
     print(f"  -> {len(market_data)} tickers")
 
     # ── Layer 2.5: Consciousness measurement ─────────────────────────────
-    print("[5/7] Prediction markets (Polymarket + Manifold)...")
+    print("[5/11] Prediction markets (Polymarket + Manifold)...")
     prediction_markets = fetch_prediction_markets()
 
-    print("[6/7] X pulse (volume per search priority)...")
+    print("[6/11] X pulse (volume per search priority)...")
     x_pulse = fetch_x_pulse()
 
     # ── Layer 2.5: Deep research ─────────────────────────────────────────
-    print("[7/7] Academic research (OpenAlex)...")
+    print("[7/11] Academic research (OpenAlex)...")
     research = fetch_research()
+
+    # ── Layer 2.5: Global event tracking ─────────────────────────────────
+    print("[8/11] GDELT global articles...")
+    gdelt = fetch_gdelt()
+
+    # ── Layer 2.5: Structural-demographic indicators ─────────────────────
+    print("[9/11] FRED SDT metrics...")
+    fred_sdt = fetch_fred_sdt()
+
+    print("[10/11] World Bank global indicators...")
+    world_bank = fetch_world_bank()
+
+    print("[11/11] Done with data collection.")
 
     # ── Dedup by title ────────────────────────────────────────────────────────
     seen_titles = set()
@@ -683,6 +835,9 @@ def run_pipeline():
             },
             "x_pulse_total_7d": x_pulse.get("total_7d_all_priorities", 0),
             "research_papers": len(research.get("papers", [])),
+            "gdelt_articles": len(gdelt.get("articles", [])),
+            "fred_metrics": len(fred_sdt.get("metrics", {})),
+            "world_bank_indicators": len(world_bank.get("indicators", {})),
         },
         "engine_position": {
             "active_windows": active_windows,
@@ -692,6 +847,9 @@ def run_pipeline():
         "prediction_markets": prediction_markets,
         "x_pulse": x_pulse,
         "research": research,
+        "gdelt": gdelt,
+        "fred_sdt": fred_sdt,
+        "world_bank": world_bank,
         "dimension_summary": {
             "WHO": dict(sorted(player_counts.items(), key=lambda x: -x[1])),
             "WHERE": dict(sorted(theater_counts.items(), key=lambda x: -x[1])),

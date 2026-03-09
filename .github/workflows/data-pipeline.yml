@@ -25,6 +25,7 @@ jobs:
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python data_feeds.py
 
       - name: Commit and push if changed
