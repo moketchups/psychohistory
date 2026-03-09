@@ -8,20 +8,36 @@ Pulls current events from multiple sources and maps them against:
 - WHERE (theater mentions)
 - WHY (incentive signals — financial, energy, tech, military)
 
-Sources: Tavily (web search), GNews (structured news), RSS (geopolitical),
-         yfinance (market fear/greed proxy)
+Sources:
+  Layer 2 — Managed data collection:
+    Tavily (deep web search), GNews (structured news), RSS (geopolitical),
+    yfinance (market fear/greed proxy)
+  Layer 2.5 — Consciousness measurement:
+    Polymarket + Manifold (prediction market odds),
+    X/Twitter (volume per search priority)
+  Layer 2.5 — Deep research:
+    OpenAlex (academic papers)
 
 Output: current_events.json — structured data for dashboard
+
+Architecture note: Prediction markets and X volume are NOT news events.
+They are measurements of aggregate belief. They sit in separate sections
+of the output JSON, never mixed into the events array.
 """
 
 import json
 import os
 import sys
+import time
+import urllib.request
+import urllib.parse
+import urllib.error
 from datetime import datetime, timedelta
 from pathlib import Path
 
 # ── API Keys (from environment variables) ────────────────────────────────────
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
+X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
 
 # ── Pressure Windows ─────────────────────────────────────────────────────────
 PRESSURE_WINDOWS = [
@@ -150,6 +166,71 @@ RSS_FEEDS = [
     ("Ars Technica", "https://feeds.arstechnica.com/arstechnica/index"),
 ]
 
+# ── Search Priorities (mapped to 10 program.md priorities) ───────────────────
+# Each priority has keywords for prediction markets, X pulse, and academic search
+SEARCH_PRIORITIES = {
+    "genesis_mission": {
+        "label": "Genesis Mission / DOE / Nuclear",
+        "market_terms": ["nuclear energy", "fusion energy", "Department of Energy"],
+        "x_terms": ["DOE national lab", "nuclear fusion", "Genesis Mission", "Manhattan Project"],
+        "academic_terms": ["nuclear fusion energy policy", "national laboratory governance"],
+    },
+    "donroe_doctrine": {
+        "label": "Donroe Doctrine / Fortress Hemisphere",
+        "market_terms": ["Greenland", "Panama Canal", "Cuba invasion", "Venezuela"],
+        "x_terms": ["Greenland acquisition", "Monroe Doctrine", "Fortress America", "hemispheric control"],
+        "academic_terms": ["hemispheric security doctrine", "US territorial expansion"],
+    },
+    "model_collapse": {
+        "label": "Model Collapse / AI Scaling Limits",
+        "market_terms": ["AI bubble", "artificial intelligence", "AGI"],
+        "x_terms": ["model collapse", "AI scaling", "AI hallucination", "synthetic data"],
+        "academic_terms": ["model collapse synthetic data", "AI scaling laws diminishing returns"],
+    },
+    "financial_consolidation": {
+        "label": "Financial Consolidation",
+        "market_terms": ["recession", "stock market crash", "banking crisis", "BlackRock"],
+        "x_terms": ["BlackRock Aladdin", "financial consolidation", "too big to fail", "market concentration"],
+        "academic_terms": ["financial market concentration systemic risk", "asset manager systemic importance"],
+    },
+    "phoenix_adjacent": {
+        "label": "Phoenix-Adjacent / Geological-Cosmic",
+        "market_terms": ["solar storm", "earthquake", "volcanic eruption"],
+        "x_terms": ["solar maximum", "geomagnetic storm", "Carrington event", "seismic activity"],
+        "academic_terms": ["solar cycle geomagnetic storm infrastructure", "seismic cycle periodicity"],
+    },
+    "player_movements": {
+        "label": "Player Movements",
+        "market_terms": ["Elon Musk", "Peter Thiel", "Sam Altman", "Palantir"],
+        "x_terms": ["DOGE government", "Palantir contract", "OpenAI", "Neuralink"],
+        "academic_terms": ["technology oligopoly governance", "surveillance capitalism"],
+    },
+    "brics": {
+        "label": "BRICS / Dedollarization",
+        "market_terms": ["BRICS", "dollar reserve currency", "dedollarization", "yuan"],
+        "x_terms": ["BRICS currency", "dedollarization", "petrodollar", "multipolar order"],
+        "academic_terms": ["dedollarization reserve currency transition", "BRICS financial architecture"],
+    },
+    "christian_reich": {
+        "label": "Rise of Christian Reich",
+        "market_terms": ["Christian nationalism", "theocracy"],
+        "x_terms": ["Christian nationalism", "dominionism", "Project 2025", "theocratic"],
+        "academic_terms": ["Christian nationalism US politics", "dominion theology political movement"],
+    },
+    "pax_judaica": {
+        "label": "Pax Judaica / Succession",
+        "market_terms": ["Israel Palestine", "Israel Iran", "Netanyahu"],
+        "x_terms": ["Pax Judaica", "Israel expansion", "Netanyahu coalition", "Greater Israel"],
+        "academic_terms": ["Israeli geopolitical strategy", "Middle East power transition"],
+    },
+    "club_of_rome": {
+        "label": "Club of Rome / Limits to Growth",
+        "market_terms": ["climate change", "resource depletion", "overshoot"],
+        "x_terms": ["limits to growth", "Club of Rome", "overshoot collapse", "resource depletion"],
+        "academic_terms": ["limits to growth world3 validation", "resource depletion overshoot model"],
+    },
+}
+
 # ── Fetchers ──────────────────────────────────────────────────────────────────
 
 def fetch_tavily(queries, max_per_query=5):
@@ -162,7 +243,7 @@ def fetch_tavily(queries, max_per_query=5):
     results = []
     for q in queries:
         try:
-            resp = client.search(q, max_results=max_per_query, search_depth="basic")
+            resp = client.search(q, max_results=max_per_query, search_depth="advanced")
             for r in resp.get("results", []):
                 results.append({
                     "source": "tavily",
@@ -268,6 +349,184 @@ def fetch_market_data():
     return results
 
 
+# ── Prediction Market Fetchers ────────────────────────────────────────────
+
+def _api_get(url, headers=None, timeout=15):
+    """Simple GET request using stdlib only. Returns parsed JSON or None."""
+    h = {"User-Agent": "psychohistory-engine/1.0 (moketchups.github.io/psychohistory)"}
+    if headers:
+        h.update(headers)
+    req = urllib.request.Request(url, headers=h)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode())
+    except Exception as e:
+        print(f"  API error: {url[:80]}... — {e}")
+        return None
+
+
+def fetch_prediction_markets():
+    """
+    Pull prediction market odds from Polymarket + Manifold.
+    These are consciousness measurements — what the aggregate believes.
+    Source owners: Polymarket (Shayne Coplan / crypto-native), Manifold (open-source).
+    """
+    results = {"polymarket": [], "manifold": [], "source_owners": {
+        "polymarket": "Polymarket — crypto prediction market, US-restricted, whale-dominated",
+        "manifold": "Manifold — open-source, play money + real sweepstakes, retail crowd",
+    }}
+
+    # ── Polymarket via gamma-api ──────────────────────────────────────────
+    # No text search — pull active, high-volume markets and filter locally
+    print("  Polymarket...")
+    poly_url = "https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=100&order=volume&ascending=false"
+    poly_data = _api_get(poly_url)
+    if poly_data:
+        for m in poly_data:
+            question = m.get("question", "").lower()
+            # Check if market is relevant to any search priority
+            matched_priorities = []
+            for pid, priority in SEARCH_PRIORITIES.items():
+                for term in priority["market_terms"]:
+                    if term.lower() in question:
+                        matched_priorities.append(pid)
+                        break
+            # Also match against player keywords
+            matched_players = []
+            for player, keywords in PLAYERS.items():
+                if any(kw in question for kw in keywords):
+                    matched_players.append(player)
+
+            if matched_priorities or matched_players:
+                results["polymarket"].append({
+                    "question": m.get("question", ""),
+                    "outcome_prices": m.get("outcomePrices", ""),
+                    "volume": m.get("volume", 0),
+                    "liquidity": m.get("liquidity", 0),
+                    "end_date": m.get("endDate", ""),
+                    "slug": m.get("slug", ""),
+                    "priorities": matched_priorities,
+                    "players": matched_players,
+                })
+        print(f"    -> {len(results['polymarket'])} relevant markets (of {len(poly_data)} total)")
+    else:
+        print("    -> Polymarket unavailable")
+
+    # ── Manifold — search by priority keywords ────────────────────────────
+    print("  Manifold...")
+    manifold_seen = set()
+    for pid, priority in SEARCH_PRIORITIES.items():
+        for term in priority["market_terms"][:2]:  # Top 2 terms per priority
+            encoded = urllib.parse.quote(term)
+            mani_url = f"https://api.manifold.markets/v0/search-markets?term={encoded}&limit=5&sort=liquidity&filter=open"
+            mani_data = _api_get(mani_url)
+            if mani_data:
+                for m in mani_data:
+                    mid = m.get("id", "")
+                    if mid in manifold_seen:
+                        continue
+                    manifold_seen.add(mid)
+                    results["manifold"].append({
+                        "question": m.get("question", ""),
+                        "probability": round(m.get("probability", 0) * 100, 1),
+                        "volume": m.get("volume", 0),
+                        "total_liquidity": m.get("totalLiquidity", 0),
+                        "unique_bettors": m.get("uniqueBettorCount", 0),
+                        "url": m.get("url", ""),
+                        "priority": pid,
+                        "search_term": term,
+                    })
+            time.sleep(0.5)  # Be polite
+    print(f"    -> {len(results['manifold'])} relevant markets")
+
+    return results
+
+
+def fetch_x_pulse():
+    """
+    Measure X/Twitter volume per search priority using v2 counts endpoint.
+    This is a consciousness measurement — aggregate direction and intensity.
+    Source owner: X Corp (Elon Musk) — editorial control via algorithm, visibility, suppression.
+    """
+    if not X_BEARER_TOKEN:
+        print("  X_BEARER_TOKEN not set, skipping X pulse")
+        return {"priorities": {}, "source_owner": "X Corp (Musk) — algorithmic ranking, shadow suppression, ad-driven visibility"}
+
+    results = {
+        "priorities": {},
+        "source_owner": "X Corp (Musk) — algorithmic ranking, shadow suppression, ad-driven visibility",
+    }
+    headers = {"Authorization": f"Bearer {X_BEARER_TOKEN}"}
+
+    for pid, priority in SEARCH_PRIORITIES.items():
+        priority_volume = {"label": priority["label"], "terms": {}, "total_7d": 0}
+        for term in priority["x_terms"][:3]:  # Top 3 terms per priority
+            encoded = urllib.parse.quote(term)
+            # tweets/counts/recent gives last 7 days of volume
+            url = f"https://api.twitter.com/2/tweets/counts/recent?query={encoded}&granularity=day"
+            data = _api_get(url, headers=headers)
+            if data and "data" in data:
+                total = sum(d.get("tweet_count", 0) for d in data["data"])
+                daily = [{"date": d.get("start", "")[:10], "count": d.get("tweet_count", 0)} for d in data["data"]]
+                priority_volume["terms"][term] = {
+                    "total_7d": total,
+                    "daily": daily,
+                }
+                priority_volume["total_7d"] += total
+            elif data and "errors" in data:
+                print(f"    X API error for '{term}': {data['errors'][0].get('message', 'unknown')}")
+            time.sleep(1)  # Rate limit: 300/15min, but be polite
+
+        results["priorities"][pid] = priority_volume
+
+    total_all = sum(p["total_7d"] for p in results["priorities"].values())
+    results["total_7d_all_priorities"] = total_all
+    print(f"    -> {total_all:,} total tweets across {len(results['priorities'])} priorities")
+
+    return results
+
+
+def fetch_research():
+    """
+    Pull academic papers from OpenAlex relevant to search priorities.
+    Source owner: OpenAlex (OurResearch nonprofit) — open index of scholarly works.
+    Inherits biases of academic publishing (institutional gatekeeping, citation networks).
+    """
+    results = {
+        "papers": [],
+        "source_owner": "OpenAlex (OurResearch nonprofit) — open scholarly index, inherits academic publishing bias",
+    }
+    seen_ids = set()
+
+    for pid, priority in SEARCH_PRIORITIES.items():
+        for term in priority["academic_terms"][:1]:  # 1 query per priority
+            encoded = urllib.parse.quote(term)
+            url = f"https://api.openalex.org/works?search={encoded}&per_page=3&sort=relevance_score:desc&mailto=psychohistory@moketchups.github.io"
+            data = _api_get(url)
+            if data and "results" in data:
+                for work in data["results"]:
+                    wid = work.get("id", "")
+                    if wid in seen_ids:
+                        continue
+                    seen_ids.add(wid)
+                    primary_loc = work.get("primary_location") or {}
+                    source_info = primary_loc.get("source") or {}
+                    results["papers"].append({
+                        "title": work.get("title", ""),
+                        "year": work.get("publication_year"),
+                        "cited_by": work.get("cited_by_count", 0),
+                        "doi": work.get("doi", ""),
+                        "open_access": (work.get("open_access") or {}).get("is_oa", False),
+                        "source": source_info.get("display_name", ""),
+                        "priority": pid,
+                        "search_term": term,
+                    })
+            time.sleep(0.5)  # Be polite
+
+    print(f"    -> {len(results['papers'])} papers across {len(SEARCH_PRIORITIES)} priorities")
+    return results
+
+
 # ── Tagging Engine ────────────────────────────────────────────────────────────
 
 def tag_event(event):
@@ -330,28 +589,36 @@ def run_pipeline():
 
     all_events = []
 
-    # 1. Tavily web search
-    print("[1/4] Tavily web search...")
+    # ── Layer 2: Managed data collection ─────────────────────────────────
+    print("[1/7] Tavily deep web search...")
     tavily_results = fetch_tavily(TAVILY_QUERIES, max_per_query=3)
     all_events.extend(tavily_results)
     print(f"  -> {len(tavily_results)} results")
 
-    # 2. GNews structured news
-    print("[2/4] GNews headlines...")
+    print("[2/7] GNews headlines...")
     gnews_results = fetch_gnews()
     all_events.extend(gnews_results)
     print(f"  -> {len(gnews_results)} results")
 
-    # 3. RSS feeds
-    print("[3/4] RSS feeds...")
+    print("[3/7] RSS feeds...")
     rss_results = fetch_rss(RSS_FEEDS)
     all_events.extend(rss_results)
     print(f"  -> {len(rss_results)} results")
 
-    # 4. Market data
-    print("[4/4] Market indicators...")
+    print("[4/7] Market indicators...")
     market_data = fetch_market_data()
     print(f"  -> {len(market_data)} tickers")
+
+    # ── Layer 2.5: Consciousness measurement ─────────────────────────────
+    print("[5/7] Prediction markets (Polymarket + Manifold)...")
+    prediction_markets = fetch_prediction_markets()
+
+    print("[6/7] X pulse (volume per search priority)...")
+    x_pulse = fetch_x_pulse()
+
+    # ── Layer 2.5: Deep research ─────────────────────────────────────────
+    print("[7/7] Academic research (OpenAlex)...")
+    research = fetch_research()
 
     # ── Dedup by title ────────────────────────────────────────────────────────
     seen_titles = set()
@@ -410,12 +677,21 @@ def run_pipeline():
                 "rss": len(rss_results),
             },
             "high_relevance_events": len([e for e in deduped if e["tags"]["relevance"] >= 3]),
+            "prediction_markets": {
+                "polymarket": len(prediction_markets.get("polymarket", [])),
+                "manifold": len(prediction_markets.get("manifold", [])),
+            },
+            "x_pulse_total_7d": x_pulse.get("total_7d_all_priorities", 0),
+            "research_papers": len(research.get("papers", [])),
         },
         "engine_position": {
             "active_windows": active_windows,
             "next_window": next_window,
         },
         "market_data": market_data,
+        "prediction_markets": prediction_markets,
+        "x_pulse": x_pulse,
+        "research": research,
         "dimension_summary": {
             "WHO": dict(sorted(player_counts.items(), key=lambda x: -x[1])),
             "WHERE": dict(sorted(theater_counts.items(), key=lambda x: -x[1])),
@@ -448,8 +724,36 @@ def run_pipeline():
     for i, c in sorted(incentive_counts.items(), key=lambda x: -x[1])[:6]:
         print(f"  {i}: {c}")
 
+    # Prediction market summary
+    poly_count = len(prediction_markets.get("polymarket", []))
+    mani_count = len(prediction_markets.get("manifold", []))
+    if poly_count or mani_count:
+        print(f"\nPREDICTION MARKETS:")
+        print(f"  Polymarket: {poly_count} relevant markets")
+        print(f"  Manifold: {mani_count} relevant markets")
+        for m in prediction_markets.get("polymarket", [])[:5]:
+            prices = m.get("outcome_prices", "")
+            print(f"    [{','.join(m.get('priorities', []))}] {m['question'][:60]} -- {prices}")
+        for m in prediction_markets.get("manifold", [])[:5]:
+            print(f"    [{m.get('priority', '')}] {m['question'][:60]} -- {m.get('probability', '?')}%")
+
+    # X pulse summary
+    x_total = x_pulse.get("total_7d_all_priorities", 0)
+    if x_total:
+        print(f"\nX PULSE (7-day volume):")
+        for pid, pdata in sorted(x_pulse.get("priorities", {}).items(), key=lambda x: -x[1].get("total_7d", 0)):
+            if pdata.get("total_7d", 0) > 0:
+                print(f"  {pdata.get('label', pid)}: {pdata['total_7d']:,}")
+
+    # Research summary
+    papers = research.get("papers", [])
+    if papers:
+        print(f"\nRESEARCH ({len(papers)} papers):")
+        for p in sorted(papers, key=lambda x: -x.get("cited_by", 0))[:5]:
+            print(f"  [{p.get('priority', '')}] {p['title'][:60]} ({p.get('year', '?')}, {p.get('cited_by', 0)} cites)")
+
     print(f"\n{'='*60}")
-    print(f"Pipeline complete. {len(deduped)} events ingested.")
+    print(f"Pipeline complete. {len(deduped)} events, {poly_count}+{mani_count} markets, {x_total:,} tweets, {len(papers)} papers.")
     print(f"{'='*60}\n")
 
     return output
