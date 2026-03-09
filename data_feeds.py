@@ -271,7 +271,7 @@ def fetch_market_data():
 # ── Tagging Engine ────────────────────────────────────────────────────────────
 
 def tag_event(event):
-    """Tag an event with WHO, WHERE, WHY dimensions."""
+    """Tag an event with WHO, WHERE, WHY dimensions + source owner."""
     text = (event.get("title", "") + " " + event.get("content", "")).lower()
     tags = {"players": [], "theaters": [], "incentives": []}
 
@@ -288,6 +288,22 @@ def tag_event(event):
             tags["incentives"].append(signal)
 
     tags["relevance"] = len(tags["players"]) + len(tags["theaters"]) + len(tags["incentives"])
+
+    # Source owner tagging — WHO controls this data
+    source = event.get("source", "")
+    if source == "tavily":
+        tags["source_owner"] = "tavily"
+        tags["owner_note"] = "Tavily AI — aggregates web, inherits all web biases"
+    elif source == "gnews":
+        tags["source_owner"] = "gnews"
+        tags["owner_note"] = "Google News — Google controls ranking and visibility"
+    elif source == "rss":
+        tags["source_owner"] = "rss"
+        tags["owner_note"] = f"RSS ({event.get('feed', 'unknown')}) — editorial selection bias"
+    else:
+        tags["source_owner"] = "unknown"
+        tags["owner_note"] = "Unknown source"
+
     return tags
 
 

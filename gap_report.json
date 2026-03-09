@@ -1,0 +1,473 @@
+{
+  "timestamp": "2026-03-09T17:17:17.016120+00:00Z",
+  "baseline_timestamp": "2026-03-09T17:12:34.325687+00:00Z",
+  "priorities": {
+    "genesis_mission": {
+      "label": "Genesis Mission / DOE / Nuclear",
+      "prediction_summary": "Compute buildout accelerates through 2032, energy grid bifurcates",
+      "gaps": [
+        {
+          "anchor": "Uranium ETF",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 49.65,
+          "baseline": 49.69,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.1,
+          "detail": "-0.1% (expected up)"
+        },
+        {
+          "anchor": "NuScale Power",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 11.88,
+          "baseline": 11.93,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.4,
+          "detail": "-0.4% (expected up)"
+        },
+        {
+          "anchor": "Federal nondefense R&D spending",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "DOE compute events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": 7.0,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "donroe_doctrine": {
+      "label": "Donroe Doctrine \u2014 Hemisphere Consolidation",
+      "prediction_summary": "Hemisphere secured by 2027, energy stockpile for Genesis",
+      "gaps": [
+        {
+          "anchor": "Crude Oil",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 94.89,
+          "baseline": 94.64,
+          "gap_type": "CONVERGING",
+          "magnitude": 0.3,
+          "detail": "+0.3% (expected up)"
+        },
+        {
+          "anchor": "Gold",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 5111.2,
+          "baseline": 5113.9,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.1,
+          "detail": "-0.1% (expected up)"
+        },
+        {
+          "anchor": "Donroe resource grab events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": 33.0,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "Hemisphere consolidation events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": 225.0,
+          "baseline": 225.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected up)"
+        }
+      ]
+    },
+    "model_collapse": {
+      "label": "Model Collapse \u2014 AI Scaling Failures",
+      "prediction_summary": "Model Collapse visible by 2027, total by 2032",
+      "gaps": [
+        {
+          "anchor": "Microsoft (OpenAI backer)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 406.7,
+          "baseline": 406.82,
+          "gap_type": "TRACKING",
+          "magnitude": -0.0,
+          "detail": "-0.0% (trajectory: complex)"
+        },
+        {
+          "anchor": "Alphabet (DeepMind)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 300.96,
+          "baseline": 301.03,
+          "gap_type": "TRACKING",
+          "magnitude": -0.0,
+          "detail": "-0.0% (trajectory: complex)"
+        },
+        {
+          "anchor": "Model collapse reports",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "financial_consolidation": {
+      "label": "Financial Consolidation",
+      "prediction_summary": "Consolidation accelerates, Ouroboros Loop breaks at 2032",
+      "gaps": [
+        {
+          "anchor": "BlackRock",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 948.11,
+          "baseline": 947.77,
+          "gap_type": "TRACKING",
+          "magnitude": 0.0,
+          "detail": "+0.0% (trajectory: complex)"
+        },
+        {
+          "anchor": "VIX fear index",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 26.76,
+          "baseline": 26.47,
+          "gap_type": "CONVERGING",
+          "magnitude": 1.1,
+          "detail": "+1.1% (expected up)"
+        },
+        {
+          "anchor": "10-Year Treasury yield",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 4.13,
+          "baseline": 4.12,
+          "gap_type": "TRACKING",
+          "magnitude": 0.2,
+          "detail": "+0.2% (trajectory: complex)"
+        },
+        {
+          "anchor": "Federal Debt Total",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "M2 Money Supply",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "phoenix_adjacent": {
+      "label": "Phoenix-Adjacent \u2014 Geological & Electromagnetic",
+      "prediction_summary": "Anomalies increase from 2028, intensify through 2039",
+      "gaps": [
+        {
+          "anchor": "Significant quakes 5.0+",
+          "source_owner": "usgs",
+          "owner_incentive": "Control geological narrative thresholds",
+          "current": 147.0,
+          "baseline": 147.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected up)"
+        },
+        {
+          "anchor": "Major quakes 6.0+",
+          "source_owner": "usgs",
+          "owner_incentive": "Control geological narrative thresholds",
+          "current": 12.0,
+          "baseline": 12.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected up)"
+        },
+        {
+          "anchor": "Coronal Mass Ejections",
+          "source_owner": "nasa_donki",
+          "owner_incentive": "Classify and prioritize space weather events",
+          "current": 140.0,
+          "baseline": 140.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected up)"
+        },
+        {
+          "anchor": "Geomagnetic Storms",
+          "source_owner": "nasa_donki",
+          "owner_incentive": "Classify and prioritize space weather events",
+          "current": null,
+          "baseline": 1.0,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "Solar Flares",
+          "source_owner": "nasa_donki",
+          "owner_incentive": "Classify and prioritize space weather events",
+          "current": null,
+          "baseline": 21.0,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "player_movements": {
+      "label": "Player Movements",
+      "prediction_summary": "Players execute Technate blueprint, consolidation visible",
+      "gaps": [
+        {
+          "anchor": "Tesla (Musk)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 389.8,
+          "baseline": 390.23,
+          "gap_type": "TRACKING",
+          "magnitude": -0.1,
+          "detail": "-0.1% (trajectory: complex)"
+        },
+        {
+          "anchor": "Palantir (Thiel)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 154.1,
+          "baseline": 154.19,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.1,
+          "detail": "-0.1% (expected up)"
+        },
+        {
+          "anchor": "DOGE restructuring events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": 9.0,
+          "baseline": 9.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected up)"
+        },
+        {
+          "anchor": "AI industry events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "brics_counter": {
+      "label": "BRICS Counter-Strategy",
+      "prediction_summary": "Dedollarization accelerates, USD reserve share declines",
+      "gaps": [
+        {
+          "anchor": "US Dollar Index (DXY)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 99.08,
+          "baseline": 99.08,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "no movement (expected down)"
+        },
+        {
+          "anchor": "Gold (BRICS reserve alt)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 5111.2,
+          "baseline": 5113.9,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.1,
+          "detail": "-0.1% (expected up)"
+        },
+        {
+          "anchor": "Trade Weighted Dollar Index",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "BRICS dedollarization events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": 0.0,
+          "baseline": 0.0,
+          "gap_type": "FLAT",
+          "magnitude": 0.0,
+          "detail": "both zero"
+        }
+      ]
+    },
+    "christian_reich": {
+      "label": "Rise of Christian Reich",
+      "prediction_summary": "Christianity instrumentalized as control architecture, peaks CY127 (2029)",
+      "gaps": [
+        {
+          "anchor": "Christian nationalism events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": 1.0,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "pax_judaica": {
+      "label": "Pax Judaica Signals",
+      "prediction_summary": "American infrastructure migrating to Israel, resolves at CY137 (2039)",
+      "gaps": [
+        {
+          "anchor": "US-Israel friction events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "Israel tech buildup events",
+          "source_owner": "gdelt",
+          "owner_incentive": "Define what counts as an event, control classification",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    },
+    "club_of_rome": {
+      "label": "Club of Rome / Limits to Growth",
+      "prediction_summary": "Industrial output peaks early 21st century, decline ~2040",
+      "gaps": [
+        {
+          "anchor": "Crude Oil (extraction cost proxy)",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 94.89,
+          "baseline": 94.64,
+          "gap_type": "CONVERGING",
+          "magnitude": 0.3,
+          "detail": "+0.3% (expected up)"
+        },
+        {
+          "anchor": "Commodity Index ETF",
+          "source_owner": "yfinance",
+          "owner_incentive": "Market prices are consensus, movable by large capital",
+          "current": 28.01,
+          "baseline": 28.02,
+          "gap_type": "DIVERGING",
+          "magnitude": -0.0,
+          "detail": "-0.0% (expected up)"
+        },
+        {
+          "anchor": "Industrial Production Index",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        },
+        {
+          "anchor": "Federal Debt to GDP Ratio",
+          "source_owner": "fred",
+          "owner_incentive": "Present monetary policy as working",
+          "current": null,
+          "baseline": null,
+          "gap_type": "NO_DATA",
+          "magnitude": 0.0,
+          "detail": "missing data"
+        }
+      ]
+    }
+  },
+  "contradictions": [
+    {
+      "priority": "financial_consolidation",
+      "up_signals": [
+        {
+          "key": "yf_VIX",
+          "source": "yfinance",
+          "pct": 54.15
+        }
+      ],
+      "down_signals": [
+        {
+          "key": "yf_BLK",
+          "source": "yfinance",
+          "pct": -11.71
+        }
+      ],
+      "description": "financial_consolidation: yfinance/yf_VIX +54% BUT yfinance/yf_BLK -12%"
+    },
+    {
+      "priority": "player_movements",
+      "up_signals": [
+        {
+          "key": "yf_PLTR",
+          "source": "yfinance",
+          "pct": 7.83
+        }
+      ],
+      "down_signals": [
+        {
+          "key": "yf_TSLA",
+          "source": "yfinance",
+          "pct": -6.59
+        }
+      ],
+      "description": "player_movements: yfinance/yf_PLTR +8% BUT yfinance/yf_TSLA -7%"
+    }
+  ],
+  "summary": {
+    "CONVERGING": 3,
+    "DIVERGING": 6,
+    "SILENCE": 0,
+    "FLAT": 7,
+    "TRACKING": 5,
+    "NO_DATA": 15,
+    "NEW_SIGNAL": 0
+  }
+}

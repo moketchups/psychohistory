@@ -21,19 +21,25 @@ jobs:
       - name: Install dependencies
         run: pip install tavily-python gnews feedparser yfinance
 
-      - name: Run data pipeline
+      - name: Run data pipeline (Layer 2 — managed data collection)
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python data_feeds.py
+
+      - name: Run gap analysis (Layer 3 — engine vs institutional narrative)
+        env:
+          NASA_API_KEY: ${{ secrets.NASA_API_KEY || 'DEMO_KEY' }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python gap_analysis.py
 
       - name: Commit and push if changed
         run: |
           git config user.name "psychohistory-bot"
           git config user.email "bot@moketchups.github.io"
-          git add current_events.json
+          git add current_events.json gap_report.json gap_report.md baselines.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto-update current_events.json [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
+            git commit -m "Auto-update data + gap report [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
             git push
           fi
