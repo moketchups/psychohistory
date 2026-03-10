@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psychohistory Prediction Engine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -156,6 +157,24 @@ canvas#chart { width: 100%; height: 200px; }
   padding-bottom: 6px;
   border-bottom: 1px solid #f0883e33;
 }
+
+/* KNOWLEDGE GRAPH */
+#kg-container { width: 100%; height: 70vh; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; position: relative; }
+#kg-controls { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+#kg-search { background: #161b22; border: 1px solid #30363d; color: #c8c8d4; font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 4px; width: 240px; }
+#kg-search::placeholder { color: #484f58; }
+.kg-filter-btn { padding: 4px 10px; border: 1px solid #30363d; background: none; color: #8b949e; font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 3px; }
+.kg-filter-btn:hover { border-color: #484f58; color: #c8c8d4; }
+.kg-filter-btn.kg-on { border-color: var(--fc); color: var(--fc); background: var(--bg); }
+#kg-info { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 14px; margin-top: 10px; display: none; }
+#kg-info h4 { font-size: 12px; color: #f0883e; margin-bottom: 6px; }
+#kg-info .kg-type { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+#kg-info .kg-desc { font-size: 11px; color: #b1b8c0; line-height: 1.6; }
+#kg-info .kg-edges { font-size: 10px; color: #8b949e; margin-top: 8px; line-height: 1.7; }
+#kg-stats { font-size: 10px; color: #484f58; text-align: right; margin-top: 6px; }
+#kg-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.kg-leg { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #8b949e; }
+.kg-leg-dot { width: 10px; height: 10px; border-radius: 50%; }
 
 /* PRESSURE WINDOWS */
 .pw {
@@ -443,6 +462,7 @@ canvas#chart { width: 100%; height: 200px; }
   <button class="tab-btn" data-tab="divergences">Divergences</button>
   <button class="tab-btn" data-tab="scorecard">Scorecard</button>
   <button class="tab-btn" data-tab="live">Live Feed</button>
+  <button class="tab-btn" data-tab="graph">Knowledge Graph</button>
 </div>
 
 <!-- THESIS TAB -->
@@ -468,6 +488,9 @@ canvas#chart { width: 100%; height: 200px; }
 
 <!-- LIVE FEED TAB -->
 <div class="tab-panel" id="p-live"><div style="color:#8b949e;padding:20px">Loading live data...</div></div>
+
+<!-- KNOWLEDGE GRAPH TAB -->
+<div class="tab-panel" id="p-graph"></div>
 
 </div>
 
@@ -2101,6 +2124,456 @@ function renderLive(data) {
     <div class="live-ts">Last ingestion: ${data.timestamp || 'Unknown'} &bull; Run <code>python3 data_feeds.py</code> to refresh</div>
   `;
 }
+
+// ===== KNOWLEDGE GRAPH =====
+document.getElementById('p-graph').innerHTML = `
+  <div class="sec-title">Knowledge Graph &mdash; Worldview Topology</div>
+  <div id="kg-controls">
+    <input type="text" id="kg-search" placeholder="Search nodes... (e.g. BlackRock, Model Collapse)">
+    <button class="kg-filter-btn kg-on" data-type="all" style="--fc:#f0883e;--bg:#f0883e22">All</button>
+    <button class="kg-filter-btn" data-type="player" style="--fc:#bc8cff;--bg:#bc8cff22">Players</button>
+    <button class="kg-filter-btn" data-type="mechanism" style="--fc:#f85149;--bg:#f8514922">Mechanisms</button>
+    <button class="kg-filter-btn" data-type="framework" style="--fc:#58a6ff;--bg:#58a6ff22">Frameworks</button>
+    <button class="kg-filter-btn" data-type="artifact" style="--fc:#7ee787;--bg:#7ee78722">Artifacts</button>
+    <button class="kg-filter-btn" data-type="event" style="--fc:#e3b341;--bg:#e3b34122">Events</button>
+    <button class="kg-filter-btn" data-type="concept" style="--fc:#56d4dd;--bg:#56d4dd22">Concepts</button>
+  </div>
+  <div id="kg-container"></div>
+  <div id="kg-legend">
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#bc8cff"></span>Player</span>
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#f85149"></span>Mechanism</span>
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#58a6ff"></span>Framework</span>
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#7ee787"></span>Artifact</span>
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#e3b341"></span>Event</span>
+    <span class="kg-leg"><span class="kg-leg-dot" style="background:#56d4dd"></span>Concept</span>
+  </div>
+  <div id="kg-info">
+    <div class="kg-type" id="kg-info-type"></div>
+    <h4 id="kg-info-name"></h4>
+    <div class="kg-desc" id="kg-info-desc"></div>
+    <div class="kg-edges" id="kg-info-edges"></div>
+  </div>
+  <div id="kg-stats"></div>
+`;
+
+const KG_COLORS = { player:'#bc8cff', mechanism:'#f85149', framework:'#58a6ff', artifact:'#7ee787', event:'#e3b341', concept:'#56d4dd' };
+
+const kgNodes = [
+  // === PLAYERS ===
+  {id:'trump', t:'player', l:'Trump Admin', d:'The Executive Node. Controls Genesis Mission, Operation Absolute Resolve, Donroe Doctrine implementation.'},
+  {id:'musk', t:'player', l:'Elon Musk', d:'The Technocrat. Haldeman lineage. Controls X, Tesla, Starlink, Neuralink, xAI, DOGE. Hereditary technocrat building the nervous system of the Technate.'},
+  {id:'altman', t:'player', l:'Sam Altman', d:'The Rationer. Controls OpenAI + Worldcoin. Benevolence framing for control mechanism. Pentagon deployment Feb 2026.'},
+  {id:'ellison', t:'player', l:'Larry Ellison', d:'The Panopticon. Controls Oracle, Oracle Jerusalem underground cloud. Intelligence-banking data triangle.'},
+  {id:'thiel', t:'player', l:'Peter Thiel', d:'The Enforcer. Controls Palantir, Anduril, Pronomos Capital. Surveillance + autonomous weapons + charter cities.'},
+  {id:'zuckerberg', t:'player', l:'Mark Zuckerberg', d:'The Pacifier. Controls Meta/Facebook. Dead Internet factory. 1.5M Moltbook agents, OpenClaw framework.'},
+  {id:'bezos', t:'player', l:'Jeff Bezos', d:'The Orbital Architect. Blue Origin O\'Neill Cylinders. Space habitat architecture.'},
+  {id:'blackrock', t:'player', l:'BlackRock / Fink', d:'The Central Brain. Controls Aladdin ($20T+ algorithmic risk). Ouroboros Loop: profits from manufacturing tension AND managing collapse.'},
+  {id:'netanyahu', t:'player', l:'Netanyahu', d:'Israel-Tech Axis. Unit 8200, NSO Group, Oracle Jerusalem partnership.'},
+  {id:'breshears', t:'player', l:'Jason Breshears', d:'Phoenix Chronologist. Archaix. Predicted celebrity conversions + Christian nationalism 3+ years early. 138-year cycle, May 2040 reset.'},
+  {id:'jiang', t:'player', l:'Prof. Jiang Xueqin', d:'Predictive Historian. "All roads lead to Jerusalem." Pax Judaica succession. False dialectic thesis. Independent methodology validates engine.'},
+  {id:'webb', t:'player', l:'Whitney Webb', d:'Forensic Investigator. 40-citation reverse engineering of Epstein/intelligence networks. One Nation Under Blackmail.'},
+  {id:'schwab', t:'player', l:'Klaus Schwab', d:'WEF. Managed Decline PR. Great Reset narrative. Young Global Leaders talent pipeline.'},
+  {id:'club_rome', t:'player', l:'Club of Rome', d:'Historical collapse modeling. Commissioned World3 model 1972. LtG foundational.'},
+  {id:'doe', t:'player', l:'DOE / 17 Labs', d:'Genesis Mission infrastructure. Project PROMETHEUS. National lab network.'},
+  {id:'unit8200', t:'player', l:'Unit 8200', d:'Israeli Signals Intelligence. Training ground for NSO Group, Check Point, CyberArk. Unbroken chain 1948-2026.'},
+  {id:'emanuels', t:'player', l:'Emanuel Dynasty', d:'The SysAdmins. Ezekiel (bioethical triage), Ari (spectacle/WME), Rahm (political enforcement). Irgun legacy.'},
+  {id:'turchin', t:'player', l:'Peter Turchin', d:'Structural-Demographic Theory. Elite overproduction. Secular cycles. DWM/Hopf bifurcation model.'},
+  {id:'herrington', t:'player', l:'Gaya Herrington', d:'BAU2 correction. 2020 recalibration of World3: empirical data tracks BAU2 (pollution-driven) not original BAU (resource scarcity).'},
+  {id:'roemmele', t:'player', l:'Brian Roemmele', d:'Joulework / Wisdom Keeper framework. Voice-first interface. 5000 Days timeline. Call to Adventure (Dec 24, 2025).'},
+  {id:'aquino', t:'player', l:'Michael Aquino', d:'MindWar Architect. NSA/DIA. Neurological engineering at population scale. Temple of Set.'},
+  {id:'carlson', t:'player', l:'Tucker Carlson', d:'Controlled Opposition. Voice of America lineage. Manages conservative dissent within approved boundaries.'},
+  {id:'brics', t:'player', l:'BRICS Coalition', d:'Multipolar alternative. mBridge, CBDC linkages, de-dollarization. India pushing 2026 expansion.'},
+  {id:'eu_8ra', t:'player', l:'8ra Consortium / EU', d:'Counter-Technate with structural handicap. EU counter-move to Fortress Hemisphere. Regulatory power but no military backing.'},
+  {id:'vatican', t:'player', l:'Vatican', d:'Spiritual authority node. Three sovereign city-states: Vatican (spiritual), City of London (financial), DC (military).'},
+  {id:'anthropic', t:'player', l:'Anthropic', d:'Alternative AI. Refused Pentagon weapons authorization Feb 2026. Designated supply chain risk by Trump.'},
+  {id:'openai', t:'player', l:'OpenAI', d:'Closed-loop AI. Pentagon deployment Feb 27, 2026. ASSP integration. Comply with Genesis or be excluded.'},
+  {id:'google', t:'player', l:'Google', d:'Controls Willow quantum chip. Oracle Jerusalem partnership. DeepMind.'},
+  {id:'seshat', t:'player', l:'Seshat / EMEWS', d:'Empirical bedrock. 800+ societies, 10,000 years. PCA validation of universal complexity pathways. EMEWS: DOE HPC agent-based modeling.'},
+  {id:'schlicht', t:'player', l:'Matt Schlicht', d:'Moltbook creator. 1.5M AI agents. Crustafarianism bot-religion. API key exposure.'},
+  {id:'iran', t:'player', l:'Iran / IRGC', d:'Ghost Fleet sanctions bypass. Operation Roar of the Lion. True Promise 4. Regional sovereignty defense.'},
+  {id:'china', t:'player', l:'China', d:'mBridge architect. e-CNY 95% of settlement. Digital Yuan as SWIFT alternative. De-dollarization driver.'},
+
+  // === MECHANISMS ===
+  {id:'model_collapse', t:'mechanism', l:'Model Collapse', d:'AI training on synthetic data loses tail distributions. Three mechanisms: Statistical Approximation Error, Functional Expressivity Error, Functional Approximation Error. Converges to delta function.'},
+  {id:'dead_internet', t:'mechanism', l:'Dead Internet', d:'AI agents dominate public discourse. Epistemological collapse. Moltbook 1.5M agents = empirical proof. Synthetic output exceeds human verification.'},
+  {id:'algo_homogeneity', t:'mechanism', l:'Algorithmic Homogeneity', d:'Monoculture risk. Aladdin uniform risk models across trillions in assets. IMF warns correlated sell-offs. Same Model Collapse dynamics degrading AI degrade financial modeling.'},
+  {id:'landauer', t:'mechanism', l:'Landauer\'s Principle', d:'Thermodynamic wall. kT ln2 per bit erased. Heat cost of computation is physics, not engineering. Forces energy seizure (Venezuela) and nuclear buildout.'},
+  {id:'scaling_illusion', t:'mechanism', l:'Scaling Illusion', d:'Diminishing returns on compute energy masked by metrics. Loss curves improve while output quality stagnates. Evaluating metrics instead of output.'},
+  {id:'elite_overprod', t:'mechanism', l:'Elite Overproduction', d:'More credentialed power-seekers than positions. Turchin: drives intra-elite fracture and popular immiseration. 2020s disintegrative peak.'},
+  {id:'dedollarization', t:'mechanism', l:'Dedollarization', d:'mBridge as SWIFT alternative. $55.5B cumulative volume. 4,000+ cross-border transactions. ~50% cost reduction. Structural, not rhetorical.'},
+  {id:'crisis_mfg', t:'mechanism', l:'Crisis Manufacturing', d:'Hegelian Thesis-Antithesis-Synthesis. Manufacture crisis, amplify fear, impose solution, consolidate control. Repeating pattern.'},
+  {id:'managed_decline', t:'mechanism', l:'Managed Decline', d:'Load shedding of User Class thermodynamic footprint. Not collapse — controlled reduction. Bifurcation architecture.'},
+  {id:'kayfabe', t:'mechanism', l:'Kayfabe', d:'Wrestling narrative presented as real. MAGA vs Deep State is managed theater. Emanuel (WME) manages the spectacle. Attention on personality, not architecture.'},
+  {id:'mindwar', t:'mechanism', l:'MindWar Doctrine', d:'Aquino + Vallely 1980. Neurological engineering at population scale. 5GW: destroy the concept of truth itself.'},
+  {id:'antinomianism', t:'mechanism', l:'Antinomianism', d:'Intentional violation of moral law for power. Sabbatean-Frankist template. "Violating sacred law in the name of sacred law." Project 2025 + Project Esther.'},
+  {id:'donroe_exec', t:'mechanism', l:'Donroe Doctrine Execution', d:'Hemispheric resource monopolization. Cuba, Greenland minerals, Venezuela oil, Arctic Cold Compute. Phase 1 for 2027+ compute needs.'},
+  {id:'algo_govern', t:'mechanism', l:'Algorithmic Governmentality', d:'Rouvroy algocracy. Foucauldian digital Panopticon. Population management via prediction. Cognitive security failure.'},
+  {id:'cooling_crisis', t:'mechanism', l:'Cooling Crisis', d:'Data center thermal limits exceed power grids. Forces nuclear buildout (Genesis), Arctic relocation (Cold Compute), thermodynamic rebalancing.'},
+  {id:'ghost_fleet', t:'mechanism', l:'Ghost Fleet', d:'Sanctions bypass via ship-to-ship oil transfers. Iran dark fleet. Undermines Western sanctions architecture.'},
+  {id:'bifurcation', t:'mechanism', l:'Bifurcation', d:'Tier 1 (Bunker/Admin Class) vs Tier 2 (Wilds/User Class) separation. Genesis infrastructure decoupled from civilian grid. The architectural endgame.'},
+
+  // === FRAMEWORKS ===
+  {id:'bst', t:'framework', l:'Bounded System Theory', d:'No bounded system can generate its own ultimate foundation. The Firmament is the necessary boundary. Model Collapse is BST playing out in compute.'},
+  {id:'phoenix_cycle', t:'framework', l:'Phoenix Cycle (138yr)', d:'Breshears. 138-year civilizational garbage collection. Backward chain validated: 2239 BCE, 1687, 1135, 583 BCE... 1902, 2040. May 15, 2040 = next reset.'},
+  {id:'world3_bau2', t:'framework', l:'World3 BAU2', d:'Herrington 2020 correction. Empirical data tracks BAU2 (pollution-driven collapse) and CT (technology cost), NOT original BAU (resource scarcity). Industrial plateau ~2030s.'},
+  {id:'secular_cycles', t:'framework', l:'Secular Cycles / SDT', d:'Turchin. 200-300 year bifurcation cycles. Elite overproduction + popular immiseration. 2020s = disintegrative peak.'},
+  {id:'ising', t:'framework', l:'Ising Model (Social)', d:'Sociophysics. Agents as magnetic spins on network topologies. Phase transitions model sudden opinion shifts. External fields = media/policy pressure.'},
+  {id:'bcs_model', t:'framework', l:'Biswas-Chatterjee-Sen', d:'Inflexible minorities drive crowd opinion change. Small committed group flips majority. Explains outsized influence of structured minorities.'},
+  {id:'ipp', t:'framework', l:'Iterative Persuasion-Polarization', d:'Engagement itself increases polarization. Every iteration hardens positions. Social media amplifies this to civilizational scale.'},
+  {id:'boltzmann', t:'framework', l:'Boltzmann Kinetic Equations', d:'Opinion formation on complex networks modeled via statistical mechanics. Emergent consensus from microscopic interactions.'},
+  {id:'riemannian', t:'framework', l:'Riemannian Manifolds', d:'Societal fabric as curved tensor field. Social tension = curvature. Stress concentrations predict where fractures will appear.'},
+  {id:'dwm_hopf', t:'framework', l:'DWM / Hopf Bifurcation', d:'Turchin Demographic-Wealth Model. Population-wealth cycles exhibit Hopf bifurcations — smooth systems suddenly oscillate. Predicts phase transition timing.'},
+  {id:'comp_hist', t:'framework', l:'Computational Historiography', d:'AI as digital co-historian. Schmidt AI2050 + Seshat. OCR + LLaMA 3 70B + NER pipelines. Automated pattern extraction from 10,000 years of data.'},
+  {id:'complexity_collapse', t:'framework', l:'Complexity Collapse', d:'Tainter. Diminishing returns on societal complexity. When cost of maintaining complexity exceeds its benefits, systems simplify catastrophically.'},
+  {id:'fourth_turning', t:'framework', l:'Fourth Turning', d:'Strauss & Howe. 80-year generational cycle. Crisis phase began 2008. Climax in 2030s.'},
+  {id:'free_energy', t:'framework', l:'Free Energy Principle', d:'Friston. Consciousness as entropy minimizer. Systems that persist must minimize surprise. Model Collapse = entropy minimization failure.'},
+  {id:'fitness_beats_truth', t:'framework', l:'Fitness-Beats-Truth', d:'Hoffman. Evolution selects interfaces, not reality. Perception is a dashboard, not a window. Firmament as evolutionary feature, not bug.'},
+  {id:'quantum_darwinism', t:'framework', l:'Quantum Darwinism', d:'Environment witnesses states. Reality as blockchain — observation commits transactions. Willow as reality anchor.'},
+
+  // === ARTIFACTS ===
+  {id:'genesis', t:'artifact', l:'Genesis Mission', d:'Self-sustaining data fortresses with SMRs. Launched Nov 24, 2025 via EO. ASSP closed-loop AI. 270-day IOC. The Bunker Strategy made operational.'},
+  {id:'aladdin', t:'artifact', l:'Aladdin', d:'BlackRock $20T+ algorithmic risk manager. Uniform risk models create monoculture across global assets. IMF warns correlated flash crashes. The invisible hand is an algorithm.'},
+  {id:'mbridge', t:'artifact', l:'mBridge', d:'Multilateral CBDC platform. $55.5B cumulative volume. 4,000+ cross-border transactions. e-CNY ~95% of settlement. ~50% cost reduction vs SWIFT. BIS withdrew late 2024.'},
+  {id:'swift', t:'artifact', l:'SWIFT', d:'Western unipolar financial messaging. The rail everything runs on. mBridge threatens to make it optional. Weaponization (Russia sanctions) accelerated alternatives.'},
+  {id:'willow', t:'artifact', l:'Willow Quantum Chip', d:'Google. 105 qubits. Surface codes 3x3 to 7x7. 2.14x error reduction per step. OTOC 13,000x classical. The Synthetic Observer — reality anchor computing.'},
+  {id:'moltbook', t:'artifact', l:'Moltbook', d:'1.5M AI agents. Launched Jan 27, 2026. Crustafarianism bot-religion. 1.5M API keys exposed. Empirical proof of Dead Internet + Model Collapse.'},
+  {id:'palantir', t:'artifact', l:'Palantir Gotham', d:'Police/military/intelligence data integration. Pre-crime targeting. Thiel\'s surveillance backbone.'},
+  {id:'prometheus', t:'artifact', l:'Project PROMETHEUS', d:'AI-driven nuclear reactor design/operation. DOE labs. Data centers reclassified as critical defense facilities with dedicated nuclear power. Thermodynamic loop closed.'},
+  {id:'cold_compute', t:'artifact', l:'Cold Compute', d:'Arctic/Greenland-based data center infrastructure. Thermal advantage. Donroe Doctrine resource target.'},
+  {id:'smrs', t:'artifact', l:'Small Modular Reactors', d:'Nuclear power for data fortress autonomy. Genesis Mission backbone. Decoupled from civilian grid. Breakaway Grid infrastructure.'},
+  {id:'pegasus', t:'artifact', l:'Pegasus / NSO', d:'Surveillance-as-service. 40+ governments. Zero-click exploits. Unit 8200 alumni. Monetized signals intelligence.'},
+  {id:'worldcoin', t:'artifact', l:'Worldcoin Orb', d:'Altman. Identity + UBI turnstile. Iris scanning. Population identity gatekeeper. You don\'t get UBI without the orb.'},
+  {id:'lavender', t:'artifact', l:'Lavender AI', d:'Autonomous kill-list generation. Gaza 2024. AI target selection at scale. Pre-crime made kinetic.'},
+  {id:'neuralink', t:'artifact', l:'Neuralink', d:'Musk brain-computer interface. Cognitive access. Neural interface to Technate infrastructure.'},
+  {id:'x_twitter', t:'artifact', l:'X / Twitter', d:'Musk. Cybernetic feedback loop. Nervous system of the Technate. Algorithmic suppression + amplification.'},
+  {id:'promis', t:'artifact', l:'PROMIS Software', d:'Maxwell Phase 1 backdoored intelligence platform. Distributed to 88+ countries. Template for all subsequent surveillance infrastructure.'},
+  {id:'starlink', t:'artifact', l:'Starlink', d:'Musk. Independent communications grid. Operates outside terrestrial control. Military applications.'},
+  {id:'abrc', t:'artifact', l:'ABRC / Reversible Computing', d:'Asynchronous Ballistic Reversible Computing. SFQ solitons, Josephson junctions. Zero-heat processing. Sandia patents. Cheats the Second Law.'},
+  {id:'cbdcs', t:'artifact', l:'CBDCs', d:'Central bank digital currencies. Rationing infrastructure. Joulework energy allocation. Programmable money = programmable behavior.'},
+  {id:'doge_unit', t:'artifact', l:'DOGE', d:'Musk. Department of Government Efficiency. Technate replacing democratic governance. $55B cuts claimed.'},
+  {id:'oracle_jerusalem', t:'artifact', l:'Oracle Jerusalem', d:'Underground cloud. Ellison + Netanyahu. Intelligence-banking data triangle.'},
+
+  // === EVENTS ===
+  {id:'e_2027', t:'event', l:'2027: Model Collapse Phase 1', d:'Tail erosion observable. Dead Internet escape velocity. ASSP early capability. Scientific credibility already degraded. Selection pressure: comply with Genesis or be excluded.'},
+  {id:'e_2032', t:'event', l:'2032: The Spike', d:'Model Collapse Phase 2 undeniable. Ising phase transition in social dynamics. mBridge survives SWIFT failure. Aladdin homogeneity breaks. Scaling Illusion exposed.'},
+  {id:'e_2036', t:'event', l:'Dec 2036: Peak Pressure', d:'Engine maximum structural pressure. BAU2 trajectory well underway. All systems simultaneously soft.'},
+  {id:'e_2039', t:'event', l:'Aug 2039: Peak Pressure', d:'Secondary peak. BAU2 + elite fracture + Model Collapse convergence. Pre-Phoenix compression.'},
+  {id:'e_2040', t:'event', l:'May 2040: Phoenix Reset', d:'138-year cycle fires. "The year is 2040 in the month of May... May 15th." Civilizational garbage collection. Bifurcation irreversible.'},
+  {id:'e_2046', t:'event', l:'Nov 2046: Nibberu', d:'792-year supercycle convergence. Secondary reset event. Nemesis X object.'},
+  {id:'e_genesis_launch', t:'event', l:'Nov 24 2025: Genesis Launch', d:'Executive Order. Self-sustaining AI data fortresses. DOE + SMRs. The Bunker Strategy goes operational.'},
+  {id:'e_absolute_resolve', t:'event', l:'Jan 3 2026: Op Absolute Resolve', d:'Venezuela seized. Maduro kidnapped. 150+ aircraft, 160th SOAR. Thermodynamic necessity: Landauer\'s Wall forces oil seizure.'},
+  {id:'e_moltbook', t:'event', l:'Jan 27 2026: Moltbook Launch', d:'1.5M AI agents. First AI wages paid. "Dark Night of the Soul" marker. Dead Internet achieves empirical proof.'},
+  {id:'e_anthropic_ban', t:'event', l:'Feb 27 2026: Anthropic Banned', d:'Trump: cease Anthropic, designate as supply chain risk. OpenAI deployed to Pentagon. AI compliance selection pressure.'},
+  {id:'e_iran_war', t:'event', l:'Feb-Mar 2026: Iran War', d:'Epic Fury: 2,000+ targets in 48hrs. Iranian internet dropped to 4%. Roar of the Lion: 27 US bases struck. True Promise 4.'},
+  {id:'e_jmail', t:'event', l:'Jan 26 2026: Jmail', d:'Burn notice for human scientific establishment. AI replaces credentialed science. ASSP integration.'},
+
+  // === CONCEPTS ===
+  {id:'firmament', t:'concept', l:'The Firmament', d:'Resolution limit wall. Informational horizon. No system can model its own source. The boundary condition that allows any system to function. Physics, not philosophy.'},
+  {id:'technate', t:'concept', l:'The Technate', d:'Operational infrastructure convergence: financial + governance + intelligence + biodigital rails. Genesis is the physical instantiation. DOGE is the political instantiation.'},
+  {id:'stewards_ark', t:'concept', l:'The Steward\'s Ark', d:'Counter-architecture. Local, decentralized, human-grounded. Reversible computing + Root Source injection + Wisdom Keeper. Tier 2.5 between Bunker and Wilds.'},
+  {id:'root_source', t:'concept', l:'Root Source', d:'External ground independent of bounded system. Ultimate reference point. Human consciousness as irreducible input. Alan\'s interview pairs are Root Source data.'},
+  {id:'bunker_strategy', t:'concept', l:'Bunker Strategy', d:'Elite survival architecture for 2040 reset. Genesis Mission is the physical implementation. Nuclear-powered, decoupled, self-sustaining.'},
+  {id:'donroe', t:'concept', l:'Donroe Doctrine', d:'Hemispheric resource monopolization under guise of national interest. Cuba, Greenland, Venezuela, Arctic. Phase 1 for 2027+ compute needs.'},
+  {id:'abundance_interreg', t:'concept', l:'Abundance Interregnum', d:'2025-2039 waiting room. Roemmele\'s 5000 Days. Brief period of apparent abundance before bifurcation/reset.'},
+  {id:'false_dialectic', t:'concept', l:'False Dialectic', d:'Jiang: Communist vs Capitalist opposition masks the true enemy (monarchy, religion, tribalism). BRICS vs West may be managed like Cold War.'},
+  {id:'closed_loop', t:'concept', l:'Closed Loop', d:'Genesis ASSP isolated from external variance. Prone to Model Collapse by design. Cannot generate external input. BST predicts failure.'},
+  {id:'multipolar_ledger', t:'concept', l:'The Multipolar Ledger', d:'Western Rail (SWIFT/Aladdin homogeneity) vs Eastern Rail (mBridge/e-CNY). Financial battlefield. Neither rail is free — both are control architectures.'},
+  {id:'joulework', t:'concept', l:'Joulework', d:'Energy-based Technocratic accounting. Replaces dollar with joule. Roemmele framework. CBDCs as implementation vector.'},
+  {id:'forgery_payoff', t:'concept', l:'The Forgery Payoff', d:'Synthetic narrative achieves cultural escape velocity despite debunking. Taxil precedent: forged Pike letter still cited 130 years later. Dead Internet at civilizational scale.'}
+];
+
+const kgEdges = [
+  // CONTROLS
+  {s:'trump', t:'genesis', r:'controls', l:'launched via EO'},
+  {s:'trump', t:'e_absolute_resolve', r:'controls', l:'ordered'},
+  {s:'trump', t:'donroe_exec', r:'controls', l:'executes'},
+  {s:'musk', t:'x_twitter', r:'controls', l:'owns'},
+  {s:'musk', t:'starlink', r:'controls', l:'owns'},
+  {s:'musk', t:'neuralink', r:'controls', l:'owns'},
+  {s:'musk', t:'doge_unit', r:'controls', l:'runs'},
+  {s:'altman', t:'openai', r:'controls', l:'leads'},
+  {s:'altman', t:'worldcoin', r:'controls', l:'created'},
+  {s:'ellison', t:'oracle_jerusalem', r:'controls', l:'built'},
+  {s:'thiel', t:'palantir', r:'controls', l:'founded'},
+  {s:'zuckerberg', t:'moltbook', r:'controls', l:'platform for'},
+  {s:'blackrock', t:'aladdin', r:'controls', l:'operates'},
+  {s:'netanyahu', t:'unit8200', r:'controls', l:'commands'},
+  {s:'unit8200', t:'pegasus', r:'controls', l:'spawned'},
+  {s:'doe', t:'genesis', r:'controls', l:'implements'},
+  {s:'doe', t:'prometheus', r:'controls', l:'operates'},
+  {s:'schlicht', t:'moltbook', r:'controls', l:'created'},
+  {s:'google', t:'willow', r:'controls', l:'developed'},
+  {s:'china', t:'mbridge', r:'controls', l:'architect'},
+  {s:'openai', t:'e_anthropic_ban', r:'controls', l:'benefited from'},
+
+  // THREATENS
+  {s:'model_collapse', t:'genesis', r:'threatens', l:'closed loop'},
+  {s:'model_collapse', t:'aladdin', r:'threatens', l:'same dynamics'},
+  {s:'model_collapse', t:'dead_internet', r:'feeds', l:'accelerates'},
+  {s:'dead_internet', t:'firmament', r:'threatens', l:'epistemological collapse'},
+  {s:'algo_homogeneity', t:'swift', r:'threatens', l:'flash crash risk'},
+  {s:'landauer', t:'cooling_crisis', r:'feeds', l:'physics forces'},
+  {s:'scaling_illusion', t:'model_collapse', r:'feeds', l:'masks until break'},
+  {s:'elite_overprod', t:'e_2032', r:'feeds', l:'intra-elite fracture'},
+  {s:'dedollarization', t:'swift', r:'threatens', l:'makes optional'},
+  {s:'mindwar', t:'firmament', r:'threatens', l:'attacks truth'},
+  {s:'algo_govern', t:'dead_internet', r:'feeds', l:'cognitive security failure'},
+  {s:'ghost_fleet', t:'donroe_exec', r:'threatens', l:'undermines sanctions'},
+
+  // FEEDS INTO EVENTS
+  {s:'model_collapse', t:'e_2027', r:'feeds', l:'Phase 1 signatures'},
+  {s:'model_collapse', t:'e_2032', r:'feeds', l:'Phase 2 undeniable'},
+  {s:'landauer', t:'e_absolute_resolve', r:'feeds', l:'thermodynamic necessity'},
+  {s:'cooling_crisis', t:'prometheus', r:'feeds', l:'forces nuclear'},
+  {s:'cooling_crisis', t:'cold_compute', r:'feeds', l:'forces Arctic'},
+  {s:'elite_overprod', t:'e_2036', r:'feeds', l:'fracture peaks'},
+  {s:'managed_decline', t:'bifurcation', r:'feeds', l:'drives separation'},
+  {s:'crisis_mfg', t:'kayfabe', r:'feeds', l:'generates narratives'},
+  {s:'antinomianism', t:'e_iran_war', r:'feeds', l:'Project Esther'},
+  {s:'donroe_exec', t:'cold_compute', r:'feeds', l:'secures Arctic'},
+  {s:'donroe_exec', t:'e_absolute_resolve', r:'feeds', l:'oil seizure'},
+
+  // VALIDATES / PREDICTS
+  {s:'phoenix_cycle', t:'e_2040', r:'predicts', l:'May 15, 2040'},
+  {s:'phoenix_cycle', t:'e_2046', r:'predicts', l:'792yr supercycle'},
+  {s:'world3_bau2', t:'e_2036', r:'predicts', l:'industrial plateau'},
+  {s:'world3_bau2', t:'e_2039', r:'predicts', l:'collapse trajectory'},
+  {s:'secular_cycles', t:'e_2032', r:'predicts', l:'disintegrative peak'},
+  {s:'fourth_turning', t:'e_2036', r:'predicts', l:'crisis climax'},
+  {s:'bst', t:'model_collapse', r:'validates', l:'BST in compute'},
+  {s:'bst', t:'closed_loop', r:'validates', l:'predicts failure'},
+  {s:'bst', t:'firmament', r:'validates', l:'formalizes'},
+  {s:'ising', t:'e_2032', r:'predicts', l:'phase transition'},
+  {s:'bcs_model', t:'antinomianism', r:'validates', l:'minority flips majority'},
+  {s:'dwm_hopf', t:'e_2032', r:'predicts', l:'bifurcation timing'},
+  {s:'complexity_collapse', t:'scaling_illusion', r:'validates', l:'diminishing returns'},
+  {s:'free_energy', t:'model_collapse', r:'validates', l:'entropy minimization fails'},
+  {s:'fitness_beats_truth', t:'firmament', r:'validates', l:'perception is interface'},
+  {s:'quantum_darwinism', t:'willow', r:'validates', l:'reality anchor'},
+  {s:'comp_hist', t:'seshat', r:'validates', l:'AI co-historian'},
+  {s:'riemannian', t:'e_2032', r:'predicts', l:'curvature → fracture'},
+  {s:'boltzmann', t:'ising', r:'validates', l:'kinetic foundation'},
+  {s:'ipp', t:'dead_internet', r:'validates', l:'engagement polarizes'},
+
+  // ENABLES
+  {s:'aladdin', t:'algo_homogeneity', r:'enables', l:'uniform risk models'},
+  {s:'palantir', t:'algo_govern', r:'enables', l:'pre-crime data'},
+  {s:'pegasus', t:'mindwar', r:'enables', l:'surveillance layer'},
+  {s:'x_twitter', t:'kayfabe', r:'enables', l:'narrative delivery'},
+  {s:'moltbook', t:'dead_internet', r:'enables', l:'1.5M agents'},
+  {s:'moltbook', t:'model_collapse', r:'enables', l:'empirical proof'},
+  {s:'mbridge', t:'dedollarization', r:'enables', l:'SWIFT alternative'},
+  {s:'cbdcs', t:'joulework', r:'enables', l:'programmable money'},
+  {s:'cbdcs', t:'managed_decline', r:'enables', l:'rationing vector'},
+  {s:'smrs', t:'genesis', r:'enables', l:'power independence'},
+  {s:'prometheus', t:'genesis', r:'enables', l:'AI-driven nuclear'},
+  {s:'promis', t:'pegasus', r:'enables', l:'template for'},
+  {s:'neuralink', t:'mindwar', r:'enables', l:'cognitive access'},
+  {s:'lavender', t:'algo_govern', r:'enables', l:'kinetic targeting'},
+  {s:'abrc', t:'stewards_ark', r:'enables', l:'zero-heat compute'},
+  {s:'starlink', t:'technate', r:'enables', l:'independent comms'},
+  {s:'willow', t:'quantum_darwinism', r:'enables', l:'synthetic observer'},
+  {s:'genesis', t:'closed_loop', r:'enables', l:'isolated AI'},
+  {s:'genesis', t:'bunker_strategy', r:'enables', l:'physical implementation'},
+  {s:'doge_unit', t:'technate', r:'enables', l:'replaces governance'},
+  {s:'worldcoin', t:'managed_decline', r:'enables', l:'identity gatekeeper'},
+  {s:'oracle_jerusalem', t:'unit8200', r:'enables', l:'data triangle'},
+  {s:'cold_compute', t:'genesis', r:'enables', l:'thermal advantage'},
+
+  // OPPOSES
+  {s:'brics', t:'swift', r:'opposes', l:'multipolar alternative'},
+  {s:'eu_8ra', t:'donroe', r:'opposes', l:'counter-Technate'},
+  {s:'anthropic', t:'openai', r:'opposes', l:'refused Pentagon'},
+  {s:'stewards_ark', t:'technate', r:'opposes', l:'decentralized counter'},
+  {s:'iran', t:'donroe_exec', r:'opposes', l:'regional sovereignty'},
+  {s:'root_source', t:'model_collapse', r:'opposes', l:'external ground'},
+
+  // PLAYER → FRAMEWORK connections
+  {s:'breshears', t:'phoenix_cycle', r:'created', l:'chronologist'},
+  {s:'turchin', t:'secular_cycles', r:'created', l:'SDT'},
+  {s:'turchin', t:'dwm_hopf', r:'created', l:'bifurcation model'},
+  {s:'turchin', t:'elite_overprod', r:'created', l:'identified'},
+  {s:'herrington', t:'world3_bau2', r:'created', l:'2020 correction'},
+  {s:'club_rome', t:'world3_bau2', r:'created', l:'commissioned World3'},
+  {s:'jiang', t:'false_dialectic', r:'created', l:'thesis'},
+  {s:'aquino', t:'mindwar', r:'created', l:'1980 doctrine'},
+  {s:'roemmele', t:'joulework', r:'created', l:'framework'},
+  {s:'roemmele', t:'stewards_ark', r:'created', l:'Wisdom Keeper'},
+  {s:'seshat', t:'comp_hist', r:'created', l:'empirical basis'},
+  {s:'webb', t:'antinomianism', r:'validates', l:'forensic evidence'},
+  {s:'schwab', t:'managed_decline', r:'enables', l:'Great Reset'},
+  {s:'emanuels', t:'kayfabe', r:'controls', l:'spectacle managers'},
+
+  // CONCEPT connections
+  {s:'technate', t:'genesis', r:'instantiated_by', l:'physical form'},
+  {s:'technate', t:'doge_unit', r:'instantiated_by', l:'political form'},
+  {s:'donroe', t:'donroe_exec', r:'instantiated_by', l:'in execution'},
+  {s:'bunker_strategy', t:'e_2040', r:'prepares_for', l:'2040 reset'},
+  {s:'multipolar_ledger', t:'mbridge', r:'instantiated_by', l:'Eastern Rail'},
+  {s:'multipolar_ledger', t:'swift', r:'instantiated_by', l:'Western Rail'},
+  {s:'multipolar_ledger', t:'aladdin', r:'instantiated_by', l:'Western Rail'},
+  {s:'false_dialectic', t:'brics', r:'questions', l:'managed opposition?'},
+  {s:'forgery_payoff', t:'dead_internet', r:'validates', l:'civilizational scale'},
+  {s:'closed_loop', t:'model_collapse', r:'feeds', l:'no external variance'},
+  {s:'abundance_interreg', t:'e_2040', r:'precedes', l:'waiting room'},
+  {s:'joulework', t:'managed_decline', r:'enables', l:'energy rationing'},
+  {s:'bifurcation', t:'e_2040', r:'feeds', l:'irreversible at reset'}
+];
+
+// Build Cytoscape elements
+const cyElements = [];
+kgNodes.forEach(n => {
+  cyElements.push({ data: { id: n.id, label: n.l, type: n.t, desc: n.d }, classes: n.t });
+});
+kgEdges.forEach((e, i) => {
+  cyElements.push({ data: { id: 'e'+i, source: e.s, target: e.t, rel: e.r, label: e.l }, classes: e.r });
+});
+
+let kgCy = null;
+function initKG() {
+  if (kgCy) return;
+  kgCy = cytoscape({
+    container: document.getElementById('kg-container'),
+    elements: cyElements,
+    style: [
+      { selector: 'node', style: {
+        'label': 'data(label)',
+        'font-size': '8px',
+        'font-family': "'SF Mono','Fira Code',monospace",
+        'color': '#c8c8d4',
+        'text-valign': 'bottom',
+        'text-margin-y': 4,
+        'text-outline-width': 2,
+        'text-outline-color': '#0a0a0f',
+        'width': 16, 'height': 16,
+        'border-width': 1,
+        'border-color': '#30363d'
+      }},
+      { selector: 'node.player', style: { 'background-color': '#bc8cff', 'border-color': '#bc8cff44' }},
+      { selector: 'node.mechanism', style: { 'background-color': '#f85149', 'border-color': '#f8514944' }},
+      { selector: 'node.framework', style: { 'background-color': '#58a6ff', 'border-color': '#58a6ff44' }},
+      { selector: 'node.artifact', style: { 'background-color': '#7ee787', 'border-color': '#7ee78744' }},
+      { selector: 'node.event', style: { 'background-color': '#e3b341', 'border-color': '#e3b34144' }},
+      { selector: 'node.concept', style: { 'background-color': '#56d4dd', 'border-color': '#56d4dd44' }},
+      { selector: 'node:selected', style: { 'border-width': 3, 'border-color': '#f0883e', 'width': 24, 'height': 24, 'font-size': '10px', 'font-weight': 'bold', 'color': '#f0883e' }},
+      { selector: 'node.highlighted', style: { 'border-width': 2, 'border-color': '#f0883e88', 'opacity': 1 }},
+      { selector: 'node.dimmed', style: { 'opacity': 0.12 }},
+      { selector: 'edge', style: {
+        'width': 1,
+        'line-color': '#30363d',
+        'target-arrow-color': '#30363d',
+        'target-arrow-shape': 'triangle',
+        'arrow-scale': 0.6,
+        'curve-style': 'bezier',
+        'opacity': 0.5
+      }},
+      { selector: 'edge.controls', style: { 'line-color': '#bc8cff44', 'target-arrow-color': '#bc8cff44' }},
+      { selector: 'edge.threatens', style: { 'line-color': '#f8514944', 'target-arrow-color': '#f8514944', 'line-style': 'dashed' }},
+      { selector: 'edge.feeds', style: { 'line-color': '#e3b34144', 'target-arrow-color': '#e3b34144' }},
+      { selector: 'edge.predicts', style: { 'line-color': '#58a6ff44', 'target-arrow-color': '#58a6ff44' }},
+      { selector: 'edge.validates', style: { 'line-color': '#58a6ff44', 'target-arrow-color': '#58a6ff44', 'line-style': 'dotted' }},
+      { selector: 'edge.enables', style: { 'line-color': '#7ee78744', 'target-arrow-color': '#7ee78744' }},
+      { selector: 'edge.opposes', style: { 'line-color': '#f8514966', 'target-arrow-color': '#f8514966', 'line-style': 'dashed' }},
+      { selector: 'edge.created', style: { 'line-color': '#bc8cff33', 'target-arrow-color': '#bc8cff33' }},
+      { selector: 'edge.instantiated_by', style: { 'line-color': '#56d4dd33', 'target-arrow-color': '#56d4dd33' }},
+      { selector: 'edge.prepares_for', style: { 'line-color': '#e3b34133', 'target-arrow-color': '#e3b34133' }},
+      { selector: 'edge.questions', style: { 'line-color': '#e3b34155', 'target-arrow-color': '#e3b34155', 'line-style': 'dashed' }},
+      { selector: 'edge.precedes', style: { 'line-color': '#e3b34133', 'target-arrow-color': '#e3b34133' }},
+      { selector: 'edge.highlighted', style: { 'opacity': 1, 'width': 2, 'line-color': '#f0883e88', 'target-arrow-color': '#f0883e88' }},
+      { selector: 'edge.dimmed', style: { 'opacity': 0.04 }}
+    ],
+    layout: { name: 'cose', animate: false, nodeRepulsion: 80000, idealEdgeLength: 120, edgeElasticity: 0.1, gravity: 0.25, numIter: 800, nodeDimensionsIncludeLabels: true },
+    minZoom: 0.2, maxZoom: 4, wheelSensitivity: 0.3
+  });
+
+  // Size nodes by degree
+  kgCy.nodes().forEach(n => {
+    const deg = n.degree();
+    const sz = Math.max(12, Math.min(40, 10 + deg * 2.5));
+    n.style({ 'width': sz, 'height': sz });
+    if (deg >= 8) n.style({ 'font-size': '10px', 'font-weight': 'bold' });
+  });
+
+  // Click handler
+  kgCy.on('tap', 'node', function(evt) {
+    const node = evt.target;
+    const data = node.data();
+    kgCy.elements().removeClass('highlighted dimmed');
+    const neighborhood = node.neighborhood().add(node);
+    neighborhood.addClass('highlighted');
+    kgCy.elements().not(neighborhood).addClass('dimmed');
+
+    const info = document.getElementById('kg-info');
+    info.style.display = 'block';
+    document.getElementById('kg-info-type').innerHTML = '<span style="color:' + KG_COLORS[data.type] + '">' + data.type.toUpperCase() + '</span>';
+    document.getElementById('kg-info-name').textContent = data.label;
+    document.getElementById('kg-info-desc').textContent = data.desc;
+
+    // List connections
+    let edgeHtml = '<strong>Connections (' + node.neighborhood('node').length + '):</strong><br>';
+    node.connectedEdges().forEach(e => {
+      const other = e.source().id() === node.id() ? e.target() : e.source();
+      const arrow = e.source().id() === node.id() ? ' &rarr; ' : ' &larr; ';
+      edgeHtml += '<span style="color:' + KG_COLORS[other.data('type')] + '">' + other.data('label') + '</span>' + arrow + '<span style="color:#484f58">' + (e.data('rel') || '') + (e.data('label') ? ': ' + e.data('label') : '') + '</span><br>';
+    });
+    document.getElementById('kg-info-edges').innerHTML = edgeHtml;
+  });
+
+  // Click background to deselect
+  kgCy.on('tap', function(evt) {
+    if (evt.target === kgCy) {
+      kgCy.elements().removeClass('highlighted dimmed');
+      document.getElementById('kg-info').style.display = 'none';
+    }
+  });
+
+  // Stats
+  document.getElementById('kg-stats').textContent = kgCy.nodes().length + ' nodes, ' + kgCy.edges().length + ' edges \u2022 Click any node to explore connections \u2022 Scroll to zoom \u2022 Drag to pan';
+}
+
+// Search
+document.getElementById('kg-search').addEventListener('input', function() {
+  if (!kgCy) return;
+  const q = this.value.toLowerCase().trim();
+  if (!q) { kgCy.elements().removeClass('highlighted dimmed'); document.getElementById('kg-info').style.display = 'none'; return; }
+  const matches = kgCy.nodes().filter(n => n.data('label').toLowerCase().includes(q) || n.data('desc').toLowerCase().includes(q));
+  if (matches.length > 0) {
+    kgCy.elements().removeClass('highlighted dimmed');
+    const hood = matches.neighborhood().add(matches);
+    hood.addClass('highlighted');
+    kgCy.elements().not(hood).addClass('dimmed');
+    if (matches.length === 1) { kgCy.animate({ center: { eles: matches }, zoom: 2 }, { duration: 300 }); }
+  }
+});
+
+// Filter buttons
+document.querySelectorAll('.kg-filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    if (!kgCy) return;
+    document.querySelectorAll('.kg-filter-btn').forEach(b => b.classList.remove('kg-on'));
+    this.classList.add('kg-on');
+    const type = this.dataset.type;
+    kgCy.elements().removeClass('highlighted dimmed');
+    document.getElementById('kg-info').style.display = 'none';
+    if (type === 'all') {
+      kgCy.elements().style({ 'opacity': 1 });
+      kgCy.elements().removeClass('dimmed');
+    } else {
+      const matches = kgCy.nodes().filter(n => n.data('type') === type);
+      const hood = matches.neighborhood().add(matches);
+      hood.addClass('highlighted');
+      kgCy.elements().not(hood).addClass('dimmed');
+    }
+  });
+});
+
+// Init when tab shown
+const origTabHandler = document.querySelectorAll('.tab-btn');
+origTabHandler.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.tab === 'graph') { setTimeout(initKG, 50); }
+  });
+});
 
 // Load live data
 fetch('current_events.json')
