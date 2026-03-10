@@ -742,17 +742,14 @@ canvas#chart { width: 100%; height: 200px; }
     p = rotate(p, 2, 5, t * 0.13);
     p = rotate(p, 3, 6, t * 0.06);
 
-    // Perspective projection: collapse 7D → 2D
-    let scale = 1;
-    for (let d = D - 1; d >= 2; d--) {
-      const dist = 3.5 - p[d] * 0.3;
-      scale *= 1 / dist;
-    }
-    const sz = Math.min(W, H) * 0.30;
+    // Project: use first 2 dims for position, remaining 5 for depth
+    const depthSum = (p[2] + p[3] + p[4] + p[5] + p[6]) / 5;
+    const persp = 2.8 / (2.8 - depthSum * 0.4);
+    const sz = Math.min(W, H) * 0.26;
     return {
-      x: W / 2 + p[0] * sz * scale,
-      y: H / 2 + p[1] * sz * scale,
-      depth: scale
+      x: W / 2 + p[0] * sz * persp,
+      y: H / 2 + p[1] * sz * persp,
+      depth: persp
     };
   }
 
@@ -774,12 +771,17 @@ canvas#chart { width: 100%; height: 200px; }
       return { i: e[0], j: e[1], dim: e[2], depth: avgDepth };
     }).sort((a, b) => a.depth - b.depth);
 
+    // Depth range for normalization
+    const depths = projected.map(p => p.depth);
+    const dMin = Math.min(...depths), dMax = Math.max(...depths), dRange = dMax - dMin || 1;
+
     // Draw edges
     for (const e of sortedEdges) {
       const a = projected[e.i], b = projected[e.j];
       const c = DIM_COLORS[e.dim];
-      const alpha = Math.min(0.35, Math.max(0.04, e.depth * 0.5));
-      const lw = Math.min(1.5, Math.max(0.3, e.depth * 2));
+      const norm = (e.depth - dMin) / dRange; // 0..1
+      const alpha = 0.06 + norm * 0.22;
+      const lw = 0.3 + norm * 0.9;
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
@@ -790,8 +792,9 @@ canvas#chart { width: 100%; height: 200px; }
 
     // Draw vertices
     for (const p of projected) {
-      const r = Math.min(2, Math.max(0.4, p.depth * 3));
-      const alpha = Math.min(0.6, Math.max(0.08, p.depth * 0.8));
+      const norm = (p.depth - dMin) / dRange;
+      const r = 0.5 + norm * 1.5;
+      const alpha = 0.1 + norm * 0.5;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(240,136,62,' + alpha + ')';
