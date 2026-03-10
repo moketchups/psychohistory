@@ -159,13 +159,16 @@ canvas#chart { width: 100%; height: 200px; }
 }
 
 /* KNOWLEDGE GRAPH */
-#kg-container { width: 100%; height: 70vh; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; position: relative; }
+#kg-container { width: 100%; height: 75vh; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; position: relative; }
 #kg-controls { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
-#kg-search { background: #161b22; border: 1px solid #30363d; color: #c8c8d4; font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 4px; width: 240px; }
+#kg-search { background: #161b22; border: 1px solid #30363d; color: #c8c8d4; font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 4px; width: 260px; }
 #kg-search::placeholder { color: #484f58; }
 .kg-filter-btn { padding: 4px 10px; border: 1px solid #30363d; background: none; color: #8b949e; font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 3px; }
 .kg-filter-btn:hover { border-color: #484f58; color: #c8c8d4; }
 .kg-filter-btn.kg-on { border-color: var(--fc); color: var(--fc); background: var(--bg); }
+#kg-tooltip { position: absolute; background: #161b22ee; border: 1px solid #f0883e66; border-radius: 4px; padding: 8px 12px; font-size: 11px; color: #c8c8d4; pointer-events: none; z-index: 10; max-width: 280px; display: none; line-height: 1.5; }
+#kg-tooltip .kg-tt-name { color: #f0883e; font-weight: 700; font-size: 12px; }
+#kg-tooltip .kg-tt-type { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
 #kg-info { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 14px; margin-top: 10px; display: none; }
 #kg-info h4 { font-size: 12px; color: #f0883e; margin-bottom: 6px; }
 #kg-info .kg-type { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
@@ -175,6 +178,7 @@ canvas#chart { width: 100%; height: 200px; }
 #kg-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
 .kg-leg { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #8b949e; }
 .kg-leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+#kg-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); color: #484f58; font-size: 10px; z-index: 5; pointer-events: none; transition: opacity 0.5s; }
 
 /* PRESSURE WINDOWS */
 .pw {
@@ -2138,7 +2142,10 @@ document.getElementById('p-graph').innerHTML = `
     <button class="kg-filter-btn" data-type="event" style="--fc:#e3b341;--bg:#e3b34122">Events</button>
     <button class="kg-filter-btn" data-type="concept" style="--fc:#56d4dd;--bg:#56d4dd22">Concepts</button>
   </div>
-  <div id="kg-container"></div>
+  <div id="kg-container">
+    <div id="kg-tooltip"><div class="kg-tt-type" id="kg-tt-type"></div><div class="kg-tt-name" id="kg-tt-name"></div><div id="kg-tt-desc"></div></div>
+    <div id="kg-hint">Hover to identify &bull; Click to explore connections &bull; Scroll to zoom</div>
+  </div>
   <div id="kg-legend">
     <span class="kg-leg"><span class="kg-leg-dot" style="background:#bc8cff"></span>Player</span>
     <span class="kg-leg"><span class="kg-leg-dot" style="background:#f85149"></span>Mechanism</span>
@@ -2422,8 +2429,9 @@ const kgEdges = [
 
 // Build Cytoscape elements
 const cyElements = [];
+const KG_RING = { event: 0, mechanism: 1, concept: 1, framework: 2, artifact: 3, player: 3 };
 kgNodes.forEach(n => {
-  cyElements.push({ data: { id: n.id, label: n.l, type: n.t, desc: n.d }, classes: n.t });
+  cyElements.push({ data: { id: n.id, label: n.l, type: n.t, desc: n.d, ring: KG_RING[n.t] || 2 }, classes: n.t });
 });
 kgEdges.forEach((e, i) => {
   cyElements.push({ data: { id: 'e'+i, source: e.s, target: e.t, rel: e.r, label: e.l }, classes: e.r });
@@ -2436,7 +2444,53 @@ function initKG() {
     container: document.getElementById('kg-container'),
     elements: cyElements,
     style: [
+      // NODES: no labels by default — clean dots only
       { selector: 'node', style: {
+        'label': '',
+        'width': 14, 'height': 14,
+        'border-width': 1.5,
+        'border-color': '#21262d',
+        'opacity': 0.85,
+        'transition-property': 'width, height, border-width, border-color, opacity',
+        'transition-duration': '0.15s'
+      }},
+      { selector: 'node.player', style: { 'background-color': '#bc8cff' }},
+      { selector: 'node.mechanism', style: { 'background-color': '#f85149' }},
+      { selector: 'node.framework', style: { 'background-color': '#58a6ff' }},
+      { selector: 'node.artifact', style: { 'background-color': '#7ee787' }},
+      { selector: 'node.event', style: { 'background-color': '#e3b341' }},
+      { selector: 'node.concept', style: { 'background-color': '#56d4dd' }},
+      // Hovered node: show label
+      { selector: 'node.hovered', style: {
+        'label': 'data(label)',
+        'font-size': '9px',
+        'font-family': "'SF Mono','Fira Code',monospace",
+        'color': '#f0883e',
+        'text-valign': 'bottom',
+        'text-margin-y': 5,
+        'text-outline-width': 2,
+        'text-outline-color': '#0a0a0f',
+        'border-width': 2.5,
+        'border-color': '#f0883e',
+        'z-index': 999
+      }},
+      // Selected (clicked) node
+      { selector: 'node.selected-node', style: {
+        'label': 'data(label)',
+        'font-size': '11px',
+        'font-family': "'SF Mono','Fira Code',monospace",
+        'font-weight': 'bold',
+        'color': '#f0883e',
+        'text-valign': 'bottom',
+        'text-margin-y': 5,
+        'text-outline-width': 2.5,
+        'text-outline-color': '#0a0a0f',
+        'border-width': 3,
+        'border-color': '#f0883e',
+        'z-index': 1000
+      }},
+      // Neighbor of selected: show label too
+      { selector: 'node.neighbor', style: {
         'label': 'data(label)',
         'font-size': '8px',
         'font-family': "'SF Mono','Fira Code',monospace",
@@ -2445,104 +2499,173 @@ function initKG() {
         'text-margin-y': 4,
         'text-outline-width': 2,
         'text-outline-color': '#0a0a0f',
-        'width': 16, 'height': 16,
-        'border-width': 1,
-        'border-color': '#30363d'
+        'border-width': 2,
+        'border-color': '#f0883e66',
+        'opacity': 1
       }},
-      { selector: 'node.player', style: { 'background-color': '#bc8cff', 'border-color': '#bc8cff44' }},
-      { selector: 'node.mechanism', style: { 'background-color': '#f85149', 'border-color': '#f8514944' }},
-      { selector: 'node.framework', style: { 'background-color': '#58a6ff', 'border-color': '#58a6ff44' }},
-      { selector: 'node.artifact', style: { 'background-color': '#7ee787', 'border-color': '#7ee78744' }},
-      { selector: 'node.event', style: { 'background-color': '#e3b341', 'border-color': '#e3b34144' }},
-      { selector: 'node.concept', style: { 'background-color': '#56d4dd', 'border-color': '#56d4dd44' }},
-      { selector: 'node:selected', style: { 'border-width': 3, 'border-color': '#f0883e', 'width': 24, 'height': 24, 'font-size': '10px', 'font-weight': 'bold', 'color': '#f0883e' }},
-      { selector: 'node.highlighted', style: { 'border-width': 2, 'border-color': '#f0883e88', 'opacity': 1 }},
-      { selector: 'node.dimmed', style: { 'opacity': 0.12 }},
+      // Dimmed: everything not in neighborhood
+      { selector: 'node.dimmed', style: { 'opacity': 0.07, 'border-color': '#21262d' }},
+      // EDGES: invisible by default — clean graph
       { selector: 'edge', style: {
         'width': 1,
         'line-color': '#30363d',
         'target-arrow-color': '#30363d',
         'target-arrow-shape': 'triangle',
-        'arrow-scale': 0.6,
+        'arrow-scale': 0.5,
         'curve-style': 'bezier',
-        'opacity': 0.5
+        'opacity': 0
       }},
-      { selector: 'edge.controls', style: { 'line-color': '#bc8cff44', 'target-arrow-color': '#bc8cff44' }},
-      { selector: 'edge.threatens', style: { 'line-color': '#f8514944', 'target-arrow-color': '#f8514944', 'line-style': 'dashed' }},
-      { selector: 'edge.feeds', style: { 'line-color': '#e3b34144', 'target-arrow-color': '#e3b34144' }},
-      { selector: 'edge.predicts', style: { 'line-color': '#58a6ff44', 'target-arrow-color': '#58a6ff44' }},
-      { selector: 'edge.validates', style: { 'line-color': '#58a6ff44', 'target-arrow-color': '#58a6ff44', 'line-style': 'dotted' }},
-      { selector: 'edge.enables', style: { 'line-color': '#7ee78744', 'target-arrow-color': '#7ee78744' }},
-      { selector: 'edge.opposes', style: { 'line-color': '#f8514966', 'target-arrow-color': '#f8514966', 'line-style': 'dashed' }},
-      { selector: 'edge.created', style: { 'line-color': '#bc8cff33', 'target-arrow-color': '#bc8cff33' }},
-      { selector: 'edge.instantiated_by', style: { 'line-color': '#56d4dd33', 'target-arrow-color': '#56d4dd33' }},
-      { selector: 'edge.prepares_for', style: { 'line-color': '#e3b34133', 'target-arrow-color': '#e3b34133' }},
-      { selector: 'edge.questions', style: { 'line-color': '#e3b34155', 'target-arrow-color': '#e3b34155', 'line-style': 'dashed' }},
-      { selector: 'edge.precedes', style: { 'line-color': '#e3b34133', 'target-arrow-color': '#e3b34133' }},
-      { selector: 'edge.highlighted', style: { 'opacity': 1, 'width': 2, 'line-color': '#f0883e88', 'target-arrow-color': '#f0883e88' }},
-      { selector: 'edge.dimmed', style: { 'opacity': 0.04 }}
+      // Visible edges (shown on node click)
+      { selector: 'edge.visible', style: { 'opacity': 0.7, 'width': 1.5 }},
+      { selector: 'edge.visible.controls', style: { 'line-color': '#bc8cff88', 'target-arrow-color': '#bc8cff88' }},
+      { selector: 'edge.visible.threatens', style: { 'line-color': '#f8514988', 'target-arrow-color': '#f8514988', 'line-style': 'dashed' }},
+      { selector: 'edge.visible.feeds', style: { 'line-color': '#e3b34188', 'target-arrow-color': '#e3b34188' }},
+      { selector: 'edge.visible.predicts', style: { 'line-color': '#58a6ff88', 'target-arrow-color': '#58a6ff88' }},
+      { selector: 'edge.visible.validates', style: { 'line-color': '#58a6ff88', 'target-arrow-color': '#58a6ff88', 'line-style': 'dotted' }},
+      { selector: 'edge.visible.enables', style: { 'line-color': '#7ee78788', 'target-arrow-color': '#7ee78788' }},
+      { selector: 'edge.visible.opposes', style: { 'line-color': '#f8514999', 'target-arrow-color': '#f8514999', 'line-style': 'dashed', 'width': 2 }},
+      { selector: 'edge.visible.created', style: { 'line-color': '#bc8cff66', 'target-arrow-color': '#bc8cff66' }},
+      { selector: 'edge.visible.instantiated_by', style: { 'line-color': '#56d4dd66', 'target-arrow-color': '#56d4dd66' }},
+      { selector: 'edge.visible.prepares_for', style: { 'line-color': '#e3b34166', 'target-arrow-color': '#e3b34166' }},
+      { selector: 'edge.visible.questions', style: { 'line-color': '#e3b34188', 'target-arrow-color': '#e3b34188', 'line-style': 'dashed' }},
+      { selector: 'edge.visible.precedes', style: { 'line-color': '#e3b34166', 'target-arrow-color': '#e3b34166' }},
+      { selector: 'edge.dimmed', style: { 'opacity': 0 }}
     ],
-    layout: { name: 'cose', animate: false, nodeRepulsion: 80000, idealEdgeLength: 120, edgeElasticity: 0.1, gravity: 0.25, numIter: 800, nodeDimensionsIncludeLabels: true },
-    minZoom: 0.2, maxZoom: 4, wheelSensitivity: 0.3
+    layout: {
+      name: 'concentric',
+      concentric: function(node) { return 4 - (node.data('ring') || 2); },
+      levelWidth: function() { return 1; },
+      minNodeSpacing: 30,
+      animate: false,
+      padding: 40
+    },
+    minZoom: 0.3, maxZoom: 5, wheelSensitivity: 0.3
   });
 
-  // Size nodes by degree
+  // Size nodes by degree — hubs are bigger
   kgCy.nodes().forEach(n => {
     const deg = n.degree();
-    const sz = Math.max(12, Math.min(40, 10 + deg * 2.5));
+    const sz = Math.max(10, Math.min(36, 8 + deg * 2));
     n.style({ 'width': sz, 'height': sz });
-    if (deg >= 8) n.style({ 'font-size': '10px', 'font-weight': 'bold' });
   });
 
-  // Click handler
+  const tooltip = document.getElementById('kg-tooltip');
+  const ttType = document.getElementById('kg-tt-type');
+  const ttName = document.getElementById('kg-tt-name');
+  const ttDesc = document.getElementById('kg-tt-desc');
+  const hint = document.getElementById('kg-hint');
+
+  // Hover: show tooltip + highlight node
+  kgCy.on('mouseover', 'node', function(evt) {
+    const node = evt.target;
+    const d = node.data();
+    node.addClass('hovered');
+    ttType.style.color = KG_COLORS[d.type];
+    ttType.textContent = d.type.toUpperCase();
+    ttName.textContent = d.label;
+    ttDesc.textContent = d.desc.length > 120 ? d.desc.substring(0, 120) + '...' : d.desc;
+    tooltip.style.display = 'block';
+    const pos = node.renderedPosition();
+    const container = document.getElementById('kg-container').getBoundingClientRect();
+    let left = pos.x + 20;
+    let top = pos.y - 10;
+    if (left + 280 > container.width) left = pos.x - 290;
+    if (top < 0) top = 10;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+    if (hint) hint.style.opacity = '0';
+  });
+
+  kgCy.on('mouseout', 'node', function(evt) {
+    evt.target.removeClass('hovered');
+    tooltip.style.display = 'none';
+  });
+
+  // Click: select node, show neighborhood, reveal edges
   kgCy.on('tap', 'node', function(evt) {
     const node = evt.target;
     const data = node.data();
-    kgCy.elements().removeClass('highlighted dimmed');
-    const neighborhood = node.neighborhood().add(node);
-    neighborhood.addClass('highlighted');
-    kgCy.elements().not(neighborhood).addClass('dimmed');
+    // Clear previous state
+    kgCy.elements().removeClass('selected-node neighbor dimmed visible');
+    // Mark selected
+    node.addClass('selected-node');
+    // Mark neighbors
+    const neighbors = node.neighborhood('node');
+    neighbors.addClass('neighbor');
+    // Show connected edges
+    node.connectedEdges().addClass('visible');
+    // Dim everything else
+    kgCy.nodes().not(node).not(neighbors).addClass('dimmed');
+    kgCy.edges().not(node.connectedEdges()).addClass('dimmed');
 
+    // Info panel
     const info = document.getElementById('kg-info');
     info.style.display = 'block';
-    document.getElementById('kg-info-type').innerHTML = '<span style="color:' + KG_COLORS[data.type] + '">' + data.type.toUpperCase() + '</span>';
+    document.getElementById('kg-info-type').innerHTML = '<span style="color:' + KG_COLORS[data.type] + '">' + data.type.toUpperCase() + '</span> &bull; ' + node.degree() + ' connections';
     document.getElementById('kg-info-name').textContent = data.label;
     document.getElementById('kg-info-desc').textContent = data.desc;
 
-    // List connections
-    let edgeHtml = '<strong>Connections (' + node.neighborhood('node').length + '):</strong><br>';
+    // Group connections by relationship type
+    const groups = {};
     node.connectedEdges().forEach(e => {
       const other = e.source().id() === node.id() ? e.target() : e.source();
-      const arrow = e.source().id() === node.id() ? ' &rarr; ' : ' &larr; ';
-      edgeHtml += '<span style="color:' + KG_COLORS[other.data('type')] + '">' + other.data('label') + '</span>' + arrow + '<span style="color:#484f58">' + (e.data('rel') || '') + (e.data('label') ? ': ' + e.data('label') : '') + '</span><br>';
+      const rel = e.data('rel') || 'related';
+      const dir = e.source().id() === node.id() ? '\u2192' : '\u2190';
+      if (!groups[rel]) groups[rel] = [];
+      groups[rel].push({ name: other.data('label'), type: other.data('type'), label: e.data('label'), dir: dir });
     });
+    let edgeHtml = '';
+    for (const [rel, items] of Object.entries(groups)) {
+      edgeHtml += '<strong style="color:#f0883e88;text-transform:uppercase;font-size:9px;letter-spacing:0.5px">' + rel + ':</strong><br>';
+      items.forEach(it => {
+        edgeHtml += '&nbsp;&nbsp;' + it.dir + ' <span style="color:' + KG_COLORS[it.type] + '">' + it.name + '</span>';
+        if (it.label) edgeHtml += ' <span style="color:#484f58">(' + it.label + ')</span>';
+        edgeHtml += '<br>';
+      });
+    }
     document.getElementById('kg-info-edges').innerHTML = edgeHtml;
   });
 
-  // Click background to deselect
+  // Click background to reset
   kgCy.on('tap', function(evt) {
     if (evt.target === kgCy) {
-      kgCy.elements().removeClass('highlighted dimmed');
+      kgCy.elements().removeClass('selected-node neighbor dimmed visible hovered');
       document.getElementById('kg-info').style.display = 'none';
+      if (hint) hint.style.opacity = '1';
     }
   });
 
-  // Stats
-  document.getElementById('kg-stats').textContent = kgCy.nodes().length + ' nodes, ' + kgCy.edges().length + ' edges \u2022 Click any node to explore connections \u2022 Scroll to zoom \u2022 Drag to pan';
+  document.getElementById('kg-stats').textContent = kgCy.nodes().length + ' nodes \u2022 ' + kgCy.edges().length + ' edges \u2022 Concentric layout: Events (center) \u2192 Mechanisms \u2192 Frameworks \u2192 Players/Artifacts (outer)';
 }
 
 // Search
 document.getElementById('kg-search').addEventListener('input', function() {
   if (!kgCy) return;
   const q = this.value.toLowerCase().trim();
-  if (!q) { kgCy.elements().removeClass('highlighted dimmed'); document.getElementById('kg-info').style.display = 'none'; return; }
+  if (!q) {
+    kgCy.elements().removeClass('selected-node neighbor dimmed visible hovered');
+    document.getElementById('kg-info').style.display = 'none';
+    return;
+  }
   const matches = kgCy.nodes().filter(n => n.data('label').toLowerCase().includes(q) || n.data('desc').toLowerCase().includes(q));
+  kgCy.elements().removeClass('selected-node neighbor dimmed visible');
   if (matches.length > 0) {
-    kgCy.elements().removeClass('highlighted dimmed');
-    const hood = matches.neighborhood().add(matches);
-    hood.addClass('highlighted');
-    kgCy.elements().not(hood).addClass('dimmed');
-    if (matches.length === 1) { kgCy.animate({ center: { eles: matches }, zoom: 2 }, { duration: 300 }); }
+    const hood = matches.neighborhood('node');
+    matches.addClass('selected-node');
+    hood.addClass('neighbor');
+    matches.connectedEdges().addClass('visible');
+    kgCy.nodes().not(matches).not(hood).addClass('dimmed');
+    kgCy.edges().not(matches.connectedEdges()).addClass('dimmed');
+    if (matches.length <= 3) { kgCy.animate({ fit: { eles: matches.neighborhood().add(matches), padding: 60 } }, { duration: 400 }); }
+
+    // Show info for single match
+    if (matches.length === 1) {
+      const data = matches[0].data();
+      document.getElementById('kg-info').style.display = 'block';
+      document.getElementById('kg-info-type').innerHTML = '<span style="color:' + KG_COLORS[data.type] + '">' + data.type.toUpperCase() + '</span> &bull; ' + matches[0].degree() + ' connections';
+      document.getElementById('kg-info-name').textContent = data.label;
+      document.getElementById('kg-info-desc').textContent = data.desc;
+    }
   }
 });
 
@@ -2553,23 +2676,22 @@ document.querySelectorAll('.kg-filter-btn').forEach(btn => {
     document.querySelectorAll('.kg-filter-btn').forEach(b => b.classList.remove('kg-on'));
     this.classList.add('kg-on');
     const type = this.dataset.type;
-    kgCy.elements().removeClass('highlighted dimmed');
+    kgCy.elements().removeClass('selected-node neighbor dimmed visible hovered');
     document.getElementById('kg-info').style.display = 'none';
     if (type === 'all') {
-      kgCy.elements().style({ 'opacity': 1 });
-      kgCy.elements().removeClass('dimmed');
+      // Reset to clean state
     } else {
       const matches = kgCy.nodes().filter(n => n.data('type') === type);
-      const hood = matches.neighborhood().add(matches);
-      hood.addClass('highlighted');
-      kgCy.elements().not(hood).addClass('dimmed');
+      matches.addClass('neighbor');
+      matches.connectedEdges().addClass('visible');
+      kgCy.nodes().not(matches).addClass('dimmed');
+      kgCy.edges().not(matches.connectedEdges()).addClass('dimmed');
     }
   });
 });
 
 // Init when tab shown
-const origTabHandler = document.querySelectorAll('.tab-btn');
-origTabHandler.forEach(btn => {
+document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.dataset.tab === 'graph') { setTimeout(initKG, 50); }
   });
