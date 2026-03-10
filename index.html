@@ -601,50 +601,12 @@ canvas#chart { width: 100%; height: 200px; }
 
 <div class="container">
 
-<!-- TOP STATS -->
-<div class="g3">
-  <div class="card">
-    <div class="card-title">Current Magnitude</div>
-    <div class="stat-big" id="s-mag">--</div>
-    <div class="stat-sub">Rank <span id="s-rank">--</span> / 365 &bull; <span id="s-date">--</span></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Active Aspect</div>
-    <div class="stat-med" id="s-aspect">--</div>
-    <div class="stat-sub">Cycle Year <span id="s-cy">--</span> of 138</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Chronicon Mirror</div>
-    <div style="color:#e3b341; font-size: 12px; font-weight: 600;">CY124 = 1888</div>
-    <div class="stat-sub" style="margin-top:4px; line-height:1.4">Eiffel Tower erected. Kodak camera invented. Construction + surveillance tools.</div>
-  </div>
-</div>
-
-<!-- DIMENSION BARS -->
-<div class="card">
-  <div class="card-title">7 Engine Dimensions</div>
-  <div id="dims"></div>
-</div>
-
-<!-- CHART -->
-<div class="chart-wrap">
-  <div class="chart-header">
-    <h2>Pressure Curve</h2>
-    <div class="range-btns">
-      <button class="range-btn on" data-range="near">2026-2027</button>
-      <button class="range-btn" data-range="mid">2026-2032</button>
-      <button class="range-btn" data-range="full">2026-2040</button>
-    </div>
-  </div>
-  <canvas id="chart"></canvas>
-  <div class="tip" id="tooltip"></div>
-</div>
-
 <!-- TABS -->
 <div class="tabs" id="tab-bar">
   <button class="tab-btn on" data-tab="thesis">What Is This</button>
   <button class="tab-btn" data-tab="key">The Framework</button>
   <span class="tab-sep"></span>
+  <button class="tab-btn" data-tab="dashboard">Dashboard</button>
   <button class="tab-btn" data-tab="forecast">Tactical Forecast</button>
   <button class="tab-btn" data-tab="predictions">Predictions</button>
   <button class="tab-btn" data-tab="divergences">Divergences</button>
@@ -658,6 +620,43 @@ canvas#chart { width: 100%; height: 200px; }
 
 <!-- THESIS TAB -->
 <div class="tab-panel on" id="p-thesis"></div>
+
+<!-- DASHBOARD TAB (Engine) -->
+<div class="tab-panel" id="p-dashboard">
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">Current Magnitude</div>
+      <div class="stat-big" id="s-mag">--</div>
+      <div class="stat-sub">Rank <span id="s-rank">--</span> / 365 &bull; <span id="s-date">--</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Aspect</div>
+      <div class="stat-med" id="s-aspect">--</div>
+      <div class="stat-sub">Cycle Year <span id="s-cy">--</span> of 138</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Chronicon Mirror</div>
+      <div style="color:#e3b341; font-size: 12px; font-weight: 600;">CY124 = 1888</div>
+      <div class="stat-sub" style="margin-top:4px; line-height:1.4">Eiffel Tower erected. Kodak camera invented. Construction + surveillance tools.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">7 Engine Dimensions</div>
+    <div id="dims"></div>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-header">
+      <h2>Pressure Curve</h2>
+      <div class="range-btns">
+        <button class="range-btn on" data-range="near">2026-2027</button>
+        <button class="range-btn" data-range="mid">2026-2032</button>
+        <button class="range-btn" data-range="full">2026-2040</button>
+      </div>
+    </div>
+    <canvas id="chart"></canvas>
+    <div class="tip" id="tooltip"></div>
+  </div>
+</div>
 
 <!-- FRAMEWORK TAB -->
 <div class="tab-panel" id="p-key"></div>
@@ -3358,6 +3357,7 @@ document.querySelectorAll('.kg-filter-btn').forEach(btn => {
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.dataset.tab === 'graph') { setTimeout(initKG, 50); }
+    if (btn.dataset.tab === 'dashboard') { setTimeout(drawChart, 50); }
   });
 });
 
