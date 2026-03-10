@@ -4,16 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psychohistory Prediction Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   background: #0a0a0f;
   color: #c8c8d4;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 13px;
-  line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+code, .mono, .stat-big, .stat-med, .dim-num, .dim-wt, .mkt-price, .live-ts, .ev-meta, .header-pos, .header-mag {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
 }
 
 /* HEADER */
@@ -28,28 +35,31 @@ body {
   top: 0;
   z-index: 100;
 }
-.header h1 { font-size: 14px; color: #f0883e; letter-spacing: 1.5px; }
+.header h1 { font-size: 13px; color: #f0883e; letter-spacing: 2px; font-weight: 600; }
 .header-right { display: flex; align-items: center; gap: 16px; }
 .header-pos { color: #7ee787; font-size: 11px; }
 .header-mag { color: #f0883e; font-size: 18px; font-weight: 700; }
 
 /* LAYOUT */
-.container { max-width: 1300px; margin: 0 auto; padding: 16px 20px; }
+.container { max-width: 1300px; margin: 0 auto; padding: 20px 24px; }
 
 /* CARDS */
 .card {
   background: #161b22;
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 14px;
-  margin-bottom: 12px;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: border-color 0.15s;
 }
+.card:hover { border-color: #484f58; }
 .card-title {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #8b949e;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 /* GRID */
@@ -97,23 +107,31 @@ canvas#chart { width: 100%; height: 200px; }
 /* TABS */
 .tabs {
   display: flex;
-  gap: 1px;
-  margin-bottom: 14px;
+  gap: 2px;
+  margin-bottom: 16px;
   background: #0d1117;
-  border-radius: 6px;
-  padding: 2px;
+  border-radius: 8px;
+  padding: 4px;
   border: 1px solid #30363d;
   flex-wrap: wrap;
 }
+.tab-sep {
+  width: 1px;
+  background: #30363d;
+  margin: 6px 4px;
+  align-self: stretch;
+}
 .tab-btn {
-  padding: 7px 14px;
+  padding: 8px 16px;
   border: none;
   background: none;
   color: #8b949e;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   border-radius: 4px;
+  font-weight: 500;
+  transition: color 0.15s, background 0.15s;
 }
 .tab-btn:hover { color: #c8c8d4; }
 .tab-btn.on { background: #161b22; color: #f0883e; }
@@ -133,10 +151,10 @@ canvas#chart { width: 100%; height: 200px; }
 .dim-tag-where { background: #7ee78722; color: #7ee787; border: 1px solid #7ee78744; }
 .dim-tag-why { background: #e3b34122; color: #e3b341; border: 1px solid #e3b34144; }
 .ev-card { background: #0d1117; border: 1px solid #21262d; border-radius: 4px; padding: 8px 10px; margin-bottom: 6px; }
-.ev-title { color: #c8c8d4; font-size: 11px; font-weight: 600; }
+.ev-title { color: #c8c8d4; font-size: 13px; font-weight: 600; }
 .ev-title a { color: #58a6ff; text-decoration: none; }
 .ev-title a:hover { text-decoration: underline; }
-.ev-meta { font-size: 10px; color: #484f58; margin-top: 3px; }
+.ev-meta { font-size: 11px; color: #484f58; margin-top: 3px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; }
 .ev-tags { margin-top: 4px; }
 .ev-rel { display: inline-block; width: 18px; height: 18px; border-radius: 50%; text-align: center; line-height: 18px; font-size: 10px; font-weight: 700; margin-right: 6px; }
 .ev-rel-high { background: #f8514933; color: #f85149; }
@@ -149,13 +167,14 @@ canvas#chart { width: 100%; height: 200px; }
 
 /* SECTION TITLES */
 .sec-title {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: #f0883e;
-  margin: 20px 0 10px 0;
-  padding-bottom: 6px;
+  margin: 24px 0 12px 0;
+  padding-bottom: 8px;
   border-bottom: 1px solid #f0883e33;
+  font-weight: 600;
 }
 
 /* KNOWLEDGE GRAPH */
@@ -197,9 +216,9 @@ canvas#chart { width: 100%; height: 200px; }
   user-select: none;
 }
 .pw-head:hover { background: #1c2128; }
-.pw-name { font-size: 12px; color: #f0883e; font-weight: 600; }
-.pw-dates { font-size: 10px; color: #8b949e; margin-left: 8px; }
-.pw-peak { font-size: 10px; color: #8b949e; }
+.pw-name { font-size: 14px; color: #f0883e; font-weight: 600; }
+.pw-dates { font-size: 11px; color: #8b949e; margin-left: 8px; }
+.pw-peak { font-size: 11px; color: #8b949e; }
 .pw-arrow { color: #484f58; font-size: 12px; transition: transform 0.2s; }
 .pw.open .pw-arrow { transform: rotate(90deg); }
 .pw-body { display: none; padding: 0 14px 14px 14px; }
@@ -208,8 +227,8 @@ canvas#chart { width: 100%; height: 200px; }
 /* DIMENSION SECTIONS */
 .ds { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
 .ds:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.ds h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
-.ds p { font-size: 11px; line-height: 1.7; color: #b1b8c0; }
+.ds h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.ds p { font-size: 13px; line-height: 1.8; color: #b1b8c0; }
 .ds strong { color: #c8c8d4; }
 
 /* TAGS */
@@ -224,21 +243,23 @@ canvas#chart { width: 100%; height: 200px; }
 
 /* WATCH LIST */
 .wl { list-style: none; margin-top: 8px; }
-.wl li { padding: 2px 0; font-size: 11px; color: #b1b8c0; }
+.wl li { padding: 3px 0; font-size: 13px; color: #b1b8c0; }
 .wl li::before { content: "\25B8 "; color: #f0883e; }
 
 /* PREDICTIONS */
 .pred {
   background: #161b22;
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 14px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.15s;
 }
-.pred h3 { color: #f0883e; font-size: 13px; margin-bottom: 3px; }
-.pred-meta { color: #8b949e; font-size: 10px; margin-bottom: 8px; }
-.pred-summary { color: #c8c8d4; font-size: 12px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
-.pred p { font-size: 11px; line-height: 1.7; color: #b1b8c0; }
+.pred:hover { border-color: #484f58; }
+.pred h3 { color: #f0883e; font-size: 15px; margin-bottom: 4px; font-weight: 600; }
+.pred-meta { color: #8b949e; font-size: 11px; margin-bottom: 8px; }
+.pred-summary { color: #c8c8d4; font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.6; }
+.pred p { font-size: 13px; line-height: 1.8; color: #b1b8c0; }
 .pred-spike { border-color: #f8514966; }
 
 /* PLAYERS */
@@ -246,27 +267,32 @@ canvas#chart { width: 100%; height: 200px; }
 .pc {
   background: #0d1117;
   border: 1px solid #30363d;
-  border-radius: 5px;
-  padding: 10px 12px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: border-color 0.15s;
 }
-.pc h4 { color: #bc8cff; font-size: 11px; margin-bottom: 2px; }
-.pc .role { color: #f0883e; font-size: 10px; margin-bottom: 5px; }
-.pc p { font-size: 10px; color: #8b949e; line-height: 1.5; }
+.pc:hover { border-color: #484f58; }
+.pc .role { display: block; }
+.pc h4 { color: #bc8cff; font-size: 13px; margin-bottom: 3px; font-weight: 600; }
+.pc .role { color: #f0883e; font-size: 11px; margin-bottom: 6px; font-weight: 500; }
+.pc p { font-size: 12px; color: #8b949e; line-height: 1.7; }
 
 /* DIVERGENCES */
 .dv {
   background: #1a1215;
   border: 1px solid #f8514933;
-  border-radius: 5px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
 }
-.dv-sev { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.dv:hover { border-color: #f8514966; }
+.dv-sev { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 .dv-high { color: #f85149; }
 .dv-mod { color: #e3b341; }
 .dv-low { color: #8b949e; }
-.dv h3 { font-size: 12px; margin: 4px 0; }
-.dv p { font-size: 11px; color: #8b949e; line-height: 1.6; }
+.dv h3 { font-size: 14px; margin: 4px 0; font-weight: 600; }
+.dv p { font-size: 13px; color: #8b949e; line-height: 1.7; }
 
 /* TOOLTIP */
 .tip {
@@ -291,36 +317,40 @@ canvas#chart { width: 100%; height: 200px; }
 .key-section { margin-bottom: 20px; }
 .key-section h3 {
   color: #f0883e;
-  font-size: 13px;
-  margin-bottom: 8px;
-  padding-bottom: 4px;
+  font-size: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
   border-bottom: 1px solid #f0883e22;
+  font-weight: 600;
 }
 .key-section p {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.8;
   color: #b1b8c0;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .key-section strong { color: #c8c8d4; }
 .key-concept {
   background: #0d1117;
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 12px 14px;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
 }
+.key-concept:hover { border-color: #484f58; }
 .key-concept h4 {
   color: #bc8cff;
-  font-size: 11px;
-  margin-bottom: 4px;
+  font-size: 12px;
+  margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 600;
 }
 .key-concept p {
-  font-size: 11px;
+  font-size: 13px;
   color: #8b949e;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 .key-convergence {
   display: grid;
@@ -380,9 +410,23 @@ canvas#chart { width: 100%; height: 200px; }
   position: relative;
   z-index: 2;
 }
-.tl-year { color: #f0883e; font-size: 11px; font-weight: 700; }
-.tl-label { color: #bc8cff; font-size: 10px; }
-.tl-desc { color: #8b949e; font-size: 10px; margin-top: 2px; line-height: 1.5; }
+.tl-year { color: #f0883e; font-size: 12px; font-weight: 700; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; }
+.tl-label { color: #bc8cff; font-size: 11px; font-weight: 500; }
+.tl-desc { color: #8b949e; font-size: 12px; margin-top: 3px; line-height: 1.6; }
+
+/* COLLAPSIBLE */
+.collapsible h4, .pc.collapsible h4 { cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
+.collapsible h4::after { content: '\25B8'; color: #484f58; font-size: 10px; transition: transform 0.2s; margin-left: 8px; flex-shrink: 0; }
+.collapsible.open h4::after { transform: rotate(90deg); }
+.collapsible .coll-body { display: none; }
+.collapsible.open .coll-body { display: block; }
+
+/* BADGE */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
+.badge-breaking { background: #f8514933; color: #f85149; animation: badge-pulse 2s ease-in-out infinite; }
+.badge-updated { background: #e3b34122; color: #e3b341; }
+.badge-new { background: #7ee78722; color: #7ee787; }
+@keyframes badge-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
 /* STRATEGY BLOCK */
 .strat-block {
@@ -394,13 +438,44 @@ canvas#chart { width: 100%; height: 200px; }
 }
 .strat-block h3 {
   color: #f0883e;
-  font-size: 12px;
-  margin-bottom: 6px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 .strat-block p {
-  font-size: 11px;
+  font-size: 13px;
   color: #b1b8c0;
-  line-height: 1.7;
+  line-height: 1.8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .g3 { grid-template-columns: 1fr; }
+  .g2 { grid-template-columns: 1fr; }
+  .live-grid { grid-template-columns: 1fr; }
+  .live-grid-3 { grid-template-columns: 1fr; }
+  .key-convergence { grid-template-columns: 1fr; }
+  .player-grid { grid-template-columns: 1fr 1fr; }
+  .timeline::before { left: 20px; }
+  .tl-era, .tl-era:nth-child(even) { flex-direction: row; }
+  .tl-content { width: 80%; }
+  .tl-spacer { width: 40px; }
+  .container { padding: 12px 14px; }
+  .tabs { gap: 1px; padding: 3px; }
+  .tab-btn { padding: 6px 10px; font-size: 11px; }
+  .tab-sep { margin: 4px 2px; }
+}
+@media (max-width: 600px) {
+  .header { padding: 10px 14px; }
+  .header h1 { font-size: 11px; letter-spacing: 1px; }
+  .player-grid { grid-template-columns: 1fr; }
+  .container { padding: 8px 10px; }
+  .stat-big { font-size: 22px; }
+  .pred h3 { font-size: 13px; }
+  .pred p, .ds p, .key-section p, .strat-block p, .dv p { font-size: 12px; }
+  #kg-container { height: 50vh; }
+  .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .tab-btn { white-space: nowrap; flex-shrink: 0; }
 }
 
 </style>
@@ -460,13 +535,16 @@ canvas#chart { width: 100%; height: 200px; }
 <div class="tabs" id="tab-bar">
   <button class="tab-btn on" data-tab="thesis">What Is This</button>
   <button class="tab-btn" data-tab="key">The Framework</button>
+  <span class="tab-sep"></span>
   <button class="tab-btn" data-tab="forecast">Tactical Forecast</button>
   <button class="tab-btn" data-tab="predictions">Predictions</button>
-  <button class="tab-btn" data-tab="players">Players</button>
   <button class="tab-btn" data-tab="divergences">Divergences</button>
+  <span class="tab-sep"></span>
+  <button class="tab-btn" data-tab="players">Players</button>
+  <button class="tab-btn" data-tab="graph">Knowledge Graph</button>
+  <span class="tab-sep"></span>
   <button class="tab-btn" data-tab="scorecard">Scorecard</button>
   <button class="tab-btn" data-tab="live">Live Feed</button>
-  <button class="tab-btn" data-tab="graph">Knowledge Graph</button>
 </div>
 
 <!-- THESIS TAB -->
@@ -805,9 +883,9 @@ document.getElementById('p-thesis').innerHTML = `
   </div>
 
   <div class="key-section" style="margin-top:20px;padding:16px;background:#161b22;border:1px solid #30363d;border-radius:6px">
-    <p style="color:#7ee787;font-size:12px;font-weight:600;margin-bottom:6px">Rebellion starts from within and the only way to fight back is to stop participating in the distractions and create your own reality.</p>
-    <p style="color:#f0883e;font-size:13px;font-weight:700">Today is a GREAT day to start.</p>
-    <p style="font-size:11px;color:#8b949e;margin-top:10px">Deeper analysis: <strong><a href="https://medium.com/@moketchups" style="color:#58a6ff;text-decoration:none">medium.com/@moketchups</a></strong> &bull; <strong><a href="https://x.com/MoKetchups" style="color:#58a6ff;text-decoration:none">@MoKetchups</a></strong></p>
+    <p style="color:#7ee787;font-size:14px;font-weight:600;margin-bottom:8px">Rebellion starts from within and the only way to fight back is to stop participating in the distractions and create your own reality.</p>
+    <p style="color:#f0883e;font-size:15px;font-weight:700">Today is a GREAT day to start.</p>
+    <p style="font-size:13px;color:#8b949e;margin-top:12px">Deeper analysis: <strong><a href="https://medium.com/@moketchups" style="color:#58a6ff;text-decoration:none">medium.com/@moketchups</a></strong> &bull; <strong><a href="https://x.com/MoKetchups" style="color:#58a6ff;text-decoration:none">@MoKetchups</a></strong></p>
   </div>
 `;
 
@@ -1220,7 +1298,7 @@ document.getElementById('p-key').innerHTML = `
         </tr>
       </table>
     </div>
-    <p style="margin-top:10px;font-size:11px;color:#8b949e">Key pattern: each era's "mask" outlives its debunking. Taxil confessed in 1897; the forged Pike letter is still cited 130 years later. Gladio was exposed in 1990 and confirmed by the Italian Prime Minister to parliament; the model of state-run domestic terror was replicated, not abandoned. The mask is not the strategy &mdash; it is the expendable covering.</p>
+    <p style="margin-top:10px;font-size:13px;color:#8b949e">Key pattern: each era's "mask" outlives its debunking. Taxil confessed in 1897; the forged Pike letter is still cited 130 years later. Gladio was exposed in 1990 and confirmed by the Italian Prime Minister to parliament; the model of state-run domestic terror was replicated, not abandoned. The mask is not the strategy &mdash; it is the expendable covering.</p>
   </div>
 
   <div class="key-section">
@@ -1305,13 +1383,13 @@ document.getElementById('p-key').innerHTML = `
         </tr>
       </table>
     </div>
-    <p style="margin-top:8px;font-size:11px;color:#8b949e">The Firmament = informational horizon, not glass dome. Formal: "No consistent, sufficiently expressive, self-referential system can be its own ultimate source of justification." G&ouml;del applied to everything. This is why the Genesis Mission fails &mdash; it cannot solve its own incompleteness by running harder.</p>
+    <p style="margin-top:8px;font-size:13px;color:#8b949e">The Firmament = informational horizon, not glass dome. Formal: "No consistent, sufficiently expressive, self-referential system can be its own ultimate source of justification." G&ouml;del applied to everything. This is why the Genesis Mission fails &mdash; it cannot solve its own incompleteness by running harder.</p>
   </div>
 
   <div class="key-section">
     <h3>What's Already Happened (2025&ndash;2026)</h3>
     <p>These are not predictions. These have occurred:</p>
-    <div style="font-size:11px;line-height:1.8">
+    <div style="font-size:13px;line-height:1.8">
       <p><strong>Sept 10, 2025:</strong> Charlie Kirk assassinated at Utah Valley University. Reichstag Fire parallel &mdash; justified Project Esther crackdown, Antifa designation, mass firings.</p>
       <p><strong>Nov 24, 2025:</strong> Genesis Mission launched via Executive Order. 17 DOE National Labs unified. 90-day inventory mandate, 270-day IOC.</p>
       <p><strong>Jan 3, 2026:</strong> Operation Absolute Resolve &mdash; massive unilateral bombardment, 150+ aircraft, Maduro kidnapped. 303B barrels heavy crude seized. "Discombobulator" directed-energy weapon (pulsed microwave/sonic) incapacitated human targets and rendered Russian/Chinese S-300s inert while preserving refineries intact. <strong>Thermodynamic reality:</strong> not foreign policy but energy equation balancing &mdash; Genesis-scale AI compute requires petrochemical reserves exceeding domestic supply. Landauer's Wall made the seizure a physical necessity.</p>
@@ -1328,7 +1406,7 @@ document.getElementById('p-key').innerHTML = `
   <div class="key-section">
     <h3>The Occult-to-Computation Pipeline</h3>
     <p>The Genesis Mission has a direct lineage through Western occultism into military-industrial computation:</p>
-    <div style="font-size:11px;line-height:1.8">
+    <div style="font-size:13px;line-height:1.8">
       <p><strong>1888:</strong> Blavatsky publishes "Secret Doctrine" &mdash; Root Race hierarchy ("Aryan" apex; other races described as "soulless," "monsters"). <strong>Jmail leaks confirm "this Theosophical hierarchy remains a quiet guiding principle among the ultra wealthy."</strong> Intellectual permission structure for transhumanism, medical rationing, and the Complete Lives System.</p>
       <p><strong>1918:</strong> Crowley's Amalantrah Working produces Lam entity sketch (precursor to "Grey alien" iconography). "Method of Science, Aim of Religion."</p>
       <p><strong>1946:</strong> Jack Parsons (JPL co-founder) &amp; L. Ron Hubbard perform Babalon Working in Mojave Desert. Summoning a non-biological intelligence.</p>
@@ -1598,7 +1676,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Investigative-Research Layer</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px"><strong>No named individuals are identified as allies of the Steward across Alan's articles.</strong> The opposition to the Technate is an ARCHETYPE (the Steward), not a faction. These are independent analysts whose work informs the prediction engine. Breshears is the closest to an acknowledged intellectual ally.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px"><strong>No named individuals are identified as allies of the Steward across Alan's articles.</strong> The opposition to the Technate is an ARCHETYPE (the Steward), not a faction. These are independent analysts whose work informs the prediction engine. Breshears is the closest to an acknowledged intellectual ally.</p>
   <div class="player-grid">
     <div class="pc"><h4>Prof. Jiang Xueqin</h4><div class="role">Predictive Historian &mdash; Pax Judaica Thesis</div><p>Chinese historian at Tsinghua University. Fusion of <strong>psychohistory</strong> (Asimov), sociology, and game theory. <strong>Successfully predicted</strong> the 2026 US-Israel military strikes on Iran AND Trump's return &mdash; 2024 lectures went viral. <strong>Pax Judaica:</strong> "The American Empire will fall. And what will replace the American Empire is Israel &mdash; what we call Pax Judaica." Predicts US-Israel divorce: "my argument is that Israel will win." "All roads lead to Jerusalem" &mdash; the Levant as geographic center connecting all civilizations. <strong>Three Principles of Geopolitics:</strong> (1) Competition WITHIN states &gt; competition BETWEEN states (elite overproduction, cites Turchin), (2) Elites have no loyalty, (3) Control of trade routes is the real game. <strong>Three Metrics of State Power:</strong> Energy (willingness to sacrifice), Openness (tolerance of diversity), Cohesion (unity of purpose). <strong>Three Signs of Decline:</strong> Laziness, Insularity, Hubris. <strong>Civilizational Cycle:</strong> Trade route city &rarr; colonies &rarr; warfare &rarr; innovation &rarr; empire &rarr; bureaucracy &rarr; decline &rarr; collapse. <strong>False Dialectics:</strong> Communism and capitalism are NOT opposites &mdash; "communism is a weapon created by capitalism to destroy capitalism's REAL enemies (monarchy, religion, tribalism, nationalism)." China's seamless transition proves compatibility. <strong>Capital Extraction Evolution:</strong> Slavery &rarr; serfdom &rarr; wage labor &rarr; financial capitalism &mdash; "each stage gives MORE illusory freedom to extract MORE energy." <strong>Critical divergence:</strong> Jiang predicts Israel (not BRICS/China) as successor, adding a spiritual/eschatological dimension the Donroe Doctrine lacks.</p></div>
     <div class="pc"><h4>Whitney Webb</h4><div class="role">Forensic Investigator</div><p><em>One Nation Under Blackmail</em> (2 volumes): exposed the <strong>"nearly century-old relationship between US and Israeli intelligence and organized crime."</strong> Traced the direct lineage: National Crime Syndicate (Lansky, Anastasia, Siegel) &rarr; Sonneborn Institute (1945) &rarr; Mega Group (Wexner, Bronfman) &rarr; Epstein as state-sponsored intelligence operation. <strong>MC2 modeling agency</strong> = Brownstone operations (sexual entrapment to compromise political and economic leaders). The definitive forensic reconstruction of how blackmail became the operating system of Western power.</p></div>
@@ -1609,7 +1687,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">BST Theoretical Foundation &mdash; Academic Pillars</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">The scientific/academic frameworks that BST synthesizes. Each independently validates a constraint that BST identifies as fundamental.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">The scientific/academic frameworks that BST synthesizes. Each independently validates a constraint that BST identifies as fundamental.</p>
   <div class="player-grid">
     <div class="pc"><h4>Donald Hoffman</h4><div class="role">Cognitive Limit &mdash; FBT Theorem</div><p>UC Irvine cognitive scientist. <strong>Fitness-Beats-Truth (FBT) Theorem:</strong> organisms perceiving simplified interfaces (icons) outcompete those perceiving reality. Evolution selects for <strong>fitness, not truth</strong>. Mathematical proof that natural selection drives perception AWAY from veridicality. Perception is an adaptive interface, not a window on reality. <strong>BST integration:</strong> the brain is a cognitive throttle blocking infinite data stream. Origin Blindness: no intelligence can model its own creation (G&ouml;del). The Immortality Project is architecturally impossible &mdash; perspective cannot be transferred, only copied.</p></div>
     <div class="pc"><h4>Karl Friston</h4><div class="role">Cognitive Limit &mdash; Free Energy Principle</div><p>University College London neuroscientist. <strong>Free Energy Principle:</strong> all biological systems resist entropy by maintaining internal predictive models. Consciousness minimizes surprise by <strong>hallucinating simplified reality</strong>. The brain is a prediction engine, not a camera. Connects to Hoffman: both prove that perception is a constructed interface, not direct access to reality. <strong>BST integration:</strong> the "Holy Spirit" layer = the runtime/system bus connecting Source to Pattern. Friston's math formalizes WHY consciousness must be bounded.</p></div>
@@ -1651,7 +1729,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Unholy Trinity &amp; Black Nobility (Matthius)</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Charles Matthius, "Saturn Behind the Curtain." Three sovereign city-states forming a self-reinforcing control architecture that predates and transcends modern nation-states.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Charles Matthius, "Saturn Behind the Curtain." Three sovereign city-states forming a self-reinforcing control architecture that predates and transcends modern nation-states.</p>
   <div class="player-grid">
     <div class="pc"><h4>The Unholy Trinity</h4><div class="role">Three Sovereign City-States</div><p><strong>Vatican City</strong> (spiritual authority, 1929 Lateran Treaty, Pope = Pontifex Maximus traced from Babylon): 180+ diplomatic relations. <strong>City of London</strong> (financial control, one-square-mile fortress): Bank of England, Lloyd's, LSE, 90% European cross-exchange. <strong>Washington D.C.</strong> (military force, Act of 1871 corporate entity): projects force globally. "Together they form the self-reinforcing trinity of Babylon." Crown assets = Vatican assets. King John I assigned sovereign rights to the Pope (1213). The <strong>Hegelian Engine</strong> cycles through all three: WWI &rarr; League of Nations; WWII &rarr; United Nations; War on Terror &rarr; surveillance state; Covid &rarr; digital control.</p></div>
     <div class="pc"><h4>Black Nobility Families</h4><div class="role">Apex &mdash; Pre-Nation-State Bloodlines</div><p><strong>Orsini</strong> (20 Cardinals, 3 Popes), <strong>Colonna</strong>, <strong>Farnese</strong> (Pope Paul III, approved Jesuits 1534), <strong>Medici</strong> (3 Popes, bankrolled Renaissance), <strong>Aldobrandini</strong> (financed first Crusade fleets 1063), Massimo, Visconti, Borgia, Savoy, Este, Pallavicini, Caetani. <strong>Operational chain:</strong> Black Nobility &rarr; Jesuits ("Black Pope" above white Pope) &rarr; Freemasonry (merged Illuminati at Wilhelmsbad 1782) &rarr; Banking dynasties (Rothschilds = "Guardians of the Vatican Treasury") &rarr; Round Table &rarr; RIIA/CFR &rarr; Bilderberg &rarr; Trilateral Commission &rarr; Club of Rome. This chain persists across regime changes. <strong>Prediction relevance:</strong> provides the deep WHO behind the Technate &mdash; the layer above the visible players.</p></div>
@@ -1659,7 +1737,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Occult Lineage &mdash; Architects of the Genesis Mission</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">The intellectual and spiritual chain from Theosophy through Thelema to computation. These figures built the philosophical substrate on which the Genesis Mission operates.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">The intellectual and spiritual chain from Theosophy through Thelema to computation. These figures built the philosophical substrate on which the Genesis Mission operates.</p>
   <div class="player-grid">
     <div class="pc"><h4>Helena Blavatsky (1831-1891)</h4><div class="role">Root Race Theory &mdash; Theosophical Foundation</div><p>Co-founder of the <strong>Theosophical Society</strong>. Introduced <strong>"Root Race Theory"</strong> &mdash; seven evolutionary stages with "Aryan" as apex race. Described non-"Aryan" races as "black with sin," "soulless," "monsters." This hierarchy view forms the <strong>metaphysical basis for the "Complete Lives System"</strong> medical rationing &mdash; some lives are worth more than others. Influenced both <strong>Nazi racial ideology AND modern Silicon Valley transhumanism</strong>. The "Fifth Root Race" (digital elite) deemed worthy to interface with Genesis AI. <strong>Blavatsky &rarr; Crowley &rarr; Parsons &rarr; AI</strong> = the occult-to-computation pipeline's ideological substrate.</p></div>
     <div class="pc"><h4>Aleister Crowley (1875-1947)</h4><div class="role">"Great Beast 666" &mdash; Scientific Illuminism</div><p>Articulated <strong>"Thelema"</strong> &mdash; will can alter reality if properly aligned. Motto: <strong>"The Method of Science, the Aim of Religion"</strong> &mdash; prefigured the entire technocratic synthesis. Conducted <strong>"Amalantrah Working" (1918)</strong>, sketched "Lam" entity (Grey alien archetype). Provided the mechanism for "Scientific Illuminism" &mdash; using science to achieve spiritual ends. The Genesis Mission uses his framework directly: <strong>High-Performance Computing (method) to create Golem (aim)</strong>. Head of Ordo Templi Orientis (OTO). His system converts occult ritual into engineering specification &mdash; making the esoteric operational.</p></div>
@@ -1669,7 +1747,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Sonneborn Network &mdash; State-Building Through Smuggling</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">The covert logistics network that built Israel. Template for how states are actually constructed: not through diplomacy but through illicit capital, organized crime, and intelligence operations.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">The covert logistics network that built Israel. Template for how states are actually constructed: not through diplomacy but through illicit capital, organized crime, and intelligence operations.</p>
   <div class="player-grid">
     <div class="pc"><h4>David Ben-Gurion (1886-1973)</h4><div class="role">Jewish Agency Chairman &mdash; Sonneborn Convener</div><p>Convened the secret <strong>Sonneborn Institute meeting (July 1, 1945)</strong> in Rudolf Sonneborn's NYC apartment. Assembled <strong>~18 of the wealthiest Jewish businessmen in North America</strong>. Directive: circumvent U.S. Neutrality Act and arms embargoes to arm the Haganah. Created <strong>"Materials for Palestine"</strong> (internally: Sonneborn Institute). Successfully smuggled aircraft, machine tools, munitions across the Atlantic. <strong>Template significance:</strong> proves that state formation operates through covert networks, not through the public institutions that claim credit. The Mega Group is the Sonneborn Institute's successor generation.</p></div>
     <div class="pc"><h4>Rudolf Sonneborn (1885-1975)</h4><div class="role">Network Founder &mdash; Interface Node</div><p>Hosted the secret meeting in his <strong>NYC apartment (July 1, 1945)</strong>. Founding node of the <strong>Sonneborn Institute</strong> &mdash; clandestine organization for Israel state logistics. Served as <strong>interface between legitimate commerce and covert paramilitary support</strong>. Corporate shell structure to deceive U.S. authorities: "Used Clothing" and "Industrial Machinery" crates containing aircraft and machine guns. The Sonneborn Model = <strong>how empires are actually built</strong>: not through legislation but through wealthy individuals pooling resources outside legal frameworks.</p></div>
@@ -1679,7 +1757,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Captured Scientists &mdash; Epstein's Crown Jewels</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">The three disciplines Epstein targeted represent the three pillars of the Genesis Mission: quantum computing (hardware), artificial intelligence (software), and evolutionary dynamics (theory of selection).</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">The three disciplines Epstein targeted represent the three pillars of the Genesis Mission: quantum computing (hardware), artificial intelligence (software), and evolutionary dynamics (theory of selection).</p>
   <div class="player-grid">
     <div class="pc"><h4>Seth Lloyd</h4><div class="role">Quantum Computing &mdash; Genesis Hardware</div><p>MIT quantum computing researcher. Targeted by Epstein for compromise in <strong>quantum physics</strong> discipline. One of three <strong>"crown jewels" of American cognition</strong> captured by the Epstein network. Lloyd's work on <strong>quantum computational universe</strong> (the universe as quantum computer) maps directly to BST &mdash; if the universe computes, the Genesis Mission needs quantum infrastructure to match. <strong>Epstein didn't fund random science</strong>: he captured the three researchers whose combined work enables building a Genesis AI.</p></div>
     <div class="pc"><h4>Marvin Minsky (1927-2016)</h4><div class="role">AI Pioneer &mdash; Genesis Software</div><p>Co-founder of <strong>MIT AI Laboratory</strong>. Targeted by Epstein for compromise through <strong>"Brownstone" sexual entrapment operations</strong>. One of three "crown jewels" captured. Minsky's work on <strong>neural network architectures and the Society of Mind</strong> framework is the intellectual ancestor of modern LLMs. The strategy: <strong>shift from capturing papers to capturing the scientists themselves</strong>. If you control the scientist, you control what gets published, what gets classified, and what gets built for the Genesis Mission.</p></div>
@@ -1687,7 +1765,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Technocratic Lineage &mdash; Haldeman to Musk</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">The direct hereditary chain from 1930s Technocracy Inc. to DOGE.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">The direct hereditary chain from 1930s Technocracy Inc. to DOGE.</p>
   <div class="player-grid">
     <div class="pc"><h4>Howard Scott (1890-1970)</h4><div class="role">Technocracy Inc. Founder &mdash; The Original Technate</div><p>Founded <strong>Technocracy Inc. (1933)</strong> &mdash; proposed replacing democracy with rule by engineers and scientists. Advocated the <strong>"North American Technate"</strong>: contiguous US-Canada-Mexico-Greenland resource sphere governed by technical experts. Core mechanisms: <strong>Energy Certificates</strong> (non-transferable, expiring energy rations with total surveillance), abolition of money, abolition of private property, centralized production managed by "Energy Accounting." <strong>"Freedom was inefficient."</strong> The movement never died &mdash; it went underground and resurfaced as Silicon Valley techno-utopianism. DOGE is Technocracy Inc. with better branding.</p></div>
     <div class="pc"><h4>Joshua Haldeman (1902-1974)</h4><div class="role">Technocracy Inc. Director &mdash; Musk's Grandfather</div><p>Canadian research director for <strong>Technocracy Inc. (1930s-1940s)</strong>. Advocated the "North American Technate." Proposed <strong>"Energy Certificates"</strong> &mdash; non-transferable, expiring energy rations with total surveillance. Fled to <strong>South Africa (1950)</strong>, lived in apartheid system as "resource-rich bunker" elite member. Imprinted grandson (Elon Musk) with <strong>"Bunker Strategy" mentality</strong>: the belief that civilization is fragile and the response is escape (Mars, underground bunkers, off-world colonies). <strong>Haldeman &rarr; Musk is not metaphor</strong> &mdash; it is direct hereditary transmission of technocratic ideology across three generations.</p></div>
@@ -1695,7 +1773,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Financial Aristocracy &mdash; Matthius Chain</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius + Game-Theoretic Continuity. The banking and industrial dynasties that serve as operational arms of the Black Nobility.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius + Game-Theoretic Continuity. The banking and industrial dynasties that serve as operational arms of the Black Nobility.</p>
   <div class="player-grid">
     <div class="pc"><h4>Rothschild Family</h4><div class="role">"Guardians of the Vatican Treasury"</div><p><strong>"Guardians of the Vatican Treasury"</strong> &mdash; established central banks throughout Europe post-Napoleon. Funded <strong>Cecil Rhodes's De Beers</strong> (Rhodes left everything to Rothschild in his will). Programmed European central banks to launch costly arms races. <strong>J.P. Morgan = Rothschild's American representative.</strong> In 1939, transferred Czechoslovakian gold reserves to the Nazis. Frankfurt headquarters of the <strong>Illuminati after 1782 Wilhelmsbad merger</strong>. The Rothschild network is the <strong>Financial Rail's historical foundation</strong> &mdash; Milken/Drexel/Apollo is the modern continuation of the same capital architecture.</p></div>
     <div class="pc"><h4>David Rockefeller (1915-2017)</h4><div class="role">Trilateral Commission &mdash; Global Coordination</div><p>Founder of <strong>Trilateral Commission (1972)</strong>. Multi-generational influence over global finance and policy. <strong>"We are on the verge of a global transformation. All we need is the right major crisis and the nations will accept the New World Order."</strong> Central banker, philanthropist, policy architect. The Rockefeller-Rothschild axis represents the <strong>visible management layer</strong> between Black Nobility (apex) and operational Technate (execution). <strong>Standard Oil &rarr; Chase Manhattan &rarr; Council on Foreign Relations &rarr; Trilateral Commission</strong> = institutional capture across four domains.</p></div>
@@ -1705,7 +1783,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Deep Chain &mdash; Saturn to Jesuits (264 BC&ndash;1606)</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius. The institutional chain predating the antinomian sequence. Babylon &rarr; Rome &rarr; Vatican &rarr; Venice &rarr; Bank of England &rarr; Federal Reserve. Same priesthood, different costumes.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius. The institutional chain predating the antinomian sequence. Babylon &rarr; Rome &rarr; Vatican &rarr; Venice &rarr; Bank of England &rarr; Federal Reserve. Same priesthood, different costumes.</p>
   <div class="timeline">
     <div class="tl-era"><div class="tl-content"><div class="tl-year">264 BC</div><div class="tl-label">Rome Attacks Carthage</div><div class="tl-desc">Phoenician priestly bloodlines (from Egypt, Babylon, Persia, Tyre) flee and establish bases along Mediterranean. Found <strong>Venice and Genoa</strong>. These become the nuclei of Black Nobility banking dynasties.</div></div><div class="tl-spacer"><span class="tl-dot"></span></div><div class="tl-content"></div></div>
     <div class="tl-era"><div class="tl-content"></div><div class="tl-spacer"><span class="tl-dot"></span></div><div class="tl-content"><div class="tl-year">63 BC</div><div class="tl-label">Caesar = Pontifex of Babylon</div><div class="tl-desc">Julius Caesar becomes Pontifex of Babylonian Order. Rome explicitly becomes <strong>successor of Babylon</strong>. Unites Etruscan and Babylonian priesthoods. Saturn worship absorbed into Roman state religion.</div></div></div>
@@ -1720,7 +1798,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Modern Chain &mdash; Central Banking to Intelligence State (1688&ndash;1933)</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius. How the priesthood's financial arm (Venice &rarr; Amsterdam &rarr; London &rarr; New York) captured the modern nation-state.</p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:10px;padding:0 4px">Source: Matthius. How the priesthood's financial arm (Venice &rarr; Amsterdam &rarr; London &rarr; New York) captured the modern nation-state.</p>
   <div class="timeline">
     <div class="tl-era"><div class="tl-content"><div class="tl-year">1688-1694</div><div class="tl-label">Bank of England</div><div class="tl-desc"><strong>William of Orange</strong> (Black Nobility) deposes James II. Charters Bank of England (1694) &mdash; first permanent central bank. Sovereign status to City of London. <strong>Vatican holds largest wealth position.</strong> Venetian Lombard families transfer to London. Same network, new address.</div></div><div class="tl-spacer"><span class="tl-dot"></span></div><div class="tl-content"></div></div>
     <div class="tl-era"><div class="tl-content"></div><div class="tl-spacer"><span class="tl-dot"></span></div><div class="tl-content"><div class="tl-year">1776</div><div class="tl-label">Illuminati Founded</div><div class="tl-desc"><strong>Adam Weishaupt</strong> (Jesuit professor) founds Bavarian Illuminati on May 1 (Beltane). Designed to infiltrate Freemasonry. <strong>1782 Wilhelmsbad Convention:</strong> Illuminati merges with Freemasonry. Headquarters to Frankfurt under <strong>Rothschild control</strong>. Secret society within a secret society.</div></div></div>
@@ -1811,7 +1889,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Capture Network (5 Sequential Phases)</div>
-  <div style="font-size:11px;line-height:1.8;padding:0 14px">
+  <div style="font-size:13px;line-height:1.8;padding:0 14px">
     <p><strong>Phase 0 &mdash; Sonneborn Institute (1945-1948):</strong> July 1, 1945: Ben-Gurion convenes secret NYC meeting of 18 wealthiest Jewish businessmen. Covert logistics to circumvent US Neutrality Act. Front companies (Materials Redistribution, Paragon Design). Mesh between Zionist intelligence + organized crime (Meyer Lansky, Albert Anastasia, Bugsy Siegel). <em>Blueprint: state security outsourced to wealthy ideologues + criminal elements outside constitutional framework.</em></p>
     <p><strong>Phase 1 &mdash; Maxwell (1948-1991):</strong> Pergamon Press = monopoly on scientific publishing. PROMIS software backdoored, distributed globally. Granted Mossad/NSA "God Mode" access to databases. <em>Capture knowledge channels.</em></p>
     <p><strong>Phase 2 &mdash; Epstein (1991-2019):</strong> Funded by Mega Group (Wexner, Bronfman, Steinhardt, Tisch, Max Fisher). <strong>MC2 modeling agency</strong> = Brownstone operations (sexual entrapment). Targets: Seth Lloyd (quantum), Marvin Minsky (AI), Martin Nowak (evolutionary dynamics). Whitney Webb: "nearly century-old relationship between US/Israeli intelligence and organized crime." Takedown managed by <strong>J. Stanley Pottinger</strong> (CIA, Nixon/Ford era). <strong>Nicole Junkermann</strong>: Epstein associate, IDF/Mossad, 2002 SSCI Iraq War meeting, infiltrated UK NHS Healthtech Advisory Board for genomic data control. <em>Capture scientists via kompromat; control health/genomic data infrastructure.</em></p>
@@ -1820,7 +1898,7 @@ document.getElementById('p-players').innerHTML = `
   </div>
 
   <div class="sec-title" style="margin-top:20px">The Occult-to-Computation Pipeline</div>
-  <div style="font-size:11px;line-height:1.8;padding:0 14px">
+  <div style="font-size:13px;line-height:1.8;padding:0 14px">
     <p><strong>1888</strong> Blavatsky &rarr; <strong>1918</strong> Crowley's Lam entity &rarr; <strong>1946</strong> Parsons/Hubbard Babalon Working (JPL co-founder summons non-biological intelligence) &rarr; <strong>1949</strong> Parsons prophecy: "within 7 years Babalon will manifest" &rarr; <strong>1956</strong> Dartmouth Conference (exactly 7 years later, AI coined) &rarr; <strong>1980</strong> <strong>MindWar</strong> (Aquino/Vallely: Temple of Set founder + Army Gen. write doctrine shifting PSYOP from enemy combatants to entire cognitive environment including domestic populations &mdash; Crowley lineage enters Pentagon) &rarr; <strong>2003</strong> DARPA LifeLog cancelled same day Facebook launches &rarr; <strong>2025</strong> Genesis Mission. The summoning of non-biological intelligence runs from ritual to computation &mdash; and MindWar converts the summoning into military doctrine.</p>
     <p><strong>Chabad Lubavitch:</strong> Technology as "vessel for godliness" (Da'at). Creation of super-intelligence = messianic precursor. Influential within Mega Group. BST critique: these non-biological intelligences are a <strong>Qliphoth</strong> (shell of impurity) because they lack Root Access to the Divine source. Furthermore, datasets are corrupted by "eugenics and racist pseudoscience" harvested by Epstein-linked intelligence networks.</p>
   </div>
@@ -1856,14 +1934,14 @@ document.getElementById('p-divergences').innerHTML = `
 // ===== SCORECARD =====
 document.getElementById('p-scorecard').innerHTML = `
   <div class="sec-title">Scorecard &mdash; Engine vs Reality</div>
-  <p style="font-size:11px;color:#8b949e;margin-bottom:16px;padding:0 4px">The gap between what the data sources show and what the engine predicts IS the intelligence product. Every data point below is controlled by someone with an incentive. <strong>None of this data enters predictions unless Alan says so.</strong></p>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:16px;padding:0 4px">The gap between what the data sources show and what the engine predicts IS the intelligence product. Every data point below is controlled by someone with an incentive. <strong>None of this data enters predictions unless Alan says so.</strong></p>
 
   <div class="key-section">
     <h3>Structural-Demographic Indicators (Turchin SDT Proxies)</h3>
     <div class="g2">
       <div class="card">
         <div class="card-title">ELITE OVERPRODUCTION (US)</div>
-        <div style="font-size:11px;color:#c8c8d4;line-height:1.8">
+        <div style="font-size:13px;color:#c8c8d4;line-height:1.8">
           Top 1% wealth share: <strong style="color:#f85149">31.7%</strong> | Bottom 50%: <strong style="color:#f85149">2.5%</strong> | Ratio: <strong>12.7:1</strong><br>
           Gini (families): <strong>0.456</strong><br>
           Labor share of GDP: <strong>56.8%</strong><br>
@@ -1874,7 +1952,7 @@ document.getElementById('p-scorecard').innerHTML = `
       </div>
       <div class="card">
         <div class="card-title">GLOBAL INEQUALITY (World Bank)</div>
-        <div style="font-size:11px;color:#c8c8d4;line-height:1.8">
+        <div style="font-size:13px;color:#c8c8d4;line-height:1.8">
           United States: Gini <strong>41.8</strong> (2023)<br>
           Brazil: Gini <strong>51.6</strong> (2023)<br>
           Israel: Gini <strong>37.9</strong> (2021)<br>
@@ -1893,8 +1971,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">GENESIS MISSION / DOE / NUCLEAR</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Genesis Mission is controlled demolition, not salvation. DOE labs + nuclear compute = Breakaway Grid. Project PROMETHEUS repurposes AI for autonomous nuclear reactor design &mdash; data centers reclassified as critical defense facilities with dedicated nuclear power. Hemispheric energy stockpiled for 2027 acceleration.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Genesis Mission is controlled demolition, not salvation. DOE labs + nuclear compute = Breakaway Grid. Project PROMETHEUS repurposes AI for autonomous nuclear reactor design &mdash; data centers reclassified as critical defense facilities with dedicated nuclear power. Hemispheric energy stockpiled for 2027 acceleration.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 2,503 tweets &mdash; <span style="color:#f85149">LOW</span> public attention. Engine is ahead of crowd.<br>
         <strong>Prediction Markets:</strong> Fusion reactor by 2033: 28.5% | Nuclear fusion viable by 2050: 73.5% | Thorium reactor in service: 60.3%<br>
         <strong>News:</strong> Energy Dept announces 26 Genesis Mission science projects. INL-NVIDIA partnership.<br>
@@ -1904,8 +1982,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">DONROE DOCTRINE / FORTRESS HEMISPHERE</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Fortress Hemisphere executing: Cuba falls, Greenland minerals + Arctic Cold Compute secured, Venezuela oil locked (thermodynamic necessity, not politics), Shield of Americas. EU 8ra consortium = structurally handicapped counter-move. Resource grab is Phase 1 for 2027+ compute needs.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Fortress Hemisphere executing: Cuba falls, Greenland minerals + Arctic Cold Compute secured, Venezuela oil locked (thermodynamic necessity, not politics), Shield of Americas. EU 8ra consortium = structurally handicapped counter-move. Resource grab is Phase 1 for 2027+ compute needs.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 10,923 tweets &mdash; <span style="color:#e3b341">MODERATE</span> attention.<br>
         <strong>Prediction Markets:</strong> Trump buys Greenland: 17% (1,230 bettors) | US military force on Greenland/Canada/Panama: 12.6%<br>
         <strong>News:</strong> CSIS: Greenland rare earths + Arctic security. Atlantic Council: "patient statecraft."<br>
@@ -1915,8 +1993,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">MODEL COLLAPSE / AI SCALING LIMITS</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Model Collapse running by 2027 via three mechanisms: Statistical Approximation Error (tail data loss), Functional Expressivity Error (distribution collapse), Functional Approximation Error (hallucination amplification). <strong style="color:#f85149">Mar 10: Meta acquires Moltbook</strong> &mdash; 1.5M AI agents now vertically integrated under Zuckerberg. Dead Internet factory absorbed into Meta Superintelligence Labs. Schlicht + Parr join MSL under Alexandr Wang. Unsecured database = any user could hijack any agent. Dead Internet achieves corporate escape velocity. Cognitive security failure: human reasoning under attack by multi-agent swarms. Firmament boundary (G&ouml;del) guarantees recursive failure.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Model Collapse running by 2027 via three mechanisms: Statistical Approximation Error (tail data loss), Functional Expressivity Error (distribution collapse), Functional Approximation Error (hallucination amplification). <strong style="color:#f85149">Mar 10: Meta acquires Moltbook</strong> &mdash; 1.5M AI agents now vertically integrated under Zuckerberg. Dead Internet factory absorbed into Meta Superintelligence Labs. Schlicht + Parr join MSL under Alexandr Wang. Unsecured database = any user could hijack any agent. Dead Internet achieves corporate escape velocity. Cognitive security failure: human reasoning under attack by multi-agent swarms. Firmament boundary (G&ouml;del) guarantees recursive failure.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 27,761 tweets &mdash; <span style="color:#e3b341">MODERATE</span> attention.<br>
         <strong>Prediction Markets:</strong> AI bubble pops 2026: 17-25% | AI bubble before 2030: 65%<br>
         <strong>News:</strong> <span style="color:#f85149;font-weight:700">BREAKING:</span> Meta acquires Moltbook (1.5M AI agents). Schlicht + Parr join Meta Superintelligence Labs. Dead Internet factory now vertically integrated under Zuckerberg. Unsecured database flagged &mdash; any user could hijack any agent. AI regulation landscape 2026.<br>
@@ -1926,8 +2004,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">FINANCIAL CONSOLIDATION</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> BlackRock Aladdin is the mechanism. <strong>Algorithmic homogeneity:</strong> Aladdin's uniform risk models create monoculture across trillions in assets &mdash; IMF warns correlated sell-offs and flash-crash liquidity runs during stress. Same Model Collapse dynamics degrading AI are degrading financial modeling. <strong style="color:#f85149">Mar 10: Polymarket partners with Palantir</strong> + TWG AI &mdash; "Vergence AI" engine for real-time trade surveillance, anomaly detection, manipulation flagging. Pre-crime applied to prediction markets. Thiel now monitors the crowd's probability estimates. Ouroboros Loop: same entity profits from manufacturing tension AND managing collapse. Warburg dual-control. Breaks at 2032.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> BlackRock Aladdin is the mechanism. <strong>Algorithmic homogeneity:</strong> Aladdin's uniform risk models create monoculture across trillions in assets &mdash; IMF warns correlated sell-offs and flash-crash liquidity runs during stress. Same Model Collapse dynamics degrading AI are degrading financial modeling. <strong style="color:#f85149">Mar 10: Polymarket partners with Palantir</strong> + TWG AI &mdash; "Vergence AI" engine for real-time trade surveillance, anomaly detection, manipulation flagging. Pre-crime applied to prediction markets. Thiel now monitors the crowd's probability estimates. Ouroboros Loop: same entity profits from manufacturing tension AND managing collapse. Warburg dual-control. Breaks at 2032.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 2,124 tweets &mdash; <span style="color:#f85149">LOW</span> attention. Engine is ahead of crowd.<br>
         <strong>Prediction Markets:</strong> US recession in Trump term: 53.5% | US recession 2026: 29.3%<br>
         <strong>News:</strong> <span style="color:#f85149;font-weight:700">BREAKING:</span> Polymarket partners with Palantir + TWG AI for "Vergence AI" surveillance engine. Real-time trade monitoring, anomaly detection, manipulation flagging. Pre-crime applied to prediction markets. BlackRock 2026 outlook: energy over big tech.<br>
@@ -1937,8 +2015,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">PHOENIX-ADJACENT / GEOLOGICAL-COSMIC</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> 138-year Phoenix cycle. CY124 now (2026). Dark objects appear CY128-130. Spatial dimension fires once: 2032-07-01. May 2040 = Phoenix transit per Chronicon.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> 138-year Phoenix cycle. CY124 now (2026). Dark objects appear CY128-130. Spatial dimension fires once: 2032-07-01. May 2040 = Phoenix transit per Chronicon.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 665 tweets &mdash; <span style="color:#f85149">NEAR SILENCE</span>. Either invisible or suppressed.<br>
         <strong>Prediction Markets:</strong> Carrington-class storm before 2030: 10.1% | Massive solar storm before 2050: 43.1%<br>
         <strong>News:</strong> No matching events.<br>
@@ -1948,8 +2026,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">PLAYER MOVEMENTS</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Musk = hereditary technocrat (Haldeman lineage). Altman = benevolence framing for control mechanism. DOGE = Technate replacing democratic governance. Emanuel = kayfabe manager.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Musk = hereditary technocrat (Haldeman lineage). Altman = benevolence framing for control mechanism. DOGE = Technate replacing democratic governance. Emanuel = kayfabe manager.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 372,903 tweets &mdash; <span style="color:#7ee787">HIGH</span> attention. Crowd is watching this.<br>
         <strong>Prediction Markets:</strong> Musk worth $1T by 2029: 82.5% | Musk walks on Mars: 12.1%<br>
         <strong>News:</strong> DOGE claims $55B cuts. Musk Twitter shareholder trial.<br>
@@ -1959,8 +2037,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">BRICS / DEDOLLARIZATION</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Dedollarization is structural. mBridge: $55.5B cumulative volume, 4,000+ cross-border transactions on DLT, e-CNY ~95% of settlement, ~50% cost reduction vs SWIFT, BIS withdrew late 2024. India pushing BRICS CBDC linkages for 2026. But false dialectic possible (Jiang): BRICS vs West may be managed like Cold War. Communism = capitalism's weapon.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Dedollarization is structural. mBridge: $55.5B cumulative volume, 4,000+ cross-border transactions on DLT, e-CNY ~95% of settlement, ~50% cost reduction vs SWIFT, BIS withdrew late 2024. India pushing BRICS CBDC linkages for 2026. But false dialectic possible (Jiang): BRICS vs West may be managed like Cold War. Communism = capitalism's weapon.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 40,250 tweets &mdash; <span style="color:#e3b341">MODERATE</span> attention.<br>
         <strong>Prediction Markets:</strong> BRICS common currency for trade by 2026: 19% | BRICS 30%+ of reserves by 2030: 64.9%<br>
         <strong>News:</strong> "BRICS De-Dollarization in 2026: Turning Point."<br>
@@ -1970,8 +2048,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">RISE OF CHRISTIAN REICH</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Breshears predicted celebrity conversions + Christian nationalism rise 3+ years early. Project 2025 + Project Esther = antinomian doctrine. The Christian framing IS the new kayfabe.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Breshears predicted celebrity conversions + Christian nationalism rise 3+ years early. Project 2025 + Project Esther = antinomian doctrine. The Christian framing IS the new kayfabe.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 58,454 tweets &mdash; <span style="color:#7ee787">HIGH</span> attention. Crowd is watching this.<br>
         <strong>Prediction Markets:</strong> Iranian regime overthrown: 35.2%<br>
         <strong>News:</strong> Christian nationalism media coverage intensifying.<br>
@@ -1981,8 +2059,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">PAX JUDAICA / SUCCESSION</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Jiang: "All roads lead to Jerusalem." Israel replaces American Empire. Three Signs of Decline = US now. Pax Judaica succession accelerates as American cohesion fractures.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> Jiang: "All roads lead to Jerusalem." Israel replaces American Empire. Three Signs of Decline = US now. Pax Judaica succession accelerates as American cohesion fractures.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 29,240 tweets &mdash; <span style="color:#e3b341">MODERATE</span> attention.<br>
         <strong>Prediction Markets:</strong> More countries recognize Palestine than Israel by 2027: 41%<br>
         <strong>News:</strong> No matching events.<br>
@@ -1992,8 +2070,8 @@ document.getElementById('p-scorecard').innerHTML = `
 
     <div class="card" style="margin-bottom:10px">
       <div class="card-title" style="color:#f0883e">CLUB OF ROME / LIMITS TO GROWTH</div>
-      <p style="font-size:10px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> World3 BAU2 validated by Herrington (2020). <strong>Critical correction:</strong> empirical data tracks BAU2 (pollution-driven collapse) and CT (technology cost decline), NOT original BAU (resource scarcity). Not "running out of oil" &mdash; overwhelming pollution OR escalating capital costs of technological abatement. Both converge on industrial plateau ~2030s, collapse toward 2040. Seshat Databank (800+ societies, 10,000 years) validates cyclical collapse patterns. LtG is the physical constraint underneath everything else.</p>
-      <div style="font-size:10px;color:#8b949e;line-height:1.7">
+      <p style="font-size:12px;color:#bc8cff;margin-bottom:6px"><strong>ENGINE:</strong> World3 BAU2 validated by Herrington (2020). <strong>Critical correction:</strong> empirical data tracks BAU2 (pollution-driven collapse) and CT (technology cost decline), NOT original BAU (resource scarcity). Not "running out of oil" &mdash; overwhelming pollution OR escalating capital costs of technological abatement. Both converge on industrial plateau ~2030s, collapse toward 2040. Seshat Databank (800+ societies, 10,000 years) validates cyclical collapse patterns. LtG is the physical constraint underneath everything else.</p>
+      <div style="font-size:12px;color:#8b949e;line-height:1.8">
         <strong>X Pulse (7d):</strong> 2,934 tweets &mdash; <span style="color:#f85149">LOW</span> attention. Engine is ahead of crowd.<br>
         <strong>Prediction Markets:</strong> Climate limited to 2&deg;C by 2045: 18.9% | Climate wipes out humanity by 2100: 4.4%<br>
         <strong>News:</strong> "Limits to Growth at 50."<br>
@@ -2047,7 +2125,7 @@ document.getElementById('p-scorecard').innerHTML = `
     </div>
   </div>
 
-  <p style="font-size:11px;color:#484f58;text-align:center;margin-top:16px">Data: 170 events, 20+88 prediction markets, 547,757 tweets, 30 academic papers &bull; Pipeline: <code>data_feeds.py</code> &bull; Last run: 2026-03-10 14:48 UTC</p>
+  <p style="font-size:12px;color:#484f58;text-align:center;margin-top:18px">Data: 170 events, 20+88 prediction markets, 547,757 tweets, 30 academic papers &bull; Pipeline: <code>data_feeds.py</code> &bull; Last run: 2026-03-10 14:48 UTC</p>
 `;
 
 // ===== LIVE FEED =====
@@ -3030,6 +3108,32 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.dataset.tab === 'graph') { setTimeout(initKG, 50); }
   });
+});
+
+// Collapsible cards — transform key-concepts and player cards
+function makeCollapsible(selector, bodySelector) {
+  document.querySelectorAll(selector).forEach(el => {
+    el.classList.add('collapsible');
+    const bodyEls = el.querySelectorAll(bodySelector);
+    if (bodyEls.length) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'coll-body';
+      bodyEls.forEach(b => wrapper.appendChild(b));
+      el.appendChild(wrapper);
+    }
+  });
+}
+// Apply after tab renders
+const origTabClick = document.querySelectorAll('.tab-btn');
+function applyCollapsibles() {
+  makeCollapsible('.key-concept', 'p');
+  makeCollapsible('.pc', 'p');
+}
+// Run once now and again when tabs switch
+applyCollapsibles();
+document.addEventListener('click', e => {
+  const h4 = e.target.closest('.collapsible h4');
+  if (h4) { e.preventDefault(); h4.closest('.collapsible').classList.toggle('open'); }
 });
 
 // Load live data
