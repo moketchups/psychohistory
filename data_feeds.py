@@ -39,8 +39,6 @@ from pathlib import Path
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
 X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
-ACLED_EMAIL = os.environ.get("ACLED_EMAIL", "")
-ACLED_KEY = os.environ.get("ACLED_KEY", "")
 
 # ── Pressure Windows ─────────────────────────────────────────────────────────
 PRESSURE_WINDOWS = [
@@ -664,6 +662,7 @@ def fetch_world_bank():
     total_points = sum(len(v.get("countries", {})) for v in results["indicators"].values())
     print(f"    -> {len(results['indicators'])} indicators, {total_points} data points across {len(countries)} countries")
     return results
+
 
 
 # ── Tagging Engine ────────────────────────────────────────────────────────────
