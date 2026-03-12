@@ -9,6 +9,9 @@ Pulls current events from multiple sources and maps them against:
 - WHY (incentive signals — financial, energy, tech, military)
 
 Sources:
+  Layer 1.5 — Capital flow intelligence (free public data):
+    SEC EDGAR Form 4 (insider buys/sells), House financial disclosures
+    (congressional trades), FINRA daily short sale volume
   Layer 2 — Managed data collection:
     Tavily (deep web search), GNews (structured news), RSS (geopolitical),
     yfinance (market fear/greed proxy)
@@ -664,6 +667,250 @@ def fetch_world_bank():
     return results
 
 
+# ── Layer 1.5: Capital Flow Intelligence (Free Public Data) ──────────────────
+
+# Engine-relevant tickers for insider/short tracking
+# Genesis-adjacent: energy, nuclear, defense, compute
+# Rug tickers: consumer, legacy tech, civilian infrastructure
+ENGINE_TICKERS = {
+    "genesis_adjacent": [
+        "SMR", "NNE", "LEU", "CCJ", "UEC",      # Nuclear / uranium
+        "NVDA", "AMD", "TSM", "AVGO", "MRVL",    # Compute / GPU
+        "PLTR", "LMT", "RTX", "NOC", "GD",       # Defense / surveillance
+        "FSLR", "NEE", "CEG", "VST",              # Energy infrastructure
+    ],
+    "rug_candidates": [
+        "SPY", "QQQ", "DIA",                      # Broad market
+        "XLF", "KRE",                             # Financial / regional banks
+        "XLY", "XRT",                             # Consumer discretionary / retail
+        "XLC",                                     # Communication services
+        "IYR",                                     # Real estate
+    ],
+}
+ALL_TRACKED_TICKERS = ENGINE_TICKERS["genesis_adjacent"] + ENGINE_TICKERS["rug_candidates"]
+
+SEC_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+
+def fetch_insider_trades():
+    """
+    Pull recent Form 4 insider transactions from SEC EDGAR full-text search.
+    Layer 1.5: What corporate insiders are DOING with their own money.
+    Source owner: SEC — mandatory public filings, no editorial bias.
+    """
+    results = {
+        "transactions": [],
+        "summary": {"total_buys": 0, "total_sells": 0, "genesis_buys": 0, "genesis_sells": 0, "rug_sells": 0},
+        "source_owner": "SEC EDGAR — mandatory public filings, no editorial bias, 2-day filing delay",
+    }
+
+    today = datetime.now()
+    start = (today - timedelta(days=14)).strftime("%Y-%m-%d")
+    end = today.strftime("%Y-%m-%d")
+
+    for category, tickers in ENGINE_TICKERS.items():
+        for ticker in tickers:
+            url = (
+                f"https://efts.sec.gov/LATEST/search-index"
+                f"?q=%22{ticker}%22&forms=4"
+                f"&dateRange=custom&startdt={start}&enddt={end}"
+                f"&from=0&size=5"
+            )
+            req = urllib.request.Request(url, headers={"User-Agent": SEC_UA})
+            try:
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    data = json.loads(resp.read().decode())
+                hits = data.get("hits", {}).get("hits", [])
+                for hit in hits:
+                    src = hit.get("_source", {})
+                    names = src.get("display_names", [])
+                    filing = {
+                        "ticker": ticker,
+                        "category": category,
+                        "entity": names[0] if names else "",
+                        "filed": src.get("file_date", ""),
+                        "form": src.get("form", "4"),
+                        "description": src.get("file_description", ""),
+                        "accession": src.get("adsh", ""),
+                    }
+                    results["transactions"].append(filing)
+            except Exception:
+                pass  # Silent — SEC rate limits are strict, don't flood logs
+            time.sleep(0.15)  # Stay well under 10 req/s
+
+    # Count filings by category — Form 4 search index doesn't expose buy/sell detail
+    # The signal is filing VOLUME: lots of insider activity = something is happening
+    genesis_filings = [t for t in results["transactions"] if t["category"] == "genesis_adjacent"]
+    rug_filings = [t for t in results["transactions"] if t["category"] == "rug_candidates"]
+    results["summary"] = {
+        "total_filings": len(results["transactions"]),
+        "genesis_filings": len(genesis_filings),
+        "rug_filings": len(rug_filings),
+        "genesis_tickers_active": len(set(t["ticker"] for t in genesis_filings)),
+        "rug_tickers_active": len(set(t["ticker"] for t in rug_filings)),
+    }
+
+    print(f"    -> {results['summary']['total_filings']} insider filings (14-day window)")
+    print(f"       Genesis: {results['summary']['genesis_filings']} filings across {results['summary']['genesis_tickers_active']} tickers")
+    print(f"       Rug:     {results['summary']['rug_filings']} filings across {results['summary']['rug_tickers_active']} tickers")
+    return results
+
+
+def fetch_congress_trades():
+    """
+    Pull recent congressional financial disclosures from House clerk.
+    Layer 1.5: What politicians are doing with THEIR money.
+    Source owner: US House of Representatives — mandatory public disclosure.
+    """
+    results = {
+        "filings": [],
+        "summary": {"total": 0, "matched_players": 0},
+        "source_owner": "US House/Senate — mandatory STOCK Act filings, 45-day delay common",
+    }
+
+    year = datetime.now().year
+    zip_url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}FD.ZIP"
+
+    try:
+        import zipfile
+        import io
+        import xml.etree.ElementTree as ET
+
+        req = urllib.request.Request(zip_url, headers={"User-Agent": SEC_UA})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            zdata = io.BytesIO(resp.read())
+
+        with zipfile.ZipFile(zdata) as zf:
+            for name in zf.namelist():
+                if name.endswith(".xml"):
+                    tree = ET.parse(zf.open(name))
+                    root = tree.getroot()
+
+                    # Parse all Member elements
+                    for member in root.iter("Member"):
+                        prefix = member.findtext("Prefix", "").strip()
+                        last = member.findtext("Last", "").strip()
+                        first = member.findtext("First", "").strip()
+                        filing_type = member.findtext("FilingType", "").strip()
+                        filing_date = member.findtext("FilingDate", "").strip()
+                        doc_id = member.findtext("DocID", "").strip()
+
+                        # Only PTR (Periodic Transaction Reports) — actual trades
+                        if filing_type != "P":
+                            continue
+
+                        filing = {
+                            "name": f"{first} {last}".strip(),
+                            "prefix": prefix,
+                            "filing_type": "Periodic Transaction Report",
+                            "filing_date": filing_date,
+                            "doc_id": doc_id,
+                            "url": f"https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/{year}/{doc_id}.pdf",
+                        }
+
+                        # Match against engine players
+                        name_lower = filing["name"].lower()
+                        filing["matched_players"] = []
+                        for player, keywords in PLAYERS.items():
+                            if any(kw in name_lower for kw in keywords):
+                                filing["matched_players"].append(player)
+
+                        results["filings"].append(filing)
+                        results["summary"]["total"] += 1
+                        if filing["matched_players"]:
+                            results["summary"]["matched_players"] += 1
+
+        # Sort by date, most recent first
+        results["filings"].sort(key=lambda x: x.get("filing_date", ""), reverse=True)
+        # Keep only last 60 days
+        cutoff = (datetime.now() - timedelta(days=60)).strftime("%m/%d/%Y")
+        results["filings"] = [f for f in results["filings"] if f.get("filing_date", "") >= cutoff]
+        results["summary"]["total"] = len(results["filings"])
+
+    except Exception as e:
+        print(f"    Congress trades error: {e}")
+
+    print(f"    -> {results['summary']['total']} House PTR filings (last 60 days), {results['summary']['matched_players']} matched engine players")
+    return results
+
+
+def fetch_short_volume():
+    """
+    Pull daily short sale volume from FINRA for engine-tracked tickers.
+    Layer 1.5: Where is short pressure building?
+    Source owner: FINRA — exchange-reported data, no editorial bias.
+    """
+    results = {
+        "tickers": {},
+        "summary": {"high_short_ratio": []},
+        "source_owner": "FINRA — exchange-reported daily short sale volume, no editorial bias",
+    }
+
+    # Try last 3 trading days (weekends/holidays may not have data)
+    today = datetime.now()
+    for days_back in range(0, 5):
+        check_date = today - timedelta(days=days_back)
+        if check_date.weekday() >= 5:  # Skip weekends
+            continue
+        date_str = check_date.strftime("%Y%m%d")
+        url = f"https://cdn.finra.org/equity/regsho/daily/CNMSshvol{date_str}.txt"
+
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": SEC_UA})
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                text = resp.read().decode("utf-8")
+
+            for line in text.strip().split("\n"):
+                parts = [p.strip() for p in line.split("|")]
+                if len(parts) < 5:
+                    continue
+                symbol = parts[1]
+                if symbol not in ALL_TRACKED_TICKERS:
+                    continue
+                try:
+                    short_vol = int(float(parts[2]))
+                    short_exempt = int(float(parts[3]))
+                    total_vol = int(float(parts[4]))
+                except (ValueError, IndexError):
+                    continue
+                if total_vol == 0:
+                    continue
+
+                ratio = (short_vol + short_exempt) / total_vol
+                category = "genesis_adjacent" if symbol in ENGINE_TICKERS["genesis_adjacent"] else "rug_candidates"
+                results["tickers"][symbol] = {
+                    "date": date_str,
+                    "short_volume": short_vol,
+                    "short_exempt": short_exempt,
+                    "total_volume": total_vol,
+                    "short_ratio": round(ratio, 4),
+                    "category": category,
+                }
+                if ratio > 0.5:
+                    results["summary"]["high_short_ratio"].append({
+                        "ticker": symbol,
+                        "ratio": round(ratio, 4),
+                        "category": category,
+                    })
+
+            if results["tickers"]:
+                print(f"    -> Found data for {date_str}")
+                break  # Got data, stop looking
+        except urllib.error.HTTPError:
+            continue  # Try previous day
+        except Exception as e:
+            print(f"    FINRA error for {date_str}: {e}")
+            continue
+
+    # Sort high short ratio
+    results["summary"]["high_short_ratio"].sort(key=lambda x: -x["ratio"])
+
+    genesis_shorts = {k: v for k, v in results["tickers"].items() if v["category"] == "genesis_adjacent"}
+    rug_shorts = {k: v for k, v in results["tickers"].items() if v["category"] == "rug_candidates"}
+    print(f"    -> {len(results['tickers'])} tickers tracked ({len(genesis_shorts)} genesis, {len(rug_shorts)} rug)")
+    print(f"       High short ratio (>50%): {len(results['summary']['high_short_ratio'])} tickers")
+    return results
+
 
 # ── Tagging Engine ────────────────────────────────────────────────────────────
 
@@ -728,48 +975,58 @@ def run_pipeline():
     all_events = []
 
     # ── Layer 2: Managed data collection ─────────────────────────────────
-    print("[1/11] Tavily deep web search...")
+    print("[1/14] Tavily deep web search...")
     tavily_results = fetch_tavily(TAVILY_QUERIES, max_per_query=3)
     all_events.extend(tavily_results)
     print(f"  -> {len(tavily_results)} results")
 
-    print("[2/11] GNews headlines...")
+    print("[2/14] GNews headlines...")
     gnews_results = fetch_gnews()
     all_events.extend(gnews_results)
     print(f"  -> {len(gnews_results)} results")
 
-    print("[3/11] RSS feeds...")
+    print("[3/14] RSS feeds...")
     rss_results = fetch_rss(RSS_FEEDS)
     all_events.extend(rss_results)
     print(f"  -> {len(rss_results)} results")
 
-    print("[4/11] Market indicators...")
+    print("[4/14] Market indicators...")
     market_data = fetch_market_data()
     print(f"  -> {len(market_data)} tickers")
 
     # ── Layer 2.5: Consciousness measurement ─────────────────────────────
-    print("[5/11] Prediction markets (Polymarket + Manifold)...")
+    print("[5/14] Prediction markets (Polymarket + Manifold)...")
     prediction_markets = fetch_prediction_markets()
 
-    print("[6/11] X pulse (volume per search priority)...")
+    print("[6/14] X pulse (volume per search priority)...")
     x_pulse = fetch_x_pulse()
 
     # ── Layer 2.5: Deep research ─────────────────────────────────────────
-    print("[7/11] Academic research (OpenAlex)...")
+    print("[7/14] Academic research (OpenAlex)...")
     research = fetch_research()
 
     # ── Layer 2.5: Global event tracking ─────────────────────────────────
-    print("[8/11] GDELT global articles...")
+    print("[8/14] GDELT global articles...")
     gdelt = fetch_gdelt()
 
     # ── Layer 2.5: Structural-demographic indicators ─────────────────────
-    print("[9/11] FRED SDT metrics...")
+    print("[9/14] FRED SDT metrics...")
     fred_sdt = fetch_fred_sdt()
 
-    print("[10/11] World Bank global indicators...")
+    print("[10/14] World Bank global indicators...")
     world_bank = fetch_world_bank()
 
-    print("[11/11] Done with data collection.")
+    # ── Layer 1.5: Capital Flow Intelligence (free public data) ────────
+    print("[11/14] SEC insider trades (Form 4)...")
+    insider_trades = fetch_insider_trades()
+
+    print("[12/14] Congressional financial disclosures...")
+    congress_trades = fetch_congress_trades()
+
+    print("[13/14] FINRA short sale volume...")
+    short_volume = fetch_short_volume()
+
+    print("[14/14] Done with data collection.")
 
     # ── Dedup by title ────────────────────────────────────────────────────────
     seen_titles = set()
@@ -837,6 +1094,9 @@ def run_pipeline():
             "gdelt_articles": len(gdelt.get("articles", [])),
             "fred_metrics": len(fred_sdt.get("metrics", {})),
             "world_bank_indicators": len(world_bank.get("indicators", {})),
+            "insider_filings": insider_trades.get("summary", {}).get("total_filings", 0),
+            "congress_filings": congress_trades.get("summary", {}).get("total", 0),
+            "short_volume_tickers": len(short_volume.get("tickers", {})),
         },
         "engine_position": {
             "active_windows": active_windows,
@@ -849,6 +1109,9 @@ def run_pipeline():
         "gdelt": gdelt,
         "fred_sdt": fred_sdt,
         "world_bank": world_bank,
+        "insider_trades": insider_trades,
+        "congress_trades": congress_trades,
+        "short_volume": short_volume,
         "dimension_summary": {
             "WHO": dict(sorted(player_counts.items(), key=lambda x: -x[1])),
             "WHERE": dict(sorted(theater_counts.items(), key=lambda x: -x[1])),
@@ -908,6 +1171,21 @@ def run_pipeline():
         print(f"\nRESEARCH ({len(papers)} papers):")
         for p in sorted(papers, key=lambda x: -x.get("cited_by", 0))[:5]:
             print(f"  [{p.get('priority', '')}] {p['title'][:60]} ({p.get('year', '?')}, {p.get('cited_by', 0)} cites)")
+
+    # Capital flow summary
+    insider_summary = insider_trades.get("summary", {})
+    short_summary = short_volume.get("summary", {})
+    congress_summary = congress_trades.get("summary", {})
+    if insider_summary.get("total_buys", 0) or insider_summary.get("total_sells", 0):
+        print(f"\nCAPITAL FLOW (Layer 1.5):")
+        print(f"  Insider trades: {insider_summary.get('total_buys', 0)} buys / {insider_summary.get('total_sells', 0)} sells")
+        print(f"    Genesis buys: {insider_summary.get('genesis_buys', 0)} | Genesis sells: {insider_summary.get('genesis_sells', 0)}")
+        print(f"    Rug sells: {insider_summary.get('rug_sells', 0)}")
+    if congress_summary.get("total", 0):
+        print(f"  Congress PTRs (60d): {congress_summary.get('total', 0)} ({congress_summary.get('matched_players', 0)} matched engine players)")
+    high_short = short_summary.get("high_short_ratio", [])
+    if high_short:
+        print(f"  High short ratio (>50%): {', '.join(s['ticker'] + ' ' + str(int(s['ratio']*100)) + '%' for s in high_short[:10])}")
 
     print(f"\n{'='*60}")
     print(f"Pipeline complete. {len(deduped)} events, {poly_count}+{mani_count} markets, {x_total:,} tweets, {len(papers)} papers.")
