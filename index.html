@@ -2667,26 +2667,110 @@ function renderLive(data) {
   if (aw) windowHtml = `<span class="window-badge window-active">ACTIVE: ${aw.name}</span> <span style="color:#8b949e;font-size:11px">${aw.start} to ${aw.end}</span>`;
   else if (nw) windowHtml = `<span class="window-badge window-next">NEXT: ${nw.name}</span> <span style="color:#8b949e;font-size:11px">${nw.days_until} days away</span>`;
 
-  // Market
+  // ── LAYER 1: CAPITAL FLOW (what money is doing) ──────────────────────
+
+  // Short volume
+  const sv = data.short_volume || {};
+  const svTickers = sv.tickers || {};
+  const svHigh = sv.summary?.high_short_ratio || [];
+  const svGenesis = Object.values(svTickers).filter(t => t.category === 'genesis_adjacent');
+  const svRug = Object.values(svTickers).filter(t => t.category === 'rug_candidates');
+  const avgGenShort = svGenesis.length ? (svGenesis.reduce((s,t) => s + t.short_ratio, 0) / svGenesis.length) : 0;
+  const avgRugShort = svRug.length ? (svRug.reduce((s,t) => s + t.short_ratio, 0) / svRug.length) : 0;
+  const shortDelta = avgRugShort - avgGenShort;
+
+  function shortBar(ticker, ratio, cat) {
+    const pct = Math.round(ratio * 100);
+    const color = cat === 'rug_candidates' ? '#f85149' : '#7ee787';
+    const warn = ratio > 0.5 ? ' style="color:#f0883e;font-weight:600"' : '';
+    return `<div style="display:flex;align-items:center;gap:6px;padding:2px 0">
+      <span style="width:42px;font-size:10px;color:#8b949e;text-align:right">${ticker}</span>
+      <div style="flex:1;height:14px;background:#161b22;border-radius:3px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:${color};opacity:${ratio > 0.5 ? 1 : 0.6};border-radius:3px"></div>
+      </div>
+      <span style="width:36px;font-size:10px;text-align:right"${warn}>${pct}%</span>
+    </div>`;
+  }
+
+  // Sort tickers: rug first (highest short ratio), then genesis
+  const rugSorted = Object.entries(svTickers).filter(([,v]) => v.category === 'rug_candidates').sort((a,b) => b[1].short_ratio - a[1].short_ratio);
+  const genSorted = Object.entries(svTickers).filter(([,v]) => v.category === 'genesis_adjacent').sort((a,b) => b[1].short_ratio - a[1].short_ratio);
+
+  const shortBarsHtml = rugSorted.length || genSorted.length ? `
+    ${rugSorted.length ? `<div style="margin-bottom:6px;font-size:9px;color:#f85149;text-transform:uppercase;letter-spacing:1px">Rug Candidates</div>` +
+      rugSorted.map(([k,v]) => shortBar(k, v.short_ratio, v.category)).join('') : ''}
+    ${genSorted.length ? `<div style="margin:8px 0 6px;font-size:9px;color:#7ee787;text-transform:uppercase;letter-spacing:1px">Genesis Adjacent</div>` +
+      genSorted.map(([k,v]) => shortBar(k, v.short_ratio, v.category)).join('') : ''}
+  ` : '<span style="color:#484f58">Awaiting next pipeline run</span>';
+
+  // Insider trades
+  const ins = data.insider_trades || {};
+  const insSummary = ins.summary || {};
+  const insTransactions = ins.transactions || [];
+  const recentInsiders = insTransactions.slice(0, 8);
+
+  const insiderHtml = insSummary.total_filings ? `
+    <div style="display:flex;gap:16px;margin-bottom:10px">
+      <div><span class="stat-big">${insSummary.total_filings}</span> <span class="stat-sub">Form 4 filings (14d)</span></div>
+    </div>
+    <div style="display:flex;gap:20px;margin-bottom:10px">
+      <div style="flex:1;padding:8px;background:#0d1117;border-radius:4px;border-left:3px solid #7ee787">
+        <div style="font-size:18px;font-weight:700;color:#7ee787">${insSummary.genesis_filings}</div>
+        <div style="font-size:9px;color:#8b949e;text-transform:uppercase">Genesis (${insSummary.genesis_tickers_active} tickers)</div>
+      </div>
+      <div style="flex:1;padding:8px;background:#0d1117;border-radius:4px;border-left:3px solid #f85149">
+        <div style="font-size:18px;font-weight:700;color:#f85149">${insSummary.rug_filings}</div>
+        <div style="font-size:9px;color:#8b949e;text-transform:uppercase">Rug (${insSummary.rug_tickers_active} tickers)</div>
+      </div>
+    </div>
+    ${insSummary.genesis_filings > insSummary.rug_filings * 3 ?
+      `<div style="padding:6px 8px;background:rgba(126,231,135,0.08);border:1px solid rgba(126,231,135,0.2);border-radius:4px;font-size:11px;color:#7ee787;margin-bottom:8px">
+        Insider activity ${Math.round(insSummary.genesis_filings / Math.max(insSummary.rug_filings, 1))}x higher on genesis tickers than rug candidates
+      </div>` : ''}
+    <div style="font-size:9px;color:#484f58;text-transform:uppercase;margin-bottom:4px">Recent filings</div>
+    ${recentInsiders.map(t => `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #161b22">
+      <span style="font-size:10px;color:${t.category === 'genesis_adjacent' ? '#7ee787' : '#f85149'}">${t.ticker}</span>
+      <span style="font-size:10px;color:#8b949e;flex:1;margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(t.entity||'').replace(/\\s*\\(CIK.*\\)/, '')}</span>
+      <span style="font-size:10px;color:#484f58">${t.filed}</span>
+    </div>`).join('')}
+  ` : '<span style="color:#484f58">Awaiting next pipeline run</span>';
+
+  // Congress trades
+  const cong = data.congress_trades || {};
+  const congFilings = cong.filings || [];
+  const congSummary = cong.summary || {};
+
+  const congressHtml = congSummary.total ? `
+    <div style="margin-bottom:8px"><span class="stat-big">${congSummary.total}</span> <span class="stat-sub">PTR filings (60d)</span></div>
+    ${congSummary.matched_players ? `<div style="margin-bottom:8px"><span class="stat-med">${congSummary.matched_players}</span> <span class="stat-sub">matched engine players</span></div>` : ''}
+    <div style="font-size:9px;color:#484f58;text-transform:uppercase;margin-bottom:4px">Recent disclosures</div>
+    ${congFilings.slice(0, 8).map(f => `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #161b22">
+      <span style="font-size:10px;color:${f.matched_players?.length ? '#f0883e' : '#c8c8d4'}">${f.name}</span>
+      <span style="font-size:10px;color:#484f58">${f.filing_date}</span>
+    </div>`).join('')}
+    <div style="margin-top:6px;font-size:9px;color:#484f58">Source: House Clerk mandatory STOCK Act filings</div>
+  ` : '<span style="color:#484f58">Awaiting next pipeline run</span>';
+
+  // ── LAYER 2: MARKETS (what prices are doing) ─────────────────────────
+
   const mkt = data.market_data || {};
   const mktHtml = Object.entries(mkt).map(([k,v]) => {
     const dir = v.change_5d >= 0;
     return `<div class="mkt-row"><span class="mkt-name">${k}</span><span class="mkt-price">${v.price.toLocaleString()}</span><span class="${dir?'mkt-up':'mkt-down'}">${dir?'+':''}${v.change_5d}%</span></div>`;
   }).join('');
 
-  // Dimension bars
+  // ── LAYER 3: NARRATIVE (what headlines are saying) ────────────────────
+
   const dims = data.dimension_summary || {};
   function dimBars(obj, cls) {
     const entries = Object.entries(obj);
     if (!entries.length) return '<span style="color:#484f58">No signals</span>';
     const mx = Math.max(...entries.map(e=>e[1]));
     return entries.slice(0,8).map(([k,v]) => {
-      const pct = Math.round((v/mx)*100);
       return `<span class="dim-tag dim-tag-${cls}">${k.replace(/_/g,' ')}: ${v}</span>`;
     }).join(' ');
   }
 
-  // Top events
   const events = (data.events || []).slice(0, 25);
   const evHtml = events.map(e => {
     const rel = e.tags?.relevance || 0;
@@ -2704,9 +2788,39 @@ function renderLive(data) {
     </div>`;
   }).join('');
 
+  // ── RENDER ────────────────────────────────────────────────────────────
+
   el.innerHTML = `
     <div class="sec-title">Live Data Feed &mdash; ${data.date || 'Unknown'}</div>
     <div style="margin-bottom:12px">${windowHtml}</div>
+
+    <div style="font-size:11px;color:#f0883e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 1 &mdash; Capital Flow</div>
+    <div style="font-size:10px;color:#484f58;margin-bottom:12px">What people with skin in the game are doing with their money</div>
+
+    ${shortDelta > 0.05 ? `<div style="padding:8px 12px;background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);border-radius:4px;margin-bottom:12px">
+      <span style="font-size:12px;font-weight:600;color:#f85149">Short Divergence Active</span>
+      <span style="font-size:11px;color:#8b949e;margin-left:8px">Rug candidates shorted ${Math.round(avgRugShort*100)}% avg vs genesis ${Math.round(avgGenShort*100)}% avg &mdash; ${Math.round(shortDelta*100)}pt spread</span>
+    </div>` : ''}
+
+    <div class="live-grid">
+      <div class="card">
+        <div class="card-title">Short Sale Volume (FINRA)</div>
+        ${shortBarsHtml}
+        <div style="margin-top:8px;font-size:9px;color:#484f58">Source: FINRA RegSHO daily consolidated short volume. Bars over 50% flagged.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Insider Filings (SEC Form 4)</div>
+        ${insiderHtml}
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Congressional Trading (House PTR)</div>
+      ${congressHtml}
+    </div>
+
+    <div style="font-size:11px;color:#58a6ff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 2 &mdash; Markets</div>
+    <div style="font-size:10px;color:#484f58;margin-bottom:12px">What prices are doing</div>
 
     <div class="live-grid">
       <div class="card">
@@ -2717,9 +2831,15 @@ function renderLive(data) {
         <div class="card-title">Ingestion Summary</div>
         <div style="margin-bottom:8px"><span class="stat-big">${data.meta?.total_events || 0}</span> <span class="stat-sub">events ingested</span></div>
         <div><span class="stat-med">${data.meta?.high_relevance_events || 0}</span> <span class="stat-sub">high relevance (3+ dimensions)</span></div>
-        <div style="margin-top:8px;font-size:10px;color:#484f58">Tavily: ${data.meta?.sources?.tavily||0} &bull; GNews: ${data.meta?.sources?.gnews||0} &bull; RSS: ${data.meta?.sources?.rss||0}</div>
+        <div style="margin-top:8px;font-size:10px;color:#484f58">
+          Tavily: ${data.meta?.sources?.tavily||0} &bull; GNews: ${data.meta?.sources?.gnews||0} &bull; RSS: ${data.meta?.sources?.rss||0}
+          &bull; Form 4: ${data.meta?.insider_filings||0} &bull; PTR: ${data.meta?.congress_filings||0} &bull; Short: ${data.meta?.short_volume_tickers||0}
+        </div>
       </div>
     </div>
+
+    <div style="font-size:11px;color:#bc8cff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 3 &mdash; Narrative</div>
+    <div style="font-size:10px;color:#484f58;margin-bottom:12px">What headlines are saying</div>
 
     <div class="live-grid-3">
       <div class="card"><div class="card-title">WHO (Player Mentions)</div>${dimBars(dims.WHO||{}, 'who')}</div>
