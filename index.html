@@ -501,56 +501,130 @@ canvas#chart { width: 100%; height: 200px; }
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 680px;
+  max-width: 740px;
   padding: 0 24px;
 }
 #hero-content .hero-label {
-  font-size: 11px;
-  letter-spacing: 0.35em;
+  font-size: 10px;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: #8b949e;
-  margin-bottom: 24px;
+  color: #484f58;
+  margin-bottom: 16px;
   text-shadow: 0 0 8px rgba(0,0,0,0.9);
+  opacity: 0;
+  animation: heroFadeIn 0.8s ease 0.3s forwards;
 }
-#hero-content h1 {
-  font-size: clamp(28px, 5vw, 48px);
+#hero-hook {
+  font-size: clamp(26px, 4.5vw, 46px);
   font-weight: 300;
-  line-height: 1.25;
+  line-height: 1.2;
   color: #e6e6ef;
-  margin-bottom: 20px;
-  text-shadow: 0 0 16px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7);
+  margin-bottom: 10px;
+  min-height: 2.4em;
+  text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
+}
+#hero-hook .hero-typed {
+  display: inline;
+}
+#hero-hook .hero-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  background: #f0883e;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.8s step-end infinite;
+}
+@keyframes cursorBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+#hero-sub-line {
+  font-size: clamp(13px, 2vw, 16px);
+  color: #f0883e;
+  font-weight: 500;
+  margin-bottom: 14px;
+  opacity: 0;
+  text-shadow: 0 0 12px rgba(240,136,62,0.3);
+  animation: heroFadeIn 0.6s ease 1.8s forwards;
 }
 #hero-content .hero-sub {
-  font-size: clamp(13px, 2vw, 16px);
+  font-size: clamp(12px, 1.8vw, 14px);
   color: #8b949e;
   line-height: 1.7;
-  margin-bottom: 36px;
-  max-width: 520px;
+  margin-bottom: 12px;
+  max-width: 540px;
   margin-left: auto;
   margin-right: auto;
   text-shadow: 0 0 8px rgba(0,0,0,0.8);
+  opacity: 0;
+  animation: heroFadeIn 0.6s ease 2.4s forwards;
+}
+/* data ticker */
+#hero-ticker {
+  margin-bottom: 20px;
+  height: 22px;
+  overflow: hidden;
+  opacity: 0;
+  animation: heroFadeIn 0.6s ease 2.8s forwards;
+}
+#hero-ticker-inner {
+  display: flex;
+  flex-direction: column;
+  animation: tickerScroll 16s linear infinite;
+}
+.hero-tick {
+  height: 22px;
+  line-height: 22px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  color: #58a6ff;
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(88,166,255,0.3);
+}
+.hero-tick .ht-val { color: #f0883e; font-weight: 600; }
+.hero-tick .ht-sep { color: #30363d; margin: 0 8px; }
+@keyframes tickerScroll {
+  0% { transform: translateY(0); }
+  12.5% { transform: translateY(0); }
+  14.5% { transform: translateY(-22px); }
+  25% { transform: translateY(-22px); }
+  27% { transform: translateY(-44px); }
+  37.5% { transform: translateY(-44px); }
+  39.5% { transform: translateY(-66px); }
+  50% { transform: translateY(-66px); }
+  52% { transform: translateY(-88px); }
+  62.5% { transform: translateY(-88px); }
+  64.5% { transform: translateY(-110px); }
+  75% { transform: translateY(-110px); }
+  77% { transform: translateY(-132px); }
+  87.5% { transform: translateY(-132px); }
+  89.5% { transform: translateY(-154px); }
+  100% { transform: translateY(-154px); }
 }
 #hero-enter {
   display: inline-block;
-  padding: 12px 32px;
+  padding: 14px 40px;
   background: #f0883e;
   color: #0a0a0f;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   letter-spacing: 0.5px;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(240,136,62,0.25);
+  opacity: 0;
+  animation: heroFadeIn 0.6s ease 3.2s forwards;
 }
-#hero-enter:hover { background: #f09850; transform: translateY(-1px); }
+#hero-enter:hover { background: #f09850; transform: translateY(-2px); box-shadow: 0 0 30px rgba(240,136,62,0.4); }
 #hero-footer {
   position: absolute;
   bottom: 24px;
   z-index: 1;
   text-align: center;
   width: 100%;
+  opacity: 0;
+  animation: heroFadeIn 0.6s ease 3.6s forwards;
 }
 #hero-footer p {
   font-size: 11px;
@@ -566,6 +640,33 @@ canvas#chart { width: 100%; height: 200px; }
   font-size: 18px;
 }
 @keyframes hero-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@keyframes heroFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* hero stat counters */
+#hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: heroFadeIn 0.6s ease 2.0s forwards;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 700;
+  color: #f0883e;
+  text-shadow: 0 0 12px rgba(240,136,62,0.3);
+}
+.hero-stat-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #484f58;
+  margin-top: 2px;
+}
 
 #app-wrap { display: none; }
 #app-wrap.visible { display: block; }
@@ -579,9 +680,27 @@ canvas#chart { width: 100%; height: 200px; }
   <canvas id="hero-canvas"></canvas>
   <div id="hero-content">
     <p class="hero-label">Psychohistory Prediction Engine</p>
-    <h1>The architecture is visible<br>if you know where to look.</h1>
-    <p class="hero-sub">A 138-year cycle engine tracking who is building what, with whose money, for what purpose &mdash; and mapping it against the mathematical pressure curve of civilizational reset.</p>
-    <button id="hero-enter" onclick="enterEngine()">Enter the Engine</button>
+    <h1 id="hero-hook"><span class="hero-typed" id="hero-typed"></span><span class="hero-cursor"></span></h1>
+    <div id="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num" id="hs-nodes">0</div><div class="hero-stat-label">Tracked Nodes</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="hs-edges">0</div><div class="hero-stat-label">Connections</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="hs-years">0</div><div class="hero-stat-label">Year Cycle</div></div>
+    </div>
+    <p id="hero-sub-line">Follow the money. Map the network. Predict the move.</p>
+    <p class="hero-sub">Same families. Same banks. Same playbook. Every cycle.<br>This engine tracks the exposed architecture underneath &mdash; and makes predictions based on where all of it is heading.</p>
+    <div id="hero-ticker">
+      <div id="hero-ticker-inner">
+        <div class="hero-tick"><span class="ht-val">2032</span><span class="ht-sep">&mdash;</span>Engine's strongest signal in 14 years: two dimensions maxed simultaneously</div>
+        <div class="hero-tick"><span class="ht-val">$4.8B</span><span class="ht-sep">&mdash;</span>Sovereign wealth flowing through one family office. Zero profit returned.</div>
+        <div class="hero-tick"><span class="ht-val">$10B</span><span class="ht-sep">&mdash;</span>Russian capital laundered through the same bank entity managing Trump</div>
+        <div class="hero-tick"><span class="ht-val">6</span><span class="ht-sep">&mdash;</span>Corporate bankruptcies. Then $2.5B in new loans. Same bank. Same desk.</div>
+        <div class="hero-tick"><span class="ht-val">$55B</span><span class="ht-sep">&mdash;</span>Largest LBO in history announced same day as a "peace deal"</div>
+        <div class="hero-tick"><span class="ht-val">277</span><span class="ht-sep">&mdash;</span>Nodes tracked across intelligence, finance, tech, and occult lineages</div>
+        <div class="hero-tick"><span class="ht-val">138yr</span><span class="ht-sep">&mdash;</span>Cycle position CY124/138. Terminal phase. The math doesn't care who's president.</div>
+        <div class="hero-tick"><span class="ht-val">2032</span><span class="ht-sep">&mdash;</span>Engine's strongest signal in 14 years: two dimensions maxed simultaneously</div>
+      </div>
+    </div>
+    <button id="hero-enter" onclick="enterEngine()">See the Pattern</button>
   </div>
   <div id="hero-footer">
     <p>Alan Berman &middot; <a href="https://medium.com/@moketchups">@moketchups</a></p>
@@ -2511,6 +2630,56 @@ function enterEngine() {
 
 // Also allow scrolling past hero
 document.getElementById('hero-scroll').addEventListener('click', enterEngine);
+
+// ===== HERO TYPEWRITER + COUNTERS =====
+(function() {
+  const phrases = [
+    "They're not hiding it anymore.",
+    "Same money. Same families. Every cycle.",
+    "The pattern doesn't care who's president.",
+    "Follow the money. The rest writes itself.",
+    "277 nodes. 479 connections. One architecture.",
+    "This isn't theory. It's network analysis.",
+    "The math says 2032. Here's why."
+  ];
+  const el = document.getElementById('hero-typed');
+  let pi = 0, ci = 0, deleting = false, pause = 0;
+  function tick() {
+    if (pause > 0) { pause--; requestAnimationFrame(tick); return; }
+    const phrase = phrases[pi];
+    if (!deleting) {
+      ci++;
+      el.textContent = phrase.substring(0, ci);
+      if (ci >= phrase.length) { deleting = true; pause = 120; }
+      else { pause = 2 + Math.random() * 2; }
+    } else {
+      ci--;
+      el.textContent = phrase.substring(0, ci);
+      if (ci <= 0) { deleting = false; pi = (pi + 1) % phrases.length; pause = 20; }
+      else { pause = 1; }
+    }
+    requestAnimationFrame(tick);
+  }
+  setTimeout(() => requestAnimationFrame(tick), 600);
+
+  // Counter animation
+  function animateCounter(id, target, duration) {
+    const el = document.getElementById(id);
+    const start = performance.now();
+    function update(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(ease * target);
+      if (t < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+  setTimeout(() => {
+    animateCounter('hs-nodes', 277, 2000);
+    animateCounter('hs-edges', 479, 2200);
+    animateCounter('hs-years', 138, 1800);
+  }, 1800);
+})();
 </script>
 
 <script>
