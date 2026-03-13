@@ -505,11 +505,12 @@ canvas#chart { width: 100%; height: 200px; }
   padding: 0 24px;
 }
 #hero-content .hero-label {
-  font-size: 10px;
-  letter-spacing: 0.4em;
+  font-size: 13px;
+  letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: #484f58;
-  margin-bottom: 16px;
+  color: #f0883e;
+  font-weight: 600;
+  margin-bottom: 20px;
   text-shadow: 0 0 8px rgba(0,0,0,0.9);
   opacity: 0;
   animation: heroFadeIn 0.8s ease 0.3s forwards;
@@ -543,7 +544,7 @@ canvas#chart { width: 100%; height: 200px; }
   margin-bottom: 14px;
   opacity: 0;
   text-shadow: 0 0 12px rgba(240,136,62,0.3);
-  animation: heroFadeIn 0.6s ease 1.8s forwards;
+  animation: heroFadeIn 0.6s ease 1.6s forwards;
 }
 #hero-content .hero-sub {
   font-size: clamp(12px, 1.8vw, 14px);
@@ -555,7 +556,7 @@ canvas#chart { width: 100%; height: 200px; }
   margin-right: auto;
   text-shadow: 0 0 8px rgba(0,0,0,0.8);
   opacity: 0;
-  animation: heroFadeIn 0.6s ease 2.4s forwards;
+  animation: heroFadeIn 0.6s ease 2.0s forwards;
 }
 /* data ticker */
 #hero-ticker {
@@ -563,7 +564,7 @@ canvas#chart { width: 100%; height: 200px; }
   height: 22px;
   overflow: hidden;
   opacity: 0;
-  animation: heroFadeIn 0.6s ease 2.8s forwards;
+  animation: heroFadeIn 0.6s ease 2.4s forwards;
 }
 #hero-ticker-inner {
   display: flex;
@@ -614,7 +615,7 @@ canvas#chart { width: 100%; height: 200px; }
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   box-shadow: 0 0 20px rgba(240,136,62,0.25);
   opacity: 0;
-  animation: heroFadeIn 0.6s ease 3.2s forwards;
+  animation: heroFadeIn 0.6s ease 2.8s forwards;
 }
 #hero-enter:hover { background: #f09850; transform: translateY(-2px); box-shadow: 0 0 30px rgba(240,136,62,0.4); }
 #hero-footer {
@@ -624,7 +625,7 @@ canvas#chart { width: 100%; height: 200px; }
   text-align: center;
   width: 100%;
   opacity: 0;
-  animation: heroFadeIn 0.6s ease 3.6s forwards;
+  animation: heroFadeIn 0.6s ease 3.2s forwards;
 }
 #hero-footer p {
   font-size: 11px;
@@ -641,32 +642,6 @@ canvas#chart { width: 100%; height: 200px; }
 }
 @keyframes hero-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 @keyframes heroFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-/* hero stat counters */
-#hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-bottom: 14px;
-  opacity: 0;
-  animation: heroFadeIn 0.6s ease 2.0s forwards;
-}
-.hero-stat {
-  text-align: center;
-}
-.hero-stat-num {
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: clamp(18px, 2.5vw, 26px);
-  font-weight: 700;
-  color: #f0883e;
-  text-shadow: 0 0 12px rgba(240,136,62,0.3);
-}
-.hero-stat-label {
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #484f58;
-  margin-top: 2px;
-}
 
 #app-wrap { display: none; }
 #app-wrap.visible { display: block; }
@@ -681,11 +656,6 @@ canvas#chart { width: 100%; height: 200px; }
   <div id="hero-content">
     <p class="hero-label">Psychohistory Prediction Engine</p>
     <h1 id="hero-hook"><span class="hero-typed" id="hero-typed"></span><span class="hero-cursor"></span></h1>
-    <div id="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num" id="hs-nodes">0</div><div class="hero-stat-label">Tracked Nodes</div></div>
-      <div class="hero-stat"><div class="hero-stat-num" id="hs-edges">0</div><div class="hero-stat-label">Connections</div></div>
-      <div class="hero-stat"><div class="hero-stat-num" id="hs-years">0</div><div class="hero-stat-label">Year Cycle</div></div>
-    </div>
     <p id="hero-sub-line">Follow the money. Map the network. Predict the move.</p>
     <p class="hero-sub">Same families. Same banks. Same playbook. Every cycle.<br>This engine tracks the exposed architecture underneath &mdash; and makes predictions based on where all of it is heading.</p>
     <div id="hero-ticker">
@@ -2585,8 +2555,8 @@ canvas#chart { width: 100%; height: 200px; }
       const a = projected[e.i], b = projected[e.j];
       const c = DIM_COLORS[e.dim];
       const norm = (e.depth - dMin) / dRange; // 0..1
-      const alpha = 0.06 + norm * 0.22;
-      const lw = 0.3 + norm * 0.9;
+      const alpha = 0.12 + norm * 0.38;
+      const lw = 0.5 + norm * 1.4;
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
@@ -2598,8 +2568,8 @@ canvas#chart { width: 100%; height: 200px; }
     // Draw vertices
     for (const p of projected) {
       const norm = (p.depth - dMin) / dRange;
-      const r = 0.5 + norm * 1.5;
-      const alpha = 0.1 + norm * 0.5;
+      const r = 0.8 + norm * 2.2;
+      const alpha = 0.15 + norm * 0.65;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(240,136,62,' + alpha + ')';
@@ -2662,23 +2632,6 @@ document.getElementById('hero-scroll').addEventListener('click', enterEngine);
   }
   setTimeout(() => requestAnimationFrame(tick), 600);
 
-  // Counter animation
-  function animateCounter(id, target, duration) {
-    const el = document.getElementById(id);
-    const start = performance.now();
-    function update(now) {
-      const t = Math.min((now - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(ease * target);
-      if (t < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-  }
-  setTimeout(() => {
-    animateCounter('hs-nodes', 277, 2000);
-    animateCounter('hs-edges', 479, 2200);
-    animateCounter('hs-years', 138, 1800);
-  }, 1800);
 })();
 </script>
 
