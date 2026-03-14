@@ -3256,7 +3256,21 @@ function renderLive(data) {
     <div class="sec-title">Live Data Feed &mdash; ${data.date || 'Unknown'}</div>
     <div style="margin-bottom:12px">${windowHtml}</div>
 
-    <div style="font-size:11px;color:#f0883e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 1 &mdash; Capital Flow</div>
+    <div style="font-size:11px;color:#bc8cff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 1 &mdash; Narrative</div>
+    <div style="font-size:10px;color:#484f58;margin-bottom:12px">What headlines are saying &mdash; scored by engine relevance</div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Top Events (by relevance)</div>
+      ${evHtml}
+    </div>
+
+    <div class="live-grid-3">
+      <div class="card"><div class="card-title">WHO (Player Mentions)</div>${dimBars(dims.WHO||{}, 'who')}</div>
+      <div class="card"><div class="card-title">WHERE (Theater Activity)</div>${dimBars(dims.WHERE||{}, 'where')}</div>
+      <div class="card"><div class="card-title">WHY (Incentive Signals)</div>${dimBars(dims.WHY||{}, 'why')}</div>
+    </div>
+
+    <div style="font-size:11px;color:#f0883e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 2 &mdash; Capital Flow</div>
     <div style="font-size:10px;color:#484f58;margin-bottom:12px">What people with skin in the game are doing with their money</div>
 
     ${shortDelta > 0.05 ? `<div style="padding:8px 12px;background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);border-radius:4px;margin-bottom:12px">
@@ -3281,7 +3295,7 @@ function renderLive(data) {
       ${congressHtml}
     </div>
 
-    <div style="font-size:11px;color:#58a6ff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 2 &mdash; Markets</div>
+    <div style="font-size:11px;color:#58a6ff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 3 &mdash; Markets</div>
     <div style="font-size:10px;color:#484f58;margin-bottom:12px">What prices are doing</div>
 
     <div class="live-grid">
@@ -3298,20 +3312,6 @@ function renderLive(data) {
           &bull; Form 4: ${data.meta?.insider_filings||0} &bull; PTR: ${data.meta?.congress_filings||0} &bull; Short: ${data.meta?.short_volume_tickers||0}
         </div>
       </div>
-    </div>
-
-    <div style="font-size:11px;color:#bc8cff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">Layer 3 &mdash; Narrative</div>
-    <div style="font-size:10px;color:#484f58;margin-bottom:12px">What headlines are saying</div>
-
-    <div class="live-grid-3">
-      <div class="card"><div class="card-title">WHO (Player Mentions)</div>${dimBars(dims.WHO||{}, 'who')}</div>
-      <div class="card"><div class="card-title">WHERE (Theater Activity)</div>${dimBars(dims.WHERE||{}, 'where')}</div>
-      <div class="card"><div class="card-title">WHY (Incentive Signals)</div>${dimBars(dims.WHY||{}, 'why')}</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Top Events (by relevance)</div>
-      ${evHtml}
     </div>
 
     <div class="live-ts">Last ingestion: ${data.timestamp || 'Unknown'} &bull; Run <code>python3 data_feeds.py</code> to refresh</div>
