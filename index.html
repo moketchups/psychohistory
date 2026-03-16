@@ -846,6 +846,7 @@ canvas#chart { width: 100%; height: 200px; }
 <div class="header">
   <h1>PSYCHOHISTORY PREDICTION ENGINE</h1>
   <div class="header-right">
+    <span id="h-window" style="font-size:10px;color:#0a0a0f;background:#f0883e;padding:3px 10px;border-radius:10px;font-weight:600;display:none"></span>
     <span class="header-pos" id="h-pos">CY124 / 138</span>
     <span class="header-mag" id="h-mag">--</span>
   </div>
@@ -984,6 +985,67 @@ canvas#chart { width: 100%; height: 200px; }
     </div>
     <canvas id="chart"></canvas>
     <div class="tip" id="tooltip"></div>
+  </div>
+
+  <!-- Real-World Signals (populated from current_events.json) -->
+  <div id="dash-signals" style="display:none">
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Real-World Signals &mdash; <span id="dash-date" style="color:#7ee787">loading</span></div>
+      <div class="g3" style="margin-bottom:10px">
+        <div style="background:#0d1117;border-radius:6px;padding:10px;border-left:3px solid #f0883e">
+          <div id="dash-mkt-oil" style="font-size:18px;font-weight:700;color:#f0883e">--</div>
+          <div class="stat-sub">Oil (5d chg: <span id="dash-mkt-oil-chg">--</span>)</div>
+        </div>
+        <div style="background:#0d1117;border-radius:6px;padding:10px;border-left:3px solid #f85149">
+          <div id="dash-mkt-vix" style="font-size:18px;font-weight:700;color:#f85149">--</div>
+          <div class="stat-sub">VIX Fear Index (5d high: <span id="dash-mkt-vix-high">--</span>)</div>
+        </div>
+        <div style="background:#0d1117;border-radius:6px;padding:10px;border-left:3px solid #e3b341">
+          <div id="dash-mkt-gold" style="font-size:18px;font-weight:700;color:#e3b341">--</div>
+          <div class="stat-sub">Gold (5d chg: <span id="dash-mkt-gold-chg">--</span>)</div>
+        </div>
+      </div>
+      <div class="g2" style="margin-bottom:10px">
+        <div style="background:#0d1117;border-radius:6px;padding:10px;border-left:3px solid #bc8cff">
+          <div id="dash-mkt-btc" style="font-size:18px;font-weight:700;color:#bc8cff">--</div>
+          <div class="stat-sub">Bitcoin (5d chg: <span id="dash-mkt-btc-chg">--</span>)</div>
+        </div>
+        <div style="background:#0d1117;border-radius:6px;padding:10px;border-left:3px solid #58a6ff">
+          <div id="dash-mkt-sp" style="font-size:18px;font-weight:700;color:#58a6ff">--</div>
+          <div class="stat-sub">S&amp;P 500 (5d chg: <span id="dash-mkt-sp-chg">--</span>)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2" style="margin-bottom:12px">
+      <div class="card">
+        <div class="card-title">Capital Flow Divergence</div>
+        <div class="g2" style="margin-bottom:6px">
+          <div style="background:#0d1117;border-radius:6px;padding:10px;text-align:center">
+            <div id="dash-ins-genesis" style="font-size:22px;font-weight:700;color:#7ee787">--</div>
+            <div class="stat-sub">Genesis Insider Filings</div>
+          </div>
+          <div style="background:#0d1117;border-radius:6px;padding:10px;text-align:center">
+            <div id="dash-ins-rug" style="font-size:22px;font-weight:700;color:#f85149">--</div>
+            <div class="stat-sub">Rug Candidate Filings</div>
+          </div>
+        </div>
+        <div id="dash-ins-ratio" style="font-size:11px;color:#8b949e;text-align:center"></div>
+        <div style="font-size:9px;color:#484f58;margin-top:6px">Source: SEC Form 4 (14d) &bull; FINRA RegSHO daily</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Dimension Signals (What the Data Says)</div>
+        <div id="dash-who" style="margin-bottom:6px"></div>
+        <div id="dash-why" style="margin-bottom:6px"></div>
+        <div style="font-size:9px;color:#484f58">Source: 169 events from Tavily, GNews, RSS scored against engine players/theaters/incentives</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Turchin SDT Proxies (Live FRED Data)</div>
+      <div class="g3" id="dash-fred"></div>
+      <div style="font-size:9px;color:#484f58;margin-top:6px">Source: Federal Reserve Bank of St. Louis (FRED)</div>
+    </div>
   </div>
 </div>
 
@@ -6475,10 +6537,99 @@ document.addEventListener('click', e => {
   if (h4) { e.preventDefault(); h4.closest('.collapsible').classList.toggle('open'); }
 });
 
-// Load live data
+// Load live data and populate dashboard + header
 fetch('current_events.json')
   .then(r => r.json())
-  .then(renderLive)
+  .then(data => {
+    try { renderLive(data); } catch(e) { console.error('renderLive error:', e); }
+    if (!data) return;
+
+    // ── HEADER: Active window badge ──
+    const hw = document.getElementById('h-window');
+    const aw = data.engine_position?.active_windows?.[0];
+    const nw = data.engine_position?.next_window;
+    if (aw && hw) {
+      const end = new Date(aw.end);
+      const now = new Date();
+      const daysLeft = Math.max(0, Math.ceil((end - now) / 86400000));
+      hw.textContent = 'WINDOW ACTIVE: ' + aw.name + (daysLeft > 0 ? ' (' + daysLeft + 'd left)' : '');
+      hw.style.display = 'inline-block';
+    } else if (nw && hw) {
+      hw.textContent = 'NEXT: ' + nw.name + ' in ' + nw.days_until + 'd';
+      hw.style.display = 'inline-block';
+      hw.style.background = '#21262d';
+      hw.style.color = '#8b949e';
+    }
+
+    // ── DASHBOARD: Real-World Signals ──
+    const ds = document.getElementById('dash-signals');
+    if (!ds) return;
+    ds.style.display = 'block';
+
+    // Date
+    const dd = document.getElementById('dash-date');
+    if (dd) dd.textContent = data.date || 'unknown';
+
+    // Markets
+    const mkt = data.market_data || {};
+    function setMkt(id, key, prefix) {
+      const el = document.getElementById(id);
+      const v = mkt[key];
+      if (el && v) el.textContent = prefix + v.price.toLocaleString();
+      const chgEl = document.getElementById(id + '-chg');
+      if (chgEl && v) {
+        const sign = v.change_5d >= 0 ? '+' : '';
+        chgEl.textContent = sign + v.change_5d + '%';
+        chgEl.style.color = v.change_5d >= 0 ? '#7ee787' : '#f85149';
+      }
+      const highEl = document.getElementById(id + '-high');
+      if (highEl && v) highEl.textContent = v.high_5d;
+    }
+    setMkt('dash-mkt-oil', 'Oil', '$');
+    setMkt('dash-mkt-vix', 'VIX', '');
+    setMkt('dash-mkt-gold', 'Gold', '$');
+    setMkt('dash-mkt-btc', 'BTC', '$');
+    setMkt('dash-mkt-sp', 'SP500', '');
+
+    // Insider trades
+    const ins = data.insider_trades?.summary || {};
+    const gfEl = document.getElementById('dash-ins-genesis');
+    const rfEl = document.getElementById('dash-ins-rug');
+    const ratEl = document.getElementById('dash-ins-ratio');
+    if (gfEl) gfEl.textContent = ins.genesis_filings || 0;
+    if (rfEl) rfEl.textContent = ins.rug_filings || 0;
+    if (ratEl && ins.genesis_filings && ins.rug_filings) {
+      const ratio = Math.round(ins.genesis_filings / Math.max(ins.rug_filings, 1));
+      ratEl.innerHTML = 'Insiders are buying genesis tickers at <strong style="color:#7ee787">' + ratio + ':1</strong> vs rug candidates';
+    }
+
+    // Dimension signals
+    const dims = data.dimension_summary || {};
+    function renderDimTags(containerId, dimData, cls, label) {
+      const el = document.getElementById(containerId);
+      if (!el || !dimData) return;
+      const sorted = Object.entries(dimData).sort((a,b) => b[1] - a[1]).slice(0, 5);
+      el.innerHTML = '<div style="font-size:9px;color:#484f58;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">' + label + '</div>' +
+        sorted.map(([k,v]) => '<span class="dim-tag dim-tag-' + cls + '">' + k.replace(/_/g,' ') + ': ' + v + '</span>').join(' ');
+    }
+    renderDimTags('dash-who', dims.WHO, 'who', 'Top Players in Data');
+    renderDimTags('dash-why', dims.WHY, 'why', 'Top Incentive Signals');
+
+    // FRED SDT
+    const fred = data.fred_sdt?.metrics || {};
+    const fredEl = document.getElementById('dash-fred');
+    if (fredEl && Object.keys(fred).length) {
+      fredEl.innerHTML = Object.entries(fred).slice(0, 6).map(([k, v]) => {
+        const val = parseFloat(v.value);
+        const display = val > 1 ? val.toFixed(1) : (val * 100).toFixed(1) + '%';
+        const color = v.sdt_category === 'elite_overproduction' ? '#f85149' : v.sdt_category === 'popular_immiseration' ? '#e3b341' : '#8b949e';
+        return '<div style="background:#0d1117;border-radius:6px;padding:8px;border-left:3px solid ' + color + '">' +
+          '<div style="font-size:16px;font-weight:700;color:' + color + '">' + display + '</div>' +
+          '<div class="stat-sub">' + (v.label || k).substring(0, 35) + '</div>' +
+          '</div>';
+      }).join('');
+    }
+  })
   .catch(() => renderLive(null));
 
 </script>
