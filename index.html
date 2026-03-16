@@ -854,6 +854,13 @@ canvas#chart { width: 100%; height: 200px; }
 
 <div class="container">
 
+<!-- SEARCH -->
+<div id="search-wrap" style="margin-bottom:12px;position:relative">
+  <input id="search-input" type="text" placeholder="Search the engine — names, concepts, predictions, live data..." style="width:100%;padding:10px 14px 10px 36px;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#c8c8d4;font-family:inherit;font-size:13px;outline:none" onfocus="this.style.borderColor='#f0883e'" onblur="this.style.borderColor='#30363d'">
+  <span style="position:absolute;left:12px;top:11px;color:#484f58;font-size:14px;pointer-events:none">&#128269;</span>
+  <div id="search-results" style="display:none;position:absolute;top:42px;left:0;right:0;max-height:70vh;overflow-y:auto;background:#161b22;border:1px solid #30363d;border-radius:6px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4)"></div>
+</div>
+
 <!-- TABS -->
 <div class="tabs" id="tab-bar">
   <button class="tab-btn on" data-tab="thesis">What Is This</button>
@@ -6631,6 +6638,218 @@ fetch('current_events.json')
     }
   })
   .catch(() => renderLive(null));
+
+// ===== SEARCH ENGINE =====
+(function() {
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  if (!input || !results) return;
+  let liveData = null;
+
+  // Load live data for search
+  fetch('current_events.json').then(r => r.json()).then(d => { liveData = d; }).catch(() => {});
+
+  // Build searchable index from page content
+  function buildIndex() {
+    const idx = [];
+
+    // KG nodes
+    kgNodes.forEach(n => {
+      idx.push({ type: 'node', subtype: n.t, id: n.id, title: n.l, text: n.d, icon: '&#9670;' });
+    });
+
+    // KG edges for each node
+    const edgeMap = {};
+    kgEdges.forEach(e => {
+      if (!edgeMap[e.s]) edgeMap[e.s] = [];
+      if (!edgeMap[e.t]) edgeMap[e.t] = [];
+      edgeMap[e.s].push(e);
+      edgeMap[e.t].push(e);
+    });
+
+    // Player cards
+    document.querySelectorAll('#p-players .pc').forEach(pc => {
+      const h4 = pc.querySelector('h4');
+      const role = pc.querySelector('.role');
+      const p = pc.querySelector('p');
+      if (h4) idx.push({ type: 'player', title: h4.textContent, text: (role ? role.textContent + ' ' : '') + (p ? p.textContent : ''), icon: '&#9632;' });
+    });
+
+    // Predictions
+    document.querySelectorAll('.pred2').forEach(pred => {
+      const yr = pred.querySelector('.pred2-yr');
+      const hl = pred.querySelector('.pred2-headline');
+      const body = pred.textContent;
+      if (yr) idx.push({ type: 'prediction', title: (yr.textContent || '') + ': ' + (hl ? hl.textContent : '').substring(0, 80), text: body.substring(0, 2000), icon: '&#9654;' });
+    });
+
+    // Framework concepts
+    document.querySelectorAll('#p-key .key-concept').forEach(kc => {
+      const h4 = kc.querySelector('h4');
+      const p = kc.querySelector('p');
+      if (h4) idx.push({ type: 'framework', title: h4.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9733;' });
+    });
+
+    // Divergences
+    document.querySelectorAll('.dv').forEach(dv => {
+      const h3 = dv.querySelector('h3');
+      const p = dv.querySelector('p');
+      if (h3) idx.push({ type: 'divergence', title: h3.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9888;' });
+    });
+
+    // Scorecard rows
+    document.querySelectorAll('#p-scorecard table tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      if (tds.length >= 4) idx.push({ type: 'scorecard', title: tds[0].textContent, text: tds[3].textContent.substring(0, 500), icon: '&#9745;' });
+    });
+
+    // Ticker items
+    document.querySelectorAll('.hero-tick').forEach(tick => {
+      idx.push({ type: 'ticker', title: tick.textContent.substring(0, 80), text: tick.textContent, icon: '&#8226;' });
+    });
+
+    return { idx, edgeMap };
+  }
+
+  let searchIndex = null;
+
+  function getIndex() {
+    if (!searchIndex) searchIndex = buildIndex();
+    return searchIndex;
+  }
+
+  function search(q) {
+    const { idx, edgeMap } = getIndex();
+    const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 1);
+    if (!terms.length) return [];
+
+    const scored = [];
+
+    // Search static index
+    idx.forEach(item => {
+      const hay = (item.title + ' ' + item.text).toLowerCase();
+      let score = 0;
+      terms.forEach(t => {
+        if (item.title.toLowerCase().includes(t)) score += 10;
+        if (hay.includes(t)) score += 1;
+      });
+      if (score > 0) {
+        // Find connected KG edges if it's a node
+        let edges = [];
+        if (item.type === 'node' && edgeMap[item.id]) {
+          edges = edgeMap[item.id].slice(0, 8);
+        }
+        scored.push({ ...item, score, edges });
+      }
+    });
+
+    // Search live data
+    if (liveData) {
+      // Events
+      (liveData.events || []).forEach(ev => {
+        const hay = ((ev.title || '') + ' ' + JSON.stringify(ev.tags || {})).toLowerCase();
+        let score = 0;
+        terms.forEach(t => { if (hay.includes(t)) score += 1; if ((ev.title||'').toLowerCase().includes(t)) score += 5; });
+        if (score > 0) scored.push({ type: 'live-event', title: ev.title || '', text: 'Source: ' + (ev.source || '') + ' | Players: ' + (ev.tags?.players || []).join(', ') + ' | ' + (ev.published || ''), score, icon: '&#9889;', url: ev.url });
+      });
+
+      // Prediction markets
+      (liveData.prediction_markets?.polymarket || []).forEach(m => {
+        const hay = (m.question || '').toLowerCase();
+        let score = 0;
+        terms.forEach(t => { if (hay.includes(t)) score += 5; });
+        if (score > 0) scored.push({ type: 'market', title: m.question, text: 'Polymarket | Yes: ' + (m.yes_price || m.outcome_prices || '?'), score, icon: '&#128200;' });
+      });
+      (liveData.prediction_markets?.manifold || []).forEach(m => {
+        const hay = (m.question || '').toLowerCase();
+        let score = 0;
+        terms.forEach(t => { if (hay.includes(t)) score += 5; });
+        if (score > 0) scored.push({ type: 'market', title: m.question, text: 'Manifold | Prob: ' + (m.probability || '?') + '%', score, icon: '&#128200;' });
+      });
+
+      // Insider trades
+      (liveData.insider_trades?.transactions || []).forEach(t => {
+        const hay = ((t.ticker || '') + ' ' + (t.entity || '')).toLowerCase();
+        let score = 0;
+        terms.forEach(tm => { if (hay.includes(tm)) score += 5; });
+        if (score > 0) scored.push({ type: 'insider', title: t.ticker + ' — ' + (t.entity || '').substring(0, 40), text: 'Category: ' + (t.category || '') + ' | Filed: ' + (t.filed || ''), score, icon: '&#128176;' });
+      });
+
+      // GDELT
+      (liveData.gdelt?.articles || []).forEach(a => {
+        const hay = (a.title || '').toLowerCase();
+        let score = 0;
+        terms.forEach(t => { if (hay.includes(t)) score += 3; });
+        if (score > 0) scored.push({ type: 'gdelt', title: a.title, text: 'GDELT | ' + (a.source || ''), score, icon: '&#127758;' });
+      });
+    }
+
+    return scored.sort((a, b) => b.score - a.score).slice(0, 30);
+  }
+
+  const typeColors = {
+    node: '#bc8cff', player: '#bc8cff', prediction: '#f0883e', framework: '#58a6ff',
+    divergence: '#e3b341', scorecard: '#7ee787', ticker: '#8b949e',
+    'live-event': '#f85149', market: '#56d4dd', insider: '#7ee787', gdelt: '#e3b341'
+  };
+  const typeLabels = {
+    node: 'KG Node', player: 'Player Card', prediction: 'Prediction', framework: 'Framework',
+    divergence: 'Divergence', scorecard: 'Scorecard', ticker: 'Ticker',
+    'live-event': 'Live Event', market: 'Pred Market', insider: 'Insider Filing', gdelt: 'GDELT'
+  };
+
+  function renderResults(items) {
+    if (!items.length) {
+      results.innerHTML = '<div style="padding:16px;color:#484f58;font-size:12px">No results found</div>';
+      results.style.display = 'block';
+      return;
+    }
+    results.innerHTML = items.map(item => {
+      const color = typeColors[item.type] || '#8b949e';
+      const label = typeLabels[item.type] || item.type;
+      const snippet = (item.text || '').substring(0, 200).replace(/</g, '&lt;');
+      let edgesHtml = '';
+      if (item.edges && item.edges.length) {
+        edgesHtml = '<div style="margin-top:6px;padding-top:6px;border-top:1px solid #21262d">' +
+          item.edges.map(e => {
+            const dir = e.s === item.id;
+            const other = dir ? e.t : e.s;
+            const arrow = dir ? '&rarr;' : '&larr;';
+            return '<div style="font-size:10px;color:#484f58;padding:1px 0"><span style="color:' + color + '">' + arrow + '</span> ' +
+              '<span style="color:#8b949e">' + other.replace(/_/g, ' ') + '</span> <span style="color:#30363d">(' + e.r + ')</span> ' +
+              '<span style="color:#484f58">' + (e.l || '').substring(0, 60) + '</span></div>';
+          }).join('') + '</div>';
+      }
+      return '<div style="padding:10px 14px;border-bottom:1px solid #21262d;cursor:pointer" onmouseenter="this.style.background=\'#0d1117\'" onmouseleave="this.style.background=\'none\'">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">' +
+          '<span style="font-size:11px;padding:2px 8px;border-radius:8px;background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44">' + label + '</span>' +
+          '<span style="font-size:13px;color:#c8c8d4;font-weight:500">' + (item.title || '').substring(0, 80) + '</span>' +
+        '</div>' +
+        '<div style="font-size:11px;color:#484f58;line-height:1.5">' + snippet + '</div>' +
+        edgesHtml +
+      '</div>';
+    }).join('');
+    results.style.display = 'block';
+  }
+
+  let debounce = null;
+  input.addEventListener('input', () => {
+    clearTimeout(debounce);
+    const q = input.value.trim();
+    if (q.length < 2) { results.style.display = 'none'; return; }
+    debounce = setTimeout(() => renderResults(search(q)), 150);
+  });
+
+  // Close on click outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#search-wrap')) results.style.display = 'none';
+  });
+
+  // Close on Escape
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { results.style.display = 'none'; input.blur(); }
+  });
+})();
 
 </script>
 </body>
