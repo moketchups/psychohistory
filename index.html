@@ -589,6 +589,30 @@ canvas#chart { width: 100%; height: 200px; }
   .header { padding: 10px 14px; }
   .header h1 { font-size: 11px; letter-spacing: 1px; }
   .player-grid { grid-template-columns: 1fr; }
+  /* FIX 1: Hero mobile */
+  #hero #hero-content { max-width: 100%; width: 100%; padding: 0 16px; box-sizing: border-box; }
+  #hero #hero-content .hero-label { font-size: 11px; letter-spacing: 0.3em; }
+  #hero #hero-hook { font-size: clamp(20px, 5vw, 26px); min-height: 2em; }
+  #hero #hero-sub-line { font-size: 12px; }
+  #hero #hero-content .hero-sub { font-size: 12px; max-width: 100%; }
+  .hero-tick { white-space: normal; font-size: 10px; height: auto; min-height: 22px; line-height: 1.5; padding: 0 4px; }
+  #hero #hero-ticker { height: auto; max-height: 26px; }
+  #hero-canvas { opacity: 0.3; }
+  #hero #hero-enter { padding: 14px 32px; font-size: 14px; }
+  #hero #hero-footer { bottom: 12px; }
+  /* FIX 2: Table overflow */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+  /* FIX 3: Touch targets — min 44px for all tappable elements */
+  .collapsible h4, .pc.collapsible h4 { min-height: 44px; padding-top: 10px; padding-bottom: 10px; }
+  .pred2-t1 { min-height: 44px; }
+  .pred2-sub-head { min-height: 44px; padding: 10px 12px; }
+  .pw-head { min-height: 44px; }
+  .pt-node { min-height: 44px; }
+  .key-exp { min-height: 44px; display: flex; align-items: center; }
+  .ev-card { min-height: 44px; }
+  p a, .dv a, .pc a, .key-section a, .pred a, .pred2-sub-body a { min-height: 0; display: inline; }
+  .range-btn { min-height: 44px; }
+  .kg-filter-btn { min-height: 44px; }
   .container { padding: 8px 10px; }
   .stat-big { font-size: 22px; }
   .pred h3 { font-size: 13px; }
@@ -606,6 +630,78 @@ canvas#chart { width: 100%; height: 200px; }
   #kg-container { height: 50vh; }
   .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
   .tab-btn { white-space: nowrap; flex-shrink: 0; }
+  #kg-search { width: 100%; box-sizing: border-box; }
+  .pw-head { flex-wrap: wrap; gap: 4px; padding: 8px 12px; }
+  .pw-name { font-size: 12px; }
+  .pw-dates { margin-left: 0; }
+  .sec-title { font-size: 10px; letter-spacing: 1.5px; margin: 16px 0 8px 0; }
+  .dv { padding: 10px 12px; }
+  .dv h3 { font-size: 13px; }
+  .pc { padding: 10px 12px; }
+  .pc p { font-size: 11px; }
+  .pred { padding: 12px; }
+  .pred2-info { min-width: 0; }
+  .ifthen li { flex-direction: column; gap: 2px; }
+  .ifthen .it-label { text-align: left; min-width: 0; }
+  .timeline::before { left: 10px; }
+  .tl-era, .tl-era:nth-child(even) { flex-direction: row; }
+  .tl-content { width: calc(100% - 30px); }
+  .tl-spacer { width: 20px; }
+  .tab-sep { display: none; }
+}
+@media (max-width: 480px) {
+  #hero #hero-content { padding: 0 12px; }
+  #hero #hero-hook { font-size: clamp(18px, 5vw, 22px); }
+  #hero #hero-content .hero-label { font-size: 10px; letter-spacing: 0.2em; margin-bottom: 12px; }
+  .hero-tick { font-size: 9px; }
+  #hero #hero-enter { padding: 12px 28px; font-size: 13px; }
+  .container { padding: 6px 8px; }
+  .pred2-t1 { padding: 8px 10px; gap: 6px; }
+  .pred2-yr { font-size: 20px; min-width: 36px; }
+  .pred2-badges { gap: 4px; }
+  .badge-conf, .badge-status { font-size: 9px; padding: 1px 6px; }
+  .pred2-headline { font-size: 11px; }
+  .tab-btn { padding: 8px 12px; font-size: 11px; min-height: 44px; }
+  .kg-filter-btn { padding: 6px 10px; font-size: 10px; min-height: 44px; }
+  .range-btn { padding: 6px 10px; min-height: 44px; }
+  .pw-head { padding: 8px 10px; }
+  .pw-name { font-size: 11px; }
+  .pw-dates { font-size: 10px; }
+  .pw-peak { font-size: 10px; }
+  .pred2-sub-head { padding: 8px 10px; }
+  .pred2-sub-title { font-size: 12px; }
+  .ev-card { padding: 6px 8px; }
+  .ev-title { font-size: 12px; }
+  .key-section h3 { font-size: 13px; }
+  .key-section p { font-size: 11px; }
+  .gterm .gdef { width: 180px; font-size: 9px; padding: 6px 10px; }
+  #kg-legend { gap: 8px; }
+  .kg-leg { font-size: 9px; }
+}
+@media (max-width: 375px) {
+  #hero #hero-content { padding: 0 10px; }
+  #hero #hero-hook { font-size: clamp(16px, 5vw, 20px); }
+  #hero #hero-sub-line { font-size: 11px; }
+  #hero #hero-content .hero-sub { font-size: 11px; }
+  .header h1 { font-size: 10px; letter-spacing: 0.5px; }
+  .stat-big { font-size: 18px; }
+  .tab-btn { padding: 6px 8px; font-size: 10px; min-height: 44px; }
+  .pred2-yr { font-size: 18px; min-width: 32px; }
+  .pred2-headline { font-size: 11px; }
+  .pred2-t1 { padding: 6px 8px; gap: 6px; }
+  .pred2-t2, .pred2-t3 { padding: 0 8px 10px; }
+  .pc { padding: 8px 10px; }
+  .pc h4 { font-size: 12px; }
+  .pc .role { font-size: 10px; }
+  .pc p { font-size: 10px; line-height: 1.6; }
+  .dv { padding: 8px 10px; }
+  .dv h3 { font-size: 12px; }
+  .dv p { font-size: 11px; }
+  .pred p, .ds p, .key-section p, .strat-block p, .dv p { font-size: 11px; }
+  .gterm .gdef { width: 160px; }
+  #kg-controls { gap: 4px; }
+  #kg-container { height: 40vh; }
+  .container { padding: 4px 6px; }
 }
 
 /* HERO LANDING */
