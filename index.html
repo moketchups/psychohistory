@@ -568,6 +568,9 @@ canvas#chart { width: 100%; height: 200px; }
   line-height: 1.8;
 }
 
+/* Hide players jump menu on desktop */
+#players-jump { display: none; }
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .g3 { grid-template-columns: 1fr; }
@@ -611,6 +614,12 @@ canvas#chart { width: 100%; height: 200px; }
   .key-exp { min-height: 44px; display: flex; align-items: center; }
   .ev-card { min-height: 44px; }
   p a, .dv a, .pc a, .key-section a, .pred a, .pred2-sub-body a { min-height: 0; display: inline; }
+  /* FIX 4: Players jump menu */
+  #players-jump { display: block; position: sticky; top: 0; z-index: 50; background: #0d1117; padding: 8px 0; margin-bottom: 8px; border-bottom: 1px solid #21262d; }
+  #players-jump select { width: 100%; padding: 10px 12px; font-size: 13px; font-family: inherit; background: #161b22; color: #c8c8d4; border: 1px solid #30363d; border-radius: 6px; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b949e' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; min-height: 44px; }
+  /* FIX 6: Badge font bump */
+  .badge { font-size: 10px; }
+  .badge-conf, .badge-status { font-size: 10px; }
   .range-btn { min-height: 44px; }
   .kg-filter-btn { min-height: 44px; }
   .container { padding: 8px 10px; }
@@ -659,7 +668,7 @@ canvas#chart { width: 100%; height: 200px; }
   .pred2-t1 { padding: 8px 10px; gap: 6px; }
   .pred2-yr { font-size: 20px; min-width: 36px; }
   .pred2-badges { gap: 4px; }
-  .badge-conf, .badge-status { font-size: 9px; padding: 1px 6px; }
+  .badge-conf, .badge-status { font-size: 10px; padding: 2px 6px; }
   .pred2-headline { font-size: 11px; }
   .tab-btn { padding: 8px 12px; font-size: 11px; min-height: 44px; }
   .kg-filter-btn { padding: 6px 10px; font-size: 10px; min-height: 44px; }
@@ -2878,6 +2887,8 @@ canvas#chart { width: 100%; height: 200px; }
 <!-- PLAYERS TAB -->
 <div class="tab-panel" id="p-players">
 
+  <div id="players-jump"><select id="players-jump-select"><option value="">Jump to section...</option></select></div>
+
   <div class="key-section" style="background:#0d1117;border:1px solid #f0883e44;border-radius:6px;padding:14px;margin-bottom:16px">
     <p style="color:#8b949e;font-size:13px;margin:0">This page maps the people and institutions executing the strategy described in the Thesis. It&rsquo;s organized like peeling an onion: start with the names you already recognize (Trump, Musk, Thiel), then go deeper into the builders, the money, the intelligence infrastructure, and the 400-year historical chain underneath. Each section reveals a layer that makes the predictions on the next tab make sense. If a name or term is unfamiliar, keep reading &mdash; it will be introduced before it&rsquo;s needed.</p>
   </div>
@@ -4628,6 +4639,27 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('p-' + btn.dataset.tab).classList.add('on');
   });
 });
+
+// ===== FIX 4: Players jump menu =====
+(function() {
+  const sel = document.getElementById('players-jump-select');
+  if (!sel) return;
+  const titles = document.querySelectorAll('#p-players .sec-title');
+  titles.forEach((t, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = t.textContent.trim().substring(0, 55) + (t.textContent.trim().length > 55 ? '...' : '');
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', function() {
+    if (this.value === '') return;
+    const target = titles[parseInt(this.value)];
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => { this.value = ''; }, 500);
+    }
+  });
+})();
 
 // ===== THESIS TAB =====
 // ===== FRAMEWORK TAB =====
