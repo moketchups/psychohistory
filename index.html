@@ -598,8 +598,8 @@ canvas#chart { width: 100%; height: 200px; }
   #hero #hero-hook { font-size: clamp(20px, 5vw, 26px); min-height: 2em; }
   #hero #hero-sub-line { font-size: 12px; }
   #hero #hero-content .hero-sub { font-size: 12px; max-width: 100%; }
-  .hero-tick { white-space: normal; font-size: 10px; height: auto; min-height: 22px; line-height: 1.5; padding: 0 4px; }
-  #hero #hero-ticker { height: auto; max-height: 26px; }
+  .hero-tick { font-size: 10px; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  #hero #hero-ticker { height: 22px; }
   #hero-canvas { opacity: 0.3; }
   #hero #hero-enter { padding: 14px 32px; font-size: 14px; }
   #hero #hero-footer { bottom: 12px; }
@@ -662,7 +662,7 @@ canvas#chart { width: 100%; height: 200px; }
   #hero #hero-content { padding: 0 12px; }
   #hero #hero-hook { font-size: clamp(18px, 5vw, 22px); }
   #hero #hero-content .hero-label { font-size: 10px; letter-spacing: 0.2em; margin-bottom: 12px; }
-  .hero-tick { font-size: 9px; }
+  .hero-tick { font-size: 9px; overflow: hidden; text-overflow: ellipsis; }
   #hero #hero-enter { padding: 12px 28px; font-size: 13px; }
   .container { padding: 6px 8px; }
   .pred2-t1 { padding: 8px 10px; gap: 6px; }
