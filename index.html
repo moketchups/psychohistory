@@ -7517,7 +7517,7 @@ fetch('current_events.json')
 
     // KG nodes — navigate to KG tab and focus node
     kgNodes.forEach(n => {
-      idx.push({ type: 'node', subtype: n.t, id: n.id, title: n.l, text: n.d, icon: '&#9670;', tab: 'kg', el: null });
+      idx.push({ type: 'node', subtype: n.t, id: n.id, title: n.l, text: n.d, icon: '&#9670;', tab: 'graph', el: null });
     });
 
     // KG edges for each node
@@ -7680,14 +7680,14 @@ fetch('current_events.json')
       if (tabBtn) tabBtn.click();
     }
 
-    // For KG nodes, search the KG and focus
-    if (item.type === 'node' && item.id && typeof window.cy !== 'undefined') {
-      const tabBtn = document.querySelector('[data-tab="kg"]');
+    // For KG nodes, switch to graph tab and search
+    if (item.type === 'node' && item.id) {
+      const tabBtn = document.querySelector('[data-tab="graph"]');
       if (tabBtn) tabBtn.click();
       setTimeout(() => {
         const kgInput = document.getElementById('kg-search');
         if (kgInput) { kgInput.value = item.title; kgInput.dispatchEvent(new Event('input')); }
-      }, 200);
+      }, 300);
       return;
     }
 
@@ -7699,10 +7699,15 @@ fetch('current_events.json')
           item.el.classList.add('open');
         }
         item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Flash highlight
+        item.el.style.transition = 'outline-color 0.3s';
         item.el.style.outline = '2px solid #f0883e';
         item.el.style.outlineOffset = '4px';
-        setTimeout(() => { item.el.style.outline = 'none'; }, 3000);
-      }, 200);
+        setTimeout(() => {
+          item.el.style.outline = '2px solid transparent';
+          setTimeout(() => { item.el.style.outline = 'none'; }, 300);
+        }, 3000);
+      }, 350);
     }
   }
 
