@@ -7515,9 +7515,9 @@ fetch('current_events.json')
   function buildIndex() {
     const idx = [];
 
-    // KG nodes
+    // KG nodes — navigate to KG tab and focus node
     kgNodes.forEach(n => {
-      idx.push({ type: 'node', subtype: n.t, id: n.id, title: n.l, text: n.d, icon: '&#9670;' });
+      idx.push({ type: 'node', subtype: n.t, id: n.id, title: n.l, text: n.d, icon: '&#9670;', tab: 'kg', el: null });
     });
 
     // KG edges for each node
@@ -7534,7 +7534,7 @@ fetch('current_events.json')
       const h4 = pc.querySelector('h4');
       const role = pc.querySelector('.role');
       const p = pc.querySelector('p');
-      if (h4) idx.push({ type: 'player', title: h4.textContent, text: (role ? role.textContent + ' ' : '') + (p ? p.textContent : ''), icon: '&#9632;' });
+      if (h4) idx.push({ type: 'player', title: h4.textContent, text: (role ? role.textContent + ' ' : '') + (p ? p.textContent : ''), icon: '&#9632;', tab: 'players', el: pc });
     });
 
     // Predictions
@@ -7542,32 +7542,39 @@ fetch('current_events.json')
       const yr = pred.querySelector('.pred2-yr');
       const hl = pred.querySelector('.pred2-headline');
       const body = pred.textContent;
-      if (yr) idx.push({ type: 'prediction', title: (yr.textContent || '') + ': ' + (hl ? hl.textContent : '').substring(0, 80), text: body.substring(0, 2000), icon: '&#9654;' });
+      if (yr) idx.push({ type: 'prediction', title: (yr.textContent || '') + ': ' + (hl ? hl.textContent : '').substring(0, 80), text: body.substring(0, 2000), icon: '&#9654;', tab: 'predictions', el: pred });
     });
 
     // Framework concepts
-    document.querySelectorAll('#p-key .key-concept').forEach(kc => {
-      const h4 = kc.querySelector('h4');
-      const p = kc.querySelector('p');
-      if (h4) idx.push({ type: 'framework', title: h4.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9733;' });
+    document.querySelectorAll('#p-key h4').forEach(h4 => {
+      const p = h4.nextElementSibling;
+      idx.push({ type: 'framework', title: h4.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9733;', tab: 'key', el: h4 });
     });
 
     // Divergences
     document.querySelectorAll('.dv').forEach(dv => {
       const h3 = dv.querySelector('h3');
       const p = dv.querySelector('p');
-      if (h3) idx.push({ type: 'divergence', title: h3.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9888;' });
+      if (h3) idx.push({ type: 'divergence', title: h3.textContent, text: p ? p.textContent.substring(0, 1500) : '', icon: '&#9888;', tab: 'divergences', el: dv });
     });
 
     // Scorecard rows
     document.querySelectorAll('#p-scorecard table tr').forEach(tr => {
       const tds = tr.querySelectorAll('td');
-      if (tds.length >= 4) idx.push({ type: 'scorecard', title: tds[0].textContent, text: tds[3].textContent.substring(0, 500), icon: '&#9745;' });
+      if (tds.length >= 4) idx.push({ type: 'scorecard', title: tds[0].textContent, text: tds[3].textContent.substring(0, 500), icon: '&#9745;', tab: 'scorecard', el: tr });
     });
 
     // Ticker items
     document.querySelectorAll('.hero-tick').forEach(tick => {
-      idx.push({ type: 'ticker', title: tick.textContent.substring(0, 80), text: tick.textContent, icon: '&#8226;' });
+      idx.push({ type: 'ticker', title: tick.textContent.substring(0, 80), text: tick.textContent, icon: '&#8226;', tab: null, el: tick });
+    });
+
+    // Thesis sections
+    document.querySelectorAll('#p-thesis p').forEach(p => {
+      const strong = p.querySelector('strong');
+      if (strong && /^(WHAT|WHERE|WHEN|WHY|HOW)\b/.test(strong.textContent)) {
+        idx.push({ type: 'thesis', title: 'Thesis: ' + strong.textContent.split(/\s/)[0], text: p.textContent.substring(0, 2000), icon: '&#9670;', tab: 'thesis', el: p });
+      }
     });
 
     return { idx, edgeMap };
@@ -7651,22 +7658,64 @@ fetch('current_events.json')
 
   const typeColors = {
     node: '#bc8cff', player: '#bc8cff', prediction: '#f0883e', framework: '#58a6ff',
-    divergence: '#e3b341', scorecard: '#7ee787', ticker: '#8b949e',
+    divergence: '#e3b341', scorecard: '#7ee787', ticker: '#8b949e', thesis: '#f0883e',
     'live-event': '#f85149', market: '#56d4dd', insider: '#7ee787', gdelt: '#e3b341'
   };
   const typeLabels = {
     node: 'KG Node', player: 'Player Card', prediction: 'Prediction', framework: 'Framework',
-    divergence: 'Divergence', scorecard: 'Scorecard', ticker: 'Ticker',
+    divergence: 'Divergence', scorecard: 'Scorecard', ticker: 'Ticker', thesis: 'Thesis',
     'live-event': 'Live Event', market: 'Pred Market', insider: 'Insider Filing', gdelt: 'GDELT'
   };
 
+  // Navigate to a search result: switch tab, scroll to element, highlight briefly
+  window.navigateTo = function(idx) {
+    const item = lastResults[idx];
+    if (!item) return;
+    results.style.display = 'none';
+    input.value = '';
+
+    // Switch to the correct tab
+    if (item.tab) {
+      const tabBtn = document.querySelector('[data-tab="' + item.tab + '"]');
+      if (tabBtn) tabBtn.click();
+    }
+
+    // For KG nodes, search the KG and focus
+    if (item.type === 'node' && item.id && typeof window.cy !== 'undefined') {
+      const tabBtn = document.querySelector('[data-tab="kg"]');
+      if (tabBtn) tabBtn.click();
+      setTimeout(() => {
+        const kgInput = document.getElementById('kg-search');
+        if (kgInput) { kgInput.value = item.title; kgInput.dispatchEvent(new Event('input')); }
+      }, 200);
+      return;
+    }
+
+    // Scroll to element and highlight
+    if (item.el) {
+      setTimeout(() => {
+        // Open prediction cards if needed
+        if (item.type === 'prediction' && item.el.classList.contains('pred2')) {
+          item.el.classList.add('open');
+        }
+        item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        item.el.style.outline = '2px solid #f0883e';
+        item.el.style.outlineOffset = '4px';
+        setTimeout(() => { item.el.style.outline = 'none'; }, 3000);
+      }, 200);
+    }
+  }
+
+  let lastResults = [];
+
   function renderResults(items) {
+    lastResults = items;
     if (!items.length) {
       results.innerHTML = '<div style="padding:16px;color:#484f58;font-size:12px">No results found</div>';
       results.style.display = 'block';
       return;
     }
-    results.innerHTML = items.map(item => {
+    results.innerHTML = items.map((item, i) => {
       const color = typeColors[item.type] || '#8b949e';
       const label = typeLabels[item.type] || item.type;
       const snippet = (item.text || '').substring(0, 200).replace(/</g, '&lt;');
@@ -7682,7 +7731,7 @@ fetch('current_events.json')
               '<span style="color:#484f58">' + (e.l || '').substring(0, 60) + '</span></div>';
           }).join('') + '</div>';
       }
-      return '<div style="padding:10px 14px;border-bottom:1px solid #21262d;cursor:pointer" onmouseenter="this.style.background=\'#0d1117\'" onmouseleave="this.style.background=\'none\'">' +
+      return '<div onclick="navigateTo(' + i + ')" style="padding:10px 14px;border-bottom:1px solid #21262d;cursor:pointer" onmouseenter="this.style.background=\'#0d1117\'" onmouseleave="this.style.background=\'none\'">' +
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">' +
           '<span style="font-size:11px;padding:2px 8px;border-radius:8px;background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44">' + label + '</span>' +
           '<span style="font-size:13px;color:#c8c8d4;font-weight:500">' + (item.title || '').substring(0, 80) + '</span>' +
