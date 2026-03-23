@@ -1,0 +1,198 @@
+Starting Aggressive Trading Daemon at Thu Jan 22 14:25:21 EST 2026
+Target: $1,000,000 or $0
+Mode: AGGRESSIVE - Big positions, wide stops, let winners run
+---
+
+Starting Psychohistory Daemon
+
+  Symbols: ALL
+  Interval: 60s
+  Dry run: False
+  Max cycles: 100000
+
+Press Ctrl+C to stop
+
+2026-01-22 14:25:23,253 [INFO] psychohistory.daemon.alerts: No external alert channels configured, using console only
+2026-01-22 14:25:23,254 [INFO] psychohistory.daemon.history: Loaded daily snapshot for 2026-01-22
+2026-01-22 14:25:23,254 [INFO] psychohistory.daemon.history: Loaded weekly snapshot for week of 2026-01-19
+2026-01-22 14:25:23,255 [INFO] psychohistory.daemon.history: Loaded stop loss state: 1101 signals since last stop
+2026-01-22 14:25:23,255 [INFO] psychohistory.daemon.loop: Starting daemon loop...
+2026-01-22 14:25:23,255 [INFO] psychohistory.daemon.loop: Symbols: ['SOL', 'AVAX', 'LINK', 'DOGE', 'MATIC', 'NVDA', 'COIN', 'MSTR', 'MARA', 'HOOD', 'GME', 'AMC', 'QQQ', 'IWM', 'SQQQ']
+2026-01-22 14:25:23,255 [INFO] psychohistory.daemon.loop: Cycle interval: 60s
+2026-01-22 14:25:23,255 [INFO] psychohistory.daemon.loop: Dry run: False
+2026-01-22 14:25:23,856 [INFO] psychohistory.daemon.loop: === Cycle 1 at 2026-01-22 14:25:23.856502 ===
+2026-01-22 14:25:24,241 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:25:24,242 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,242 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,243 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,244 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.197, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,245 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,245 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,246 [INFO] psychohistory.daemon.loop: HOOD: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,246 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,247 [INFO] psychohistory.daemon.loop: AMC: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,247 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,248 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,248 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:25:24,248 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:25:24,249 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:26:24,405 [INFO] psychohistory.daemon.loop: === Cycle 2 at 2026-01-22 14:26:24.405309 ===
+2026-01-22 14:26:24,721 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:26:24,722 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,722 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,722 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,723 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.197, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,724 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,724 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,724 [INFO] psychohistory.daemon.loop: HOOD: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,725 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,725 [INFO] psychohistory.daemon.loop: AMC: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,726 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,726 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,726 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:26:24,726 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:26:24,726 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:27:24,903 [INFO] psychohistory.daemon.loop: === Cycle 3 at 2026-01-22 14:27:24.903158 ===
+2026-01-22 14:27:25,178 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:27:25,178 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,179 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,179 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,179 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.197, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,180 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,180 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,181 [INFO] psychohistory.daemon.loop: HOOD: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,181 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,181 [INFO] psychohistory.daemon.loop: AMC: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,181 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,182 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,182 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:27:25,182 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:27:25,182 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:28:25,380 [INFO] psychohistory.daemon.loop: === Cycle 4 at 2026-01-22 14:28:25.380788 ===
+2026-01-22 14:28:25,653 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:28:25,653 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,653 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.319, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,654 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,654 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.197, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,655 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,656 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,656 [INFO] psychohistory.daemon.loop: HOOD: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,656 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,657 [INFO] psychohistory.daemon.loop: AMC: ||∇Ψ||=0.219, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,657 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,658 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,658 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:28:25,658 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:28:25,658 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:29:25,824 [INFO] psychohistory.daemon.loop: === Cycle 5 at 2026-01-22 14:29:25.824708 ===
+2026-01-22 14:29:28,464 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:29:28,465 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,465 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,465 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,466 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,467 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,467 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,467 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,468 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,468 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,468 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:29:28,469 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:29:28,469 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:30:28,624 [INFO] psychohistory.daemon.loop: === Cycle 6 at 2026-01-22 14:30:28.624445 ===
+2026-01-22 14:30:28,869 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:30:28,869 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,870 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,870 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,871 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,871 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,871 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,872 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,872 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,873 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,873 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:30:28,873 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:30:28,873 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:31:29,037 [INFO] psychohistory.daemon.loop: === Cycle 7 at 2026-01-22 14:31:29.037257 ===
+2026-01-22 14:31:29,270 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:31:29,270 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,271 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,271 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,271 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,272 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,272 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,273 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,273 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,273 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,274 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:31:29,274 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:31:29,274 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:32:29,410 [INFO] psychohistory.daemon.loop: === Cycle 8 at 2026-01-22 14:32:29.410011 ===
+2026-01-22 14:32:29,633 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:32:29,634 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,634 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,634 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,635 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,635 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,636 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,636 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,637 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,637 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,637 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:32:29,637 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:32:29,637 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:33:29,801 [INFO] psychohistory.daemon.loop: === Cycle 9 at 2026-01-22 14:33:29.800929 ===
+2026-01-22 14:33:30,068 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:33:30,068 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,068 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,069 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,069 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,070 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,070 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,071 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,071 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,071 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,072 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:33:30,072 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:33:30,072 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:34:30,238 [INFO] psychohistory.daemon.loop: === Cycle 10 at 2026-01-22 14:34:30.238766 ===
+2026-01-22 14:34:30,455 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:34:30,455 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,455 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,456 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,456 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,457 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,457 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,458 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,458 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,459 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,459 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:34:30,459 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:34:30,459 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:35:30,612 [INFO] psychohistory.daemon.loop: === Cycle 11 at 2026-01-22 14:35:30.612917 ===
+2026-01-22 14:35:30,886 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:35:30,887 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,887 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,887 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,888 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,888 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,888 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,889 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,889 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,890 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,890 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:35:30,890 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:35:30,890 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-22 14:36:31,056 [INFO] psychohistory.daemon.loop: === Cycle 12 at 2026-01-22 14:36:31.056222 ===
+2026-01-22 14:36:31,313 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-22 14:36:31,314 [INFO] psychohistory.daemon.loop: SOL: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,314 [INFO] psychohistory.daemon.loop: AVAX: ||∇Ψ||=0.239, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,314 [INFO] psychohistory.daemon.loop: LINK: ||∇Ψ||=0.244, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,315 [INFO] psychohistory.daemon.loop: NVDA: ||∇Ψ||=0.289, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,315 [INFO] psychohistory.daemon.loop: MSTR: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,316 [INFO] psychohistory.daemon.loop: MARA: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,316 [INFO] psychohistory.daemon.loop: GME: ||∇Ψ||=0.291, active=2, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,316 [INFO] psychohistory.daemon.loop: QQQ: ||∇Ψ||=0.207, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,317 [INFO] psychohistory.daemon.loop: IWM: ||∇Ψ||=0.201, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,317 [INFO] psychohistory.daemon.loop: SQQQ: ||∇Ψ||=0.203, active=1, dir=bullish, TRADING_EXISTS
+2026-01-22 14:36:31,317 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-22 14:36:31,317 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold

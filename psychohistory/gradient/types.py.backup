@@ -1,0 +1,458 @@
+"""Core types for the 7D gradient field system.
+
+These types represent the continuous gradient field that replaces discrete decisions.
+Actions exist mathematically when ||grad_Psi|| >= 0.7 with >= 3 active dimensions.
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass, field
+from datetime import datetime
+from decimal import Decimal
+from enum import Enum
+from typing import Literal, NewType
+
+
+# === ATOMIC TYPES ===
+
+GradientMagnitude = NewType('GradientMagnitude', float)  # ||grad_Psi||, 0-infinity
+ActionDensity = NewType('ActionDensity', float)  # How strongly action exists, 0-1
+
+
+class Dimension(Enum):
+    """The 7 dimensions of the gradient field."""
+    TEMPORAL = "temporal"           # Phoenix cycle, market hours, catalysts
+    SPATIAL = "spatial"             # Fibonacci, Gann, geometric levels
+    NUMEROLOGICAL = "numerological" # Digital roots, vortex math
+    PSYCHOLOGICAL = "psychological" # Archetypes, sentiment
+    CHAOTIC = "chaotic"             # Volatility, entropy, phase transitions
+    SYMBOLIC = "symbolic"           # Astrology aspects, narrative resonance
+    ECONOMIC = "economic"           # Price momentum, volume, fundamentals
+
+
+# Default weights per dimension (from PRD)
+DIMENSION_WEIGHTS: dict[Dimension, float] = {
+    Dimension.TEMPORAL: 1.0,
+    Dimension.SPATIAL: 1.2,
+    Dimension.NUMEROLOGICAL: 0.8,
+    Dimension.PSYCHOLOGICAL: 1.0,
+    Dimension.CHAOTIC: 0.9,
+    Dimension.SYMBOLIC: 0.7,
+    Dimension.ECONOMIC: 1.1,
+}
+
+
+# === DIMENSION COMPONENT ===
+
+@dataclass(frozen=True)
+class DimensionComponent:
+    """A single dimension's contribution to the gradient field.
+
+    Each dimension encoder produces this output, which combines:
+    - activation: How relevant this dimension is (0-1)
+    - direction: Bullish (+1) to Bearish (-1), with 0 being neutral
+    - weight: Base importance of this dimension
+    - confidence: How certain we are about this reading (0-1)
+    - constraint_weight: Modifier from constraints (default 1.0)
+
+    The gradient contribution is: activation * direction * weight * confidence * constraint_weight
+    A dimension is "active" when |gradient_contribution| >= 0.1
+    """
+    dimension: Dimension
+    activation: float       # 0-1, how relevant/triggered this dimension is
+    direction: float        # -1 to +1, bearish to bullish
+    weight: float           # Base dimension weight
+    confidence: float       # 0-1, certainty of the reading
+    constraint_weight: float = 1.0  # Modifier from constraints (can reduce contribution)
+
+    # Optional metadata for debugging/logging
+    explanation: str = ""
+    components: tuple[str, ...] = ()  # Sub-components that contributed
+
+    def __post_init__(self):
+        if not (0 <= self.activation <= 1):
+            raise ValueError(f"Activation must be 0-1, got {self.activation}")
+        if not (-1 <= self.direction <= 1):
+            raise ValueError(f"Direction must be -1 to +1, got {self.direction}")
+        if not (0 <= self.confidence <= 1):
+            raise ValueError(f"Confidence must be 0-1, got {self.confidence}")
+        if not (0 <= self.constraint_weight <= 1):
+            raise ValueError(f"Constraint weight must be 0-1, got {self.constraint_weight}")
+
+    @property
+    def gradient_contribution(self) -> float:
+        """The contribution of this dimension to the gradient vector.
+
+        contribution_i = activation_i * direction_i * weight_i * confidence_i * constraint_i
+        """
+        return (
+            self.activation *
+            self.direction *
+            self.weight *
+            self.confidence *
+            self.constraint_weight
+        )
+
+    @property
+    def is_active(self) -> bool:
+        """A dimension is active when it contributes meaningfully to the field.
+
+        Threshold: |contribution| >= 0.1 (accounting for weight)
+        """
+        # We check absolute contribution scaled by weight
+        # This means a high-weight dimension needs less activation to be "active"
+        return abs(self.gradient_contribution) >= 0.1
+
+    @property
+    def is_bullish(self) -> bool:
+        """Direction is positive with meaningful activation."""
+        return self.direction > 0.1 and self.activation > 0.2
+
+    @property
+    def is_bearish(self) -> bool:
+        """Direction is negative with meaningful activation."""
+        return self.direction < -0.1 and self.activation > 0.2
+
+
+# === CONSTRAINT MODIFIER ===
+
+@dataclass(frozen=True)
+class ConstraintModifier:
+    """A modifier that adjusts dimension weights based on constraints.
+
+    Old vetoes/halts become weight modifiers:
+    - HaltRegime (daily loss) -> economic weight * 0.1
+    - HaltRegime (drawdown) -> economic weight * 0.2
+    - ResearchRegime (jupiter rx) -> symbolic+temporal * 0.5
+    - ResearchRegime (trickster) -> psychological+symbolic * 0.3
+    - Phoenix severity >= 4 -> temporal * (1 - severity * 0.2)
+    """
+    name: str
+    affected_dimensions: tuple[Dimension, ...]
+    weight_multiplier: float  # 0 to 1, how much to multiply the weight by
+    reason: str
+    triggered_at: datetime = field(default_factory=datetime.now)
+
+    def __post_init__(self):
+        if not (0 <= self.weight_multiplier <= 1):
+            raise ValueError(f"Weight multiplier must be 0-1, got {self.weight_multiplier}")
+        if not self.affected_dimensions:
+            raise ValueError("Must affect at least one dimension")
+
+    def applies_to(self, dimension: Dimension) -> bool:
+        """Check if this modifier applies to a dimension."""
+        return dimension in self.affected_dimensions
+
+
+# === 7D GRADIENT VECTOR ===
+
+@dataclass(frozen=True)
+class GradientVector7D:
+    """The complete 7-dimensional gradient vector.
+
+    Represents the gradient of the psychohistorical field Psi at a point in time.
+    The magnitude ||grad_Psi|| determines if trading coordinates exist.
+    """
+    temporal: DimensionComponent
+    spatial: DimensionComponent
+    numerological: DimensionComponent
+    psychological: DimensionComponent
+    chaotic: DimensionComponent
+    symbolic: DimensionComponent
+    economic: DimensionComponent
+
+    # Active constraint modifiers that shaped this vector
+    active_modifiers: tuple[ConstraintModifier, ...] = ()
+
+    # Timestamp when computed
+    computed_at: datetime = field(default_factory=datetime.now)
+
+    def __post_init__(self):
+        # Verify all dimensions are correctly typed
+        expected = {
+            Dimension.TEMPORAL: self.temporal,
+            Dimension.SPATIAL: self.spatial,
+            Dimension.NUMEROLOGICAL: self.numerological,
+            Dimension.PSYCHOLOGICAL: self.psychological,
+            Dimension.CHAOTIC: self.chaotic,
+            Dimension.SYMBOLIC: self.symbolic,
+            Dimension.ECONOMIC: self.economic,
+        }
+        for dim, component in expected.items():
+            if component.dimension != dim:
+                raise ValueError(
+                    f"Component {component.dimension} doesn't match expected {dim}"
+                )
+
+    @property
+    def components(self) -> tuple[DimensionComponent, ...]:
+        """All 7 dimension components."""
+        return (
+            self.temporal,
+            self.spatial,
+            self.numerological,
+            self.psychological,
+            self.chaotic,
+            self.symbolic,
+            self.economic,
+        )
+
+    @property
+    def magnitude(self) -> GradientMagnitude:
+        """||grad_Psi|| = sqrt(sum(contribution_i^2))
+
+        This is the core metric determining if trading exists.
+        """
+        sum_squares = sum(c.gradient_contribution ** 2 for c in self.components)
+        return GradientMagnitude(math.sqrt(sum_squares))
+
+    @property
+    def active_count(self) -> int:
+        """Number of dimensions that are actively contributing (|contribution| >= 0.1)."""
+        return sum(1 for c in self.components if c.is_active)
+
+    @property
+    def active_dimensions(self) -> tuple[Dimension, ...]:
+        """Which dimensions are actively contributing."""
+        return tuple(c.dimension for c in self.components if c.is_active)
+
+    @property
+    def net_direction(self) -> float:
+        """Net directional bias from -1 (bearish) to +1 (bullish).
+
+        This is the sum of directional contributions, normalized.
+        """
+        total_contribution = sum(c.gradient_contribution for c in self.components)
+        # Normalize to -1 to +1 range (max possible contribution per dimension is ~1.2)
+        max_possible = sum(DIMENSION_WEIGHTS.values())  # ~6.7
+        return max(-1.0, min(1.0, total_contribution / max_possible))
+
+    @property
+    def dominant_direction(self) -> Literal["bullish", "bearish", "neutral"]:
+        """The dominant market direction based on net direction."""
+        # Lower threshold to capture weaker but still meaningful signals
+        if self.net_direction > 0.03:
+            return "bullish"
+        elif self.net_direction < -0.03:
+            return "bearish"
+        return "neutral"
+
+    @property
+    def bullish_dimensions(self) -> tuple[Dimension, ...]:
+        """Dimensions with bullish direction."""
+        return tuple(c.dimension for c in self.components if c.is_bullish)
+
+    @property
+    def bearish_dimensions(self) -> tuple[Dimension, ...]:
+        """Dimensions with bearish direction."""
+        return tuple(c.dimension for c in self.components if c.is_bearish)
+
+    def get_component(self, dimension: Dimension) -> DimensionComponent:
+        """Get the component for a specific dimension."""
+        mapping = {
+            Dimension.TEMPORAL: self.temporal,
+            Dimension.SPATIAL: self.spatial,
+            Dimension.NUMEROLOGICAL: self.numerological,
+            Dimension.PSYCHOLOGICAL: self.psychological,
+            Dimension.CHAOTIC: self.chaotic,
+            Dimension.SYMBOLIC: self.symbolic,
+            Dimension.ECONOMIC: self.economic,
+        }
+        return mapping[dimension]
+
+
+# === FIELD STATE ===
+
+@dataclass(frozen=True)
+class FieldState:
+    """Complete state of the gradient field at a point in time.
+
+    This is the primary output of the gradient field engine.
+    Trading coordinates exist when:
+    - ||grad_Psi|| >= threshold (default 0.7)
+    - active_dimensions >= minimum (default 3)
+
+    PRD-compliant thresholds ensure trades only execute on strong,
+    multi-dimensional confluence signals.
+    """
+    gradient: GradientVector7D
+    symbol: str
+    current_price: Decimal
+    timestamp: datetime = field(default_factory=datetime.now)
+
+    # Thresholds (PRD-compliant)
+    magnitude_threshold: float = 0.7
+    min_active_dimensions: int = 3
+
+    @property
+    def trading_exists(self) -> bool:
+        """Do trading coordinates exist at this field state?
+
+        True when ||grad_Psi|| >= threshold AND active_dimensions >= minimum.
+        """
+        return (
+            self.gradient.magnitude >= self.magnitude_threshold and
+            self.gradient.active_count >= self.min_active_dimensions
+        )
+
+    @property
+    def direction(self) -> Literal["bullish", "bearish", "neutral"]:
+        """The dominant direction of the field."""
+        return self.gradient.dominant_direction
+
+    @property
+    def action_density(self) -> ActionDensity:
+        """Field magnitude as action density (0-1).
+
+        Direct linear mapping: density = min(1.0, magnitude)
+        This means:
+        - magnitude 0.7 → density 0.7 → position = 0.7 * 0.15 = 10.5%
+        - magnitude 1.0 → density 1.0 → position = 1.0 * 0.15 = 15%
+        - magnitude 1.5 → density 1.0 → position = 15% (capped)
+
+        Field magnitude IS the signal strength, capped by PRD limits.
+        Dimension count gates trading_exists, not density.
+        """
+        if not self.trading_exists:
+            return ActionDensity(0.0)
+
+        # Direct mapping: magnitude = density, capped at 1.0
+        return ActionDensity(min(1.0, self.gradient.magnitude))
+
+    @property
+    def constraint_impact(self) -> float:
+        """How much constraints are reducing the gradient (0-1, 0=no impact)."""
+        if not self.gradient.active_modifiers:
+            return 0.0
+
+        # Average the weight multipliers across all modifiers
+        total_reduction = sum(
+            (1 - m.weight_multiplier)
+            for m in self.gradient.active_modifiers
+        )
+        return min(1.0, total_reduction / len(self.gradient.active_modifiers))
+
+
+# === ACTION COORDINATES ===
+
+@dataclass(frozen=True)
+class ActionCoordinates:
+    """Coordinates where an action exists in the gradient field.
+
+    Actions don't have boolean existence - they have continuous density.
+    The density determines position sizing and execution priority.
+    """
+    action_type: Literal["enter", "exit", "hold"]
+    exists: bool  # True if density > 0
+    density: ActionDensity  # How strongly this action exists (0-1)
+    direction: Literal["bullish", "bearish", "neutral"]
+    field_state: FieldState
+
+    # Sizing coefficient - how much of max position to take
+    size_coefficient: float = 0.0
+
+    # Reasons for this action
+    primary_drivers: tuple[Dimension, ...] = ()
+    explanation: str = ""
+
+    @property
+    def should_execute(self) -> bool:
+        """Should this action be executed?
+
+        Continuous sizing: magnitude maps directly to position size.
+        Threshold is minimal - if the field has a vector, execute it.
+        magnitude 0.274 → 12.3% position. magnitude 0.8 → 36% position.
+        """
+        if self.action_type == "exit":
+            return self.exists and self.density > 0.1
+        return self.exists and self.density > 0.2
+
+    @property
+    def urgency(self) -> Literal["high", "medium", "low"]:
+        """How urgent is this action?"""
+        if self.density > 0.8:
+            return "high"
+        elif self.density > 0.5:
+            return "medium"
+        return "low"
+
+
+# === MODULE OUTPUT TYPES (for encoder inputs) ===
+
+@dataclass(frozen=True)
+class PhoenixState:
+    """State of the Phoenix cycle for temporal encoding."""
+    phase: str  # "accumulation", "expansion", "distribution", "contraction"
+    progress: float  # 0-1, how far into current phase
+    severity: int  # 0-5, how intense the current phase is
+    next_transition: datetime | None = None
+
+    @property
+    def is_favorable(self) -> bool:
+        """Is the current phase favorable for new positions?"""
+        return self.phase in ("accumulation", "expansion") and self.severity < 4
+
+
+@dataclass(frozen=True)
+class GeometryState:
+    """State of sacred geometry levels for spatial encoding."""
+    nearest_support: Decimal | None
+    nearest_resistance: Decimal | None
+    distance_to_support_pct: float  # Positive = above support
+    distance_to_resistance_pct: float  # Positive = below resistance
+    active_fib_level: str | None  # e.g., "0.618"
+    active_gann_angle: str | None  # e.g., "1x1"
+    planetary_alignment_score: float  # 0-1
+
+
+@dataclass(frozen=True)
+class NumerologyState:
+    """State of numerological analysis for numerological encoding."""
+    date_root: int  # 1-9
+    price_root: int  # 1-9
+    is_harmonic: bool  # date_root and price_root are compatible
+    vortex_position: int  # Position in vortex math sequence
+    master_number_active: bool  # 11, 22, 33 present
+
+
+@dataclass(frozen=True)
+class ArchetypeState:
+    """State of archetype analysis for psychological encoding."""
+    active_archetype: str | None  # "Hero", "Shadow", "Sage", "Trickster", "Destroyer"
+    archetype_strength: float  # 0-1
+    sentiment_score: float  # -1 to +1
+    narrative_phase: str  # "beginning", "middle", "climax", "resolution"
+
+
+@dataclass(frozen=True)
+class VolatilityState:
+    """State of volatility/chaos analysis for chaotic encoding."""
+    current_volatility: float  # Current volatility level
+    volatility_percentile: float  # 0-1, where in historical distribution
+    regime: str  # "low", "normal", "high", "extreme"
+    entropy: float  # 0-1, market disorder measure
+    phase_transition_probability: float  # 0-1, likelihood of regime change
+
+
+@dataclass(frozen=True)
+class AstrologyState:
+    """State of astrological aspects for symbolic encoding."""
+    jupiter_retrograde: bool
+    mercury_retrograde: bool
+    saturn_retrograde: bool
+    major_aspects: tuple[str, ...]  # Active major aspects
+    lunar_phase: str  # "new", "waxing", "full", "waning"
+    dominant_element: str  # "fire", "earth", "air", "water"
+    actionable_window: bool  # Is this a good time for action?
+
+
+@dataclass(frozen=True)
+class EconomicState:
+    """State of economic indicators for economic encoding."""
+    momentum_score: float  # -1 to +1, price momentum
+    volume_trend: float  # -1 to +1, volume relative to average
+    relative_strength: float  # 0-100, RSI-like
+    trend_strength: float  # 0-1, how strong is the current trend
+    support_test_count: int  # How many times support was tested
+    resistance_test_count: int  # How many times resistance was tested

@@ -1,0 +1,1144 @@
+"""Main execution loop for the psychohistory daemon.
+
+The daemon runs a pure functional loop:
+1. Receive R (external truth)
+2. Compute regime from R
+3. Compute available actions
+4. Execute actions that exist
+5. Log and repeat
+
+State is computed, not stored. The loop can be restarted at any time.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import logging
+import signal
+import sys
+from dataclasses import dataclass, field
+from datetime import date, datetime, timedelta
+from decimal import Decimal
+from typing import Callable, TYPE_CHECKING
+
+from psychohistory.daemon.types import (
+    Regime,
+    TradingRegime,
+    ResearchRegime,
+    HaltRegime,
+    Action,
+    Enter,
+    Exit,
+    Rebalance,
+    Observe,
+    TradingHistory,
+    Direction,
+    ActionResult,
+    DaemonState,
+    ConfluenceScore,
+    LayerCount,
+    ConfluenceProof,
+    SizeProof,
+)
+from psychohistory.daemon.regime import (
+    compute_regime,
+    SignalSummary,
+    AccountSummary,
+)
+from psychohistory.daemon.actions import compute_available_actions
+from psychohistory.daemon.signals import SignalAggregator, extract_signal_summary
+from psychohistory.daemon.constraints import (
+    CYCLE_INTERVAL_SECONDS,
+    PRIMARY_ASSETS,
+    SECONDARY_ASSETS,
+    ALL_ASSETS,
+    Constraints,
+)
+
+# Gradient field imports
+from psychohistory.gradient import (
+    GradientFieldEngine,
+    FieldState,
+    ActionCoordinates,
+    detect_action_coordinates,
+    compute_position_size,
+)
+from psychohistory.gradient.constraints import (
+    collect_constraint_modifiers,
+    ConstraintModifier,
+)
+from psychohistory.daemon.alerts import AlertManager, get_alert_manager
+from psychohistory.daemon.history import get_history_tracker, HistoryTracker
+from psychohistory.daemon.recovery import (
+    RetryConfig,
+    retry,
+    get_error_tracker,
+    ErrorTracker,
+)
+import json
+from pathlib import Path
+
+if TYPE_CHECKING:
+    from psychohistory.trading.alpaca_client import AlpacaClient, Position
+
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class LoopConfig:
+    """Configuration for the daemon loop."""
+    cycle_interval: int = CYCLE_INTERVAL_SECONDS
+    symbols: list[str] = field(default_factory=lambda: ALL_ASSETS.copy())
+    constraints: Constraints = field(default_factory=Constraints.default)
+    dry_run: bool = False  # If True, don't execute trades
+    max_cycles: int | None = None  # If set, stop after N cycles
+
+
+@dataclass
+class LoopState:
+    """Mutable state for the loop (for tracking across cycles)."""
+    running: bool = True
+    cycles_completed: int = 0
+    last_regime: Regime | None = None
+    entry_directions: dict[str, Direction] = field(default_factory=dict)
+    daily_start_equity: Decimal | None = None
+    weekly_start_equity: Decimal | None = None
+    last_stop_loss_time: datetime | None = None
+    signals_since_stop_loss: int = 999  # Start high (no cooldown)
+    # Per-symbol entry cooldown: skip exits for N cycles after entry
+    entry_cooldown: dict[str, int] = field(default_factory=dict)  # symbol -> cycles remaining
+
+
+class DaemonLoop:
+    """The main daemon execution loop.
+
+    This class coordinates:
+    - Signal fetching from the engine
+    - Regime computation
+    - Action computation
+    - Trade execution via Alpaca
+    - Logging and alerting
+    """
+
+    def __init__(
+        self,
+        config: LoopConfig | None = None,
+        alerts: AlertManager | None = None,
+        history_tracker: HistoryTracker | None = None,
+        on_action: Callable[[Action, ActionResult], None] | None = None,
+        on_regime_change: Callable[[Regime, Regime], None] | None = None,
+        on_error: Callable[[Exception], None] | None = None,
+    ):
+        """Initialize the daemon loop.
+
+        Args:
+            config: Loop configuration
+            alerts: Alert manager for notifications
+            history_tracker: History tracker for P&L persistence
+            on_action: Callback when action is executed
+            on_regime_change: Callback when regime changes
+            on_error: Callback on error
+        """
+        self.config = config or LoopConfig()
+        self.state = LoopState()
+
+        # Alert manager (defaults to singleton)
+        self.alerts = alerts or get_alert_manager()
+
+        # History tracker (defaults to singleton)
+        self.history = history_tracker or get_history_tracker()
+
+        # Error tracker for recovery
+        self.errors = get_error_tracker()
+
+        # Callbacks
+        self._on_action = on_action
+        self._on_regime_change = on_regime_change
+        self._on_error = on_error
+
+        # Components (lazy initialized)
+        self._engine = None
+        self._client = None
+        self._signal_aggregator = None
+        self._gradient_engine = None
+
+        # Setup signal handlers
+        signal.signal(signal.SIGINT, self._handle_shutdown)
+        signal.signal(signal.SIGTERM, self._handle_shutdown)
+
+    def _handle_shutdown(self, signum, frame):
+        """Handle shutdown signal."""
+        logger.info("Shutdown signal received, stopping loop...")
+        self.alerts.shutdown(reason=f"Signal {signum} received")
+        self.state.running = False
+
+    @property
+    def engine(self):
+        """Lazy-load the psychohistory engine."""
+        if self._engine is None:
+            from psychohistory.core.engine import PsychohistoryEngine
+            self._engine = PsychohistoryEngine()
+        return self._engine
+
+    @property
+    def client(self):
+        """Lazy-load the Alpaca client."""
+        if self._client is None:
+            from psychohistory.trading import get_trading_client
+            self._client = get_trading_client()
+        return self._client
+
+    @property
+    def signal_aggregator(self):
+        """Lazy-load the signal aggregator."""
+        if self._signal_aggregator is None:
+            self._signal_aggregator = SignalAggregator(self.config.symbols)
+        return self._signal_aggregator
+
+    @property
+    def gradient_engine(self) -> GradientFieldEngine:
+        """Lazy-load the gradient field engine."""
+        if self._gradient_engine is None:
+            self._gradient_engine = GradientFieldEngine()
+        return self._gradient_engine
+
+    def run(self) -> None:
+        """Run the daemon loop synchronously."""
+        logger.info("Starting daemon loop...")
+        logger.info(f"Symbols: {self.config.symbols}")
+        logger.info(f"Cycle interval: {self.config.cycle_interval}s")
+        logger.info(f"Dry run: {self.config.dry_run}")
+
+        # Cancel all pending orders at startup (frees held shares)
+        try:
+            open_orders = self.client.get_open_orders()
+            if open_orders:
+                logger.info(f"Cancelling {len(open_orders)} pending orders at startup...")
+                self.client.cancel_all_orders()
+                import time
+                time.sleep(2)  # Wait for cancellations to settle
+                logger.info("Pending orders cancelled")
+        except Exception as e:
+            logger.warning(f"Could not cancel pending orders: {e}")
+
+        # Get initial account state for startup alert
+        try:
+            account = self._fetch_account()
+            positions = self._fetch_positions()
+            self.alerts.startup(equity=account.equity, positions=len(positions))
+
+            # Initialize entry_directions for existing positions (assume bullish entry)
+            for symbol in self.config.symbols:
+                pos = (
+                    positions.get(symbol) or
+                    positions.get(f"{symbol}USD") or
+                    positions.get(f"{symbol}/USD")
+                )
+                if pos and symbol not in self.state.entry_directions:
+                    self.state.entry_directions[symbol] = Direction.BULLISH
+                    logger.debug(f"Initialized entry direction for {symbol}: BULLISH")
+        except Exception as e:
+            logger.warning(f"Could not send startup alert: {e}")
+
+        try:
+            while self.state.running:
+                self._run_cycle()
+
+                # Check max cycles
+                if self.config.max_cycles and self.state.cycles_completed >= self.config.max_cycles:
+                    logger.info(f"Reached max cycles ({self.config.max_cycles}), stopping")
+                    self.alerts.shutdown(reason=f"Completed {self.config.max_cycles} cycles")
+                    break
+
+                # Sleep until next cycle
+                if self.state.running:
+                    logger.debug(f"Sleeping {self.config.cycle_interval}s until next cycle")
+                    self._interruptible_sleep(self.config.cycle_interval)
+
+        except Exception as e:
+            logger.exception(f"Fatal error in daemon loop: {e}")
+            self.alerts.error(e, context="Fatal error in daemon loop")
+            if self._on_error:
+                self._on_error(e)
+            raise
+
+        logger.info("Daemon loop stopped")
+
+    def _run_cycle(self) -> DaemonState:
+        """Run a single cycle of the loop.
+
+        Returns:
+            DaemonState at end of cycle
+        """
+        cycle_start = datetime.now()
+        logger.info(f"=== Cycle {self.state.cycles_completed + 1} at {cycle_start} ===")
+
+        try:
+            # 1. Receive R (external truth)
+            account = self._fetch_account()
+            positions = self._fetch_positions()
+            signals = self._fetch_signals()
+            history = self._compute_history(account)
+
+            # 2. Check for manual halt first
+            is_halted, halt_reason = self._check_manual_halt()
+            if is_halted:
+                regime = HaltRegime(reason=f"Manual: {halt_reason}")
+                logger.warning(f"Manual halt in effect: {halt_reason}")
+            else:
+                # Compute regime from signals
+                signal_summary = self._aggregate_signals(signals)
+                regime = compute_regime(
+                    signal_summary,
+                    account,
+                    history,
+                    date.today(),
+                    self.config.constraints,
+                )
+
+            # Log and alert on regime change
+            if self.state.last_regime is not None:
+                if type(regime) != type(self.state.last_regime):
+                    logger.info(f"REGIME CHANGE: {type(self.state.last_regime).__name__} -> {type(regime).__name__}")
+                    self.alerts.regime_change(self.state.last_regime, regime)
+                    if self._on_regime_change:
+                        self._on_regime_change(self.state.last_regime, regime)
+
+            # Alert on circuit breaker (HaltRegime)
+            if isinstance(regime, HaltRegime) and not isinstance(self.state.last_regime, HaltRegime):
+                self.alerts.circuit_breaker(
+                    reason=regime.reason,
+                    details=f"Daily P&L: {history.daily_pnl:.2%}, Weekly P&L: {history.weekly_pnl:.2%}",
+                )
+
+            self.state.last_regime = regime
+            logger.info(f"Regime: {type(regime).__name__}")
+            if hasattr(regime, 'reason'):
+                logger.info(f"  Reason: {regime.reason}")
+
+            # 3. Compute available actions (gradient field with Trinity gate)
+            actions = self._compute_gradient_actions(
+                signals=signals,
+                positions=positions,
+                account=account,
+                history=history,
+                signal_summary=signal_summary if not is_halted else None,
+            )
+
+            logger.info(f"Available actions: {len(actions)}")
+            for action in actions:
+                logger.info(f"  - {type(action).__name__}: {self._action_summary(action)}")
+
+            # 4. Execute actions - no cooldowns, field dictates timing
+            for action in actions:
+                if isinstance(action, Observe):
+                    continue  # Observe is a no-op
+
+                result = self._execute_action(action, positions)
+
+                # Track entry directions for field exit logic
+                if isinstance(action, Enter) and result.success:
+                    self.state.entry_directions[action.symbol] = action.direction
+                    self.alerts.position_entered(action, result)
+                elif isinstance(action, Exit) and result.success:
+                    position = positions.get(action.symbol)
+                    pnl = position.unrealized_pl if position else None
+                    pnl_pct = position.unrealized_plpc if position else None
+                    self.alerts.position_exited(action, result, pnl=pnl, pnl_pct=pnl_pct)
+
+                    if action.partial >= Decimal('1.0'):
+                        self.state.entry_directions.pop(action.symbol, None)
+
+                if self._on_action:
+                    self._on_action(action, result)
+
+            # Record cycle for history tracking
+            self.history.record_signal()
+
+            # 5. Build final state
+            daemon_state = DaemonState(
+                timestamp=datetime.now(),
+                regime=regime,
+                available_actions=tuple(actions),
+                positions={s: self._position_to_proof(p) for s, p in positions.items()},
+                history=history,
+                equity=account.equity,
+                cash=account.cash,
+            )
+
+            self.state.cycles_completed += 1
+            return daemon_state
+
+        except Exception as e:
+            logger.exception(f"Error in cycle: {e}")
+            self.alerts.error(e, context=f"Error in cycle {self.state.cycles_completed + 1}")
+            if self._on_error:
+                self._on_error(e)
+            return None
+
+    def _fetch_account(self) -> AccountSummary:
+        """Fetch account state from Alpaca with retry."""
+        try:
+            account = self.client.get_account()
+            self.errors.record_success("alpaca")
+
+            # Initialize daily/weekly tracking
+            if self.state.daily_start_equity is None:
+                self.state.daily_start_equity = account.equity
+            if self.state.weekly_start_equity is None:
+                self.state.weekly_start_equity = account.equity
+
+            return AccountSummary(
+                equity=account.equity,
+                cash=account.cash,
+                buying_power=account.buying_power,
+                peak_equity=max(account.equity, self.state.daily_start_equity or account.equity),
+                positions={},  # Filled separately
+                crypto_buying_power=account.non_marginable_buying_power,
+            )
+        except Exception as e:
+            self.errors.record_error("alpaca", e)
+            raise
+
+    def _fetch_positions(self) -> dict[str, 'Position']:
+        """Fetch positions from Alpaca."""
+        positions = self.client.get_positions()
+        return {pos.symbol: pos for pos in positions}
+
+    def _fetch_signals(self) -> dict[str, any]:
+        """Fetch signals for all watched symbols."""
+        signals = {}
+        errors = 0
+
+        for symbol in self.config.symbols:
+            try:
+                decision = self.engine.decide(symbol=symbol)
+                signal = self.signal_aggregator.update_signal(decision)
+                signals[symbol] = signal
+            except Exception as e:
+                logger.warning(f"Failed to get signal for {symbol}: {e}")
+                errors += 1
+
+        if errors > 0:
+            self.errors.record_error("engine", Exception(f"{errors} signal errors"))
+        else:
+            self.errors.record_success("engine")
+
+        return signals
+
+    def _check_manual_halt(self) -> tuple[bool, str]:
+        """Check if manual halt is in effect.
+
+        Returns:
+            (is_halted, reason) tuple
+        """
+        halt_file = Path(__file__).parent.parent.parent / "data" / "daemon" / "halt.json"
+        if halt_file.exists():
+            try:
+                data = json.loads(halt_file.read_text())
+                if data.get("halted"):
+                    return True, data.get("reason", "Manual halt")
+            except Exception as e:
+                logger.warning(f"Error reading halt file: {e}")
+        return False, ""
+
+    def _aggregate_signals(self, signals: dict) -> SignalSummary:
+        """Aggregate all signals into a summary.
+
+        For regime computation, we look at the overall market state,
+        not individual symbols.
+        """
+        # Collect all layer votes across symbols
+        bullish = set()
+        bearish = set()
+        neutral = set()
+        jupiter_retro = False
+        trickster_active = False
+        max_phoenix = 0
+
+        for symbol, signal in signals.items():
+            summary = signal.summary
+
+            # Aggregate layer directions
+            for layer in summary.bullish_layers:
+                bullish.add(layer)
+            for layer in summary.bearish_layers:
+                bearish.add(layer)
+            for layer in summary.neutral_layers:
+                neutral.add(layer)
+
+            # Veto conditions (any symbol triggers)
+            if summary.jupiter_retrograde:
+                jupiter_retro = True
+            if summary.trickster_active:
+                trickster_active = True
+            max_phoenix = max(max_phoenix, summary.phoenix_severity)
+
+        return SignalSummary(
+            bullish_layers=list(bullish),
+            bearish_layers=list(bearish),
+            neutral_layers=list(neutral),
+            jupiter_retrograde=jupiter_retro,
+            trickster_active=trickster_active,
+            phoenix_severity=max_phoenix,
+        )
+
+    def _compute_history(self, account: AccountSummary) -> TradingHistory:
+        """Compute trading history for circuit breakers.
+
+        Uses persistent HistoryTracker to survive daemon restarts.
+        """
+        return self.history.update(account.equity)
+
+    def _execute_action(self, action: Action, positions: dict) -> ActionResult:
+        """Execute an action via Alpaca.
+
+        This is the I/O boundary - all side effects happen here.
+        """
+        if self.config.dry_run:
+            logger.info(f"DRY RUN: Would execute {type(action).__name__}")
+            return ActionResult(action=action, success=True, order_id="DRY_RUN")
+
+        try:
+            if isinstance(action, Enter):
+                result = self.client.submit_order(
+                    symbol=action.symbol,
+                    side="buy" if action.direction == Direction.BULLISH else "sell",
+                    notional=action.notional,
+                )
+                if result.success:
+                    logger.info(f"ENTER {action.symbol}: {result.status} (${float(action.notional):,.0f})")
+                else:
+                    logger.warning(f"ENTER {action.symbol}: REJECTED - {result.error}")
+                return ActionResult(
+                    action=action,
+                    success=result.success,
+                    order_id=result.order_id,
+                    error=result.error,
+                )
+
+            elif isinstance(action, Exit):
+                if action.partial >= Decimal('1.0'):
+                    # Full exit
+                    result = self.client.close_position(action.symbol)
+                else:
+                    # Partial exit - try multiple symbol forms
+                    position = (
+                        positions.get(action.symbol) or
+                        positions.get(f"{action.symbol}USD") or
+                        positions.get(f"{action.symbol}/USD")
+                    )
+                    if position:
+                        qty_to_sell = position.qty * action.partial
+                        result = self.client.submit_order(
+                            symbol=action.symbol,
+                            side="sell",
+                            qty=qty_to_sell,
+                        )
+                    else:
+                        return ActionResult(action=action, success=False, error="Position not found")
+
+                if result.success:
+                    logger.info(f"EXIT {action.symbol}: {result.status}")
+                else:
+                    logger.warning(f"EXIT {action.symbol}: REJECTED - {result.error}")
+                return ActionResult(
+                    action=action,
+                    success=result.success,
+                    order_id=result.order_id,
+                    error=result.error,
+                )
+
+            elif isinstance(action, Rebalance):
+                # Rebalance is either buy more or sell some
+                position = positions.get(action.symbol)
+                if not position:
+                    return ActionResult(action=action, success=False, error="Position not found")
+
+                if action.direction == "increase":
+                    # Buy more
+                    # Calculate how much to buy
+                    pass  # TODO: Implement rebalance
+                else:
+                    # Sell some
+                    pass  # TODO: Implement rebalance
+
+                return ActionResult(action=action, success=False, error="Rebalance not implemented")
+
+            else:
+                return ActionResult(action=action, success=False, error=f"Unknown action type: {type(action)}")
+
+        except Exception as e:
+            logger.exception(f"Error executing {type(action).__name__}: {e}")
+            return ActionResult(action=action, success=False, error=str(e))
+
+    def _position_to_proof(self, position: 'Position'):
+        """Convert Alpaca Position to PositionProof."""
+        from psychohistory.daemon.types import PositionProof
+        try:
+            return PositionProof(
+                symbol=position.symbol,
+                qty=position.qty,
+                entry_price=position.avg_entry_price,
+                current_price=position.current_price,
+                unrealized_pnl=position.unrealized_pl,
+                unrealized_pnl_pct=position.unrealized_plpc,
+            )
+        except TypeError:
+            return None
+
+    def _action_summary(self, action: Action) -> str:
+        """Generate summary string for an action."""
+        if isinstance(action, Enter):
+            return f"{action.symbol} {action.direction.value} ${action.notional:.2f}"
+        elif isinstance(action, Exit):
+            return f"{action.symbol} {action.reason.type} ({action.partial:.0%})"
+        elif isinstance(action, Rebalance):
+            return f"{action.symbol} {action.direction} {action.drift:.1%} drift"
+        elif isinstance(action, Observe):
+            return action.reason
+        else:
+            return str(action)
+
+    def _interruptible_sleep(self, seconds: int) -> None:
+        """Sleep that can be interrupted by shutdown signal."""
+        for _ in range(seconds):
+            if not self.state.running:
+                break
+            import time
+            time.sleep(1)
+
+    def _compute_gradient_actions(
+        self,
+        signals: dict,
+        positions: dict,
+        account: AccountSummary,
+        history: TradingHistory,
+        signal_summary: SignalSummary | None,
+    ) -> list[Action]:
+        """Compute actions using the 7D gradient field.
+
+        This replaces discrete regime/action computation with continuous
+        gradient field navigation. Actions exist when ||∇Ψ|| >= threshold.
+
+        No halts - constraints become gradient weight modifiers.
+        Constraints are computed per-symbol based on that symbol's signals.
+        """
+        actions: list[Action] = []
+
+        # Base constraint modifiers from account state only (apply to all symbols)
+        # Symbol-specific constraints (jupiter_rx, trickster, phoenix) computed per-symbol
+        base_modifiers = collect_constraint_modifiers(
+            daily_pnl=history.daily_pnl,
+            weekly_pnl=history.weekly_pnl,
+            current_drawdown=account.drawdown if hasattr(account, 'drawdown') else Decimal("0"),
+            signals_since_stop_loss=history.signals_since_stop_loss,
+            max_daily_loss=self.config.constraints.max_daily_loss,
+            max_weekly_loss=self.config.constraints.max_weekly_loss,
+            max_drawdown=self.config.constraints.max_drawdown,
+            cooldown_threshold=self.config.constraints.cooldown_after_loss,
+            # Don't include global astrological constraints - they're per-symbol
+            jupiter_retrograde=False,
+            trickster_active=False,
+            phoenix_severity=0,
+        )
+
+        if base_modifiers:
+            logger.info(f"Base constraints: {[m.name for m in base_modifiers]}")
+
+        # Process each symbol
+        for symbol in self.config.symbols:
+            symbol_signals = signals.get(symbol)
+            if not symbol_signals:
+                continue
+
+            try:
+                action = self._compute_symbol_gradient_action(
+                    symbol=symbol,
+                    symbol_signals=symbol_signals,
+                    positions=positions,
+                    account=account,
+                    base_modifiers=base_modifiers,
+                )
+                if action and not isinstance(action, Observe):
+                    actions.append(action)
+                elif action:
+                    logger.debug(f"{symbol}: returned Observe")
+                else:
+                    logger.debug(f"{symbol}: returned None")
+            except Exception as e:
+                logger.warning(f"Error computing gradient action for {symbol}: {e}", exc_info=True)
+
+        # Post-processing: filter by market hours and cap to buying power
+        actions = self._cap_actions_to_buying_power(actions, account)
+
+        # If no actions, return Observe
+        if not actions:
+            # Create a placeholder regime for Observe
+            regime = ResearchRegime(reason="No gradient actions available")
+            actions.append(Observe(regime=regime, reason="Gradient field below threshold"))
+
+        return actions
+
+    def _cap_actions_to_buying_power(
+        self,
+        actions: list[Action],
+        account: AccountSummary,
+    ) -> list[Action]:
+        """Filter and scale Enter actions to fit within buying power.
+
+        1. Skip stock entries when market is closed
+        2. Scale all entries proportionally to fit within available buying power
+        """
+        from psychohistory.trading.alpaca_client import CRYPTO_SYMBOLS
+
+        # Check if stock market is open
+        try:
+            stock_market_open = self.client.is_market_open()
+        except Exception:
+            stock_market_open = False
+
+        # Separate entries from other actions
+        enter_actions: list[Enter] = []
+        other_actions: list[Action] = []
+
+        for action in actions:
+            if isinstance(action, Enter):
+                # Skip stock entries when market is closed
+                is_crypto = action.symbol.upper() in CRYPTO_SYMBOLS or "/" in action.symbol
+                if not stock_market_open and not is_crypto:
+                    logger.info(f"{action.symbol}: skipped (stock market closed)")
+                    continue
+                enter_actions.append(action)
+            else:
+                other_actions.append(action)
+
+        if not enter_actions:
+            return other_actions
+
+        min_per_order = Decimal("10")
+
+        # Separate crypto and stock entries - they use different buying power pools
+        crypto_entries: list[Enter] = []
+        stock_entries: list[Enter] = []
+        for action in enter_actions:
+            is_crypto = action.symbol.upper() in CRYPTO_SYMBOLS or "/" in action.symbol
+            if is_crypto:
+                crypto_entries.append(action)
+            else:
+                stock_entries.append(action)
+
+        scaled_entries: list[Enter] = []
+
+        # Scale crypto entries to crypto_buying_power (with settlement buffer)
+        if crypto_entries:
+            # Use 25% of reported crypto BP - Alpaca reports higher than actually
+            # available due to unsettled sells and pending order holds
+            crypto_bp = account.crypto_buying_power * Decimal("0.25")
+            logger.info(f"Crypto BP: ${float(crypto_bp):,.0f} (25% of ${float(account.crypto_buying_power):,.0f}) for {len(crypto_entries)} entries")
+            if crypto_bp >= min_per_order:
+                scaled_entries.extend(self._scale_entries(crypto_entries, crypto_bp, min_per_order))
+
+        # Scale stock entries to buying_power
+        if stock_entries:
+            stock_bp = account.buying_power
+            stock_total = sum(a.notional for a in stock_entries)
+            logger.info(f"Stock BP: ${float(stock_bp):,.0f} for {len(stock_entries)} entries")
+            if stock_bp >= min_per_order:
+                scaled_entries.extend(self._scale_entries(stock_entries, stock_bp, min_per_order))
+
+        return other_actions + scaled_entries
+
+    def _scale_entries(
+        self,
+        entries: list[Enter],
+        available_bp: Decimal,
+        min_per_order: Decimal,
+    ) -> list[Enter]:
+        """Scale entries to fit within available buying power."""
+        total_notional = sum(a.notional for a in entries)
+
+        if total_notional <= available_bp:
+            return entries
+
+        scale_factor = available_bp / total_notional
+        logger.info(
+            f"Scaling {len(entries)} entries: "
+            f"${float(total_notional):,.0f} -> ${float(available_bp):,.0f} "
+            f"(factor={float(scale_factor):.2f})"
+        )
+        scaled = []
+        for action in entries:
+            new_notional = (action.notional * scale_factor).quantize(Decimal("0.01"))
+            if new_notional >= min_per_order:
+                new_size_pct = action.size_pct * scale_factor
+                scaled.append(Enter(
+                    symbol=action.symbol,
+                    direction=action.direction,
+                    size_pct=new_size_pct,
+                    notional=new_notional,
+                    confluence_proof=action.confluence_proof,
+                    size_proof=action.size_proof,
+                ))
+        return scaled
+
+    def _compute_symbol_gradient_action(
+        self,
+        symbol: str,
+        symbol_signals,
+        positions: dict,
+        account: AccountSummary,
+        base_modifiers: list,
+    ) -> Action | None:
+        """Compute gradient action for a single symbol."""
+        from psychohistory.core.types import ModuleSignal, SignalDirection, SignalStrength
+        from psychohistory.daemon.signals import extract_signal_summary
+
+        # Get the decision result
+        decision = symbol_signals.decision if hasattr(symbol_signals, 'decision') else symbol_signals
+
+        # Build raw signals from layer_votes (since DecisionResult doesn't store raw signals)
+        raw_signals: list[ModuleSignal] = []
+        if hasattr(decision, 'layer_votes'):
+            for vote in decision.layer_votes:
+                raw_signals.append(ModuleSignal(
+                    module=vote.layer.value if hasattr(vote.layer, 'value') else str(vote.layer),
+                    signal_type="layer_vote",
+                    direction=vote.direction if hasattr(vote, 'direction') else SignalDirection.NEUTRAL,
+                    strength=SignalStrength.MODERATE,
+                    confidence=vote.confidence if hasattr(vote, 'confidence') else 0.5,
+                    explanation=vote.reason if hasattr(vote, 'reason') else "",
+                ))
+
+        # Get current price from geometry context
+        current_price = Decimal("0")
+        if hasattr(decision, 'geometry') and hasattr(decision.geometry, 'current_price'):
+            current_price = Decimal(str(decision.geometry.current_price))
+
+        if current_price <= 0:
+            return None
+
+        # Get price history if available
+        price_history = None
+        try:
+            from psychohistory.providers import get_price_provider
+            provider = get_price_provider()
+            price_history = provider.get_price_history(symbol, days=30)
+        except Exception:
+            pass  # Price history is optional
+
+        # Build context from signals
+        context = self._build_gradient_context(symbol_signals)
+
+        # Build per-symbol constraint modifiers
+        symbol_modifiers = list(base_modifiers)  # Start with base modifiers
+        try:
+            summary = extract_signal_summary(symbol_signals)
+            per_symbol = collect_constraint_modifiers(
+                jupiter_retrograde=summary.jupiter_retrograde,
+                trickster_active=summary.trickster_active,
+                phoenix_severity=summary.phoenix_severity,
+                # Account-level already in base_modifiers
+                daily_pnl=Decimal("0"),
+                weekly_pnl=Decimal("0"),
+                signals_since_stop_loss=999,
+            )
+            symbol_modifiers.extend(per_symbol)
+        except Exception:
+            pass  # Use base modifiers only if extraction fails
+
+        # Compute field state
+        field_state = self.gradient_engine.compute_field_state(
+            symbol=symbol,
+            current_price=current_price,
+            target_date=date.today(),
+            signals=raw_signals,
+            price_history=price_history,
+            context=context,
+            constraint_modifiers=symbol_modifiers,
+        )
+
+        # Log gradient info
+        if field_state.trading_exists:
+            logger.info(
+                f"{symbol}: ||∇Ψ||={field_state.gradient.magnitude:.3f}, "
+                f"active={field_state.gradient.active_count}, "
+                f"dir={field_state.direction}, TRADING_EXISTS"
+            )
+        else:
+            logger.debug(
+                f"{symbol}: ||∇Ψ||={field_state.gradient.magnitude:.3f}, "
+                f"active={field_state.gradient.active_count}, "
+                f"dir={field_state.direction}"
+            )
+
+        # Get current position info (try base symbol, then Alpaca-normalized forms)
+        position = positions.get(symbol)
+        if not position:
+            # Try crypto forms: SOL -> SOLUSD, SOL/USD
+            position = positions.get(f"{symbol}USD") or positions.get(f"{symbol}/USD")
+        position_pct = Decimal("0")
+        unrealized_pnl_pct = Decimal("0")
+        entry_direction = self.state.entry_directions.get(symbol)
+
+        if position:
+            position_pct = position.market_value / account.equity if account.equity > 0 else Decimal("0")
+            unrealized_pnl_pct = position.unrealized_plpc or Decimal("0")
+
+        # Detect action coordinates
+        coordinates = detect_action_coordinates(
+            field_state=field_state,
+            position_pct=position_pct,
+            max_position_pct=self.config.constraints.max_single_position,
+            cash_pct=account.buying_power / account.equity if account.equity > 0 else Decimal("1"),
+            min_cash_pct=self.config.constraints.min_cash,
+            entry_direction=entry_direction.value if entry_direction else None,
+            unrealized_pnl_pct=unrealized_pnl_pct,
+            stop_loss_pct=self.config.constraints.stop_loss,
+            take_profit_pct=self.config.constraints.take_profit_partial,
+        )
+
+        # Trinity Minimum gate: DecisionEngine must validate signal quality for entries
+        if coordinates.action_type == "enter":
+            decision_status = None
+            if hasattr(decision, 'status'):
+                decision_status = decision.status
+            elif hasattr(decision, 'decision'):
+                decision_status = getattr(decision.decision, 'status', None)
+
+            if decision_status:
+                status_upper = str(decision_status).upper()
+                if "NO" in status_upper and "TRADE" in status_upper:
+                    # Less than 3 layers agree - block entry
+                    logger.debug(f"{symbol}: Trinity gate BLOCKED (NO TRADE)")
+                    regime = ResearchRegime(reason=f"Trinity gate: {decision_status}")
+                    return Observe(regime=regime, reason=f"DecisionEngine: {decision_status}")
+                if "ALERT" in status_upper and field_state.gradient.magnitude < 0.85:
+                    # Only 2 layers agree and gradient not high enough for override
+                    logger.debug(f"{symbol}: Trinity gate BLOCKED (ALERT, magnitude={field_state.gradient.magnitude:.3f} < 0.85)")
+                    regime = ResearchRegime(reason=f"Trinity gate: ALERT insufficient conviction")
+                    return Observe(regime=regime, reason=f"ALERT with magnitude {field_state.gradient.magnitude:.3f} < 0.85")
+
+        # Convert coordinates to Action
+        return self._coordinates_to_action(
+            symbol=symbol,
+            coordinates=coordinates,
+            field_state=field_state,
+            account=account,
+            position=position,
+        )
+
+    def _build_gradient_context(self, symbol_signals) -> dict:
+        """Build context dictionary for gradient encoders from signals."""
+        from psychohistory.gradient.types import PhoenixState, AstrologyState
+
+        context = {}
+
+        # Get the decision result
+        decision = symbol_signals.decision if hasattr(symbol_signals, 'decision') else symbol_signals
+
+        # Extract summary if available
+        summary = None
+        if hasattr(symbol_signals, 'summary'):
+            summary = symbol_signals.summary
+
+        if summary:
+            # Build astrology state as proper dataclass
+            context['astrology_state'] = AstrologyState(
+                jupiter_retrograde=getattr(summary, 'jupiter_retrograde', False),
+                mercury_retrograde=False,
+                saturn_retrograde=False,
+                major_aspects=(),
+                lunar_phase='waxing',
+                dominant_element='fire',
+                actionable_window=not getattr(summary, 'trickster_active', False),
+            )
+
+            # Build phoenix state as proper dataclass
+            if hasattr(summary, 'phoenix_severity'):
+                context['phoenix_state'] = PhoenixState(
+                    phase='expansion',
+                    progress=0.5,
+                    severity=summary.phoenix_severity,
+                    next_transition=None,
+                )
+
+        # Add full context objects from decision if available
+        if hasattr(decision, 'geometry'):
+            context['geometry_context'] = decision.geometry
+        if hasattr(decision, 'numerology'):
+            context['numerology_context'] = decision.numerology
+        if hasattr(decision, 'astrology'):
+            context['astrology_context'] = decision.astrology
+        if hasattr(decision, 'archetype'):
+            context['archetype_context'] = decision.archetype
+
+        return context
+
+    def _coordinates_to_action(
+        self,
+        symbol: str,
+        coordinates: ActionCoordinates,
+        field_state: FieldState,
+        account: AccountSummary,
+        position,
+    ) -> Action | None:
+        """Convert ActionCoordinates to an Action type."""
+        from psychohistory.gradient.sizing import compute_position_size, compute_exit_size
+
+        if not coordinates.should_execute:
+            logger.debug(f"{symbol}: coordinates not executable: type={coordinates.action_type}, density={float(coordinates.density):.3f}, exists={coordinates.exists}, explanation={coordinates.explanation}")
+            return None
+
+        if coordinates.action_type == "enter":
+            # Only enter on bullish signals (no shorting for now)
+            if coordinates.direction != "bullish":
+                logger.debug(f"{symbol}: skipping non-bullish enter ({coordinates.direction})")
+                return None
+
+            # Compute position size
+            current_pos_value = position.market_value if position else Decimal("0")
+            size = compute_position_size(
+                field_state=field_state,
+                equity=account.equity,
+                current_cash=account.buying_power,
+                current_position_value=current_pos_value,
+                action_coordinates=coordinates,
+            )
+
+            if size <= 0:
+                logger.debug(f"{symbol}: size <= 0: {size}")
+                return None
+            logger.debug(f"{symbol}: ENTER size=${float(size):,.2f}")
+
+            # Build proofs for Enter action
+            direction = Direction.BULLISH
+
+            # Build ConfluenceProof from gradient
+            agreeing_dims = tuple(d.value for d in field_state.gradient.active_dimensions)
+            if len(agreeing_dims) < 3:
+                # Should not happen (trading_exists requires 3+ active dims)
+                logger.debug(f"{symbol}: insufficient active dimensions ({len(agreeing_dims)})")
+                return None
+
+            try:
+                confluence_proof = ConfluenceProof(
+                    score=ConfluenceScore(Decimal(str(max(0.01, field_state.gradient.magnitude)))),
+                    layers=LayerCount(max(3, field_state.gradient.active_count)),
+                    agreeing_layers=agreeing_dims,
+                    direction=direction,
+                    timestamp=datetime.now(),
+                )
+            except TypeError:
+                logger.debug(f"{symbol}: failed to build confluence proof")
+                return None
+
+            # Build SizeProof (may fail if no room for position)
+            try:
+                size_proof = SizeProof(
+                    requested_pct=Decimal(str(coordinates.size_coefficient)),
+                    current_exposure=current_pos_value / account.equity if account.equity > 0 else Decimal("0"),
+                    max_single=self.config.constraints.max_single_position,
+                    max_correlated=self.config.constraints.max_correlated,
+                    min_cash=self.config.constraints.min_cash,
+                )
+            except TypeError:
+                logger.debug(f"{symbol}: no room for new position")
+                return None
+
+            return Enter(
+                symbol=symbol,
+                direction=direction,
+                size_pct=size_proof.allowed_pct,
+                notional=size,
+                confluence_proof=confluence_proof,
+                size_proof=size_proof,
+            )
+
+        elif coordinates.action_type == "exit":
+            if not position:
+                return None
+
+            # Compute exit size
+            exit_size = compute_exit_size(
+                field_state=field_state,
+                current_position_value=position.market_value,
+                action_coordinates=coordinates,
+            )
+
+            # Determine exit reason
+            from psychohistory.daemon.types import ExitReason, PositionProof
+
+            reason_type = "signal_flip"
+            if "stop_loss" in coordinates.explanation:
+                reason_type = "stop_loss"
+            elif "take_profit" in coordinates.explanation:
+                reason_type = "take_profit"
+            elif "gradient_collapse" in coordinates.explanation:
+                reason_type = "signal_flip"
+
+            exit_reason = ExitReason(type=reason_type, details=coordinates.explanation)
+
+            # Build position proof
+            position_proof = PositionProof(
+                symbol=symbol,
+                qty=position.qty,
+                entry_price=position.avg_entry_price,
+                current_price=position.current_price,
+                unrealized_pnl=position.unrealized_pl,
+                unrealized_pnl_pct=position.unrealized_plpc,
+            )
+
+            # Calculate partial exit amount
+            partial = exit_size / position.market_value if position.market_value > 0 else Decimal("1")
+            partial = min(Decimal("1"), max(Decimal("0.01"), partial))
+
+            return Exit(
+                symbol=symbol,
+                position_proof=position_proof,
+                reason=exit_reason,
+                partial=partial,
+            )
+
+        return None
+
+    def stop(self) -> None:
+        """Stop the daemon loop."""
+        self.state.running = False
+
+
+def run_daemon(
+    symbols: list[str] | None = None,
+    cycle_interval: int = CYCLE_INTERVAL_SECONDS,
+    dry_run: bool = False,
+    max_cycles: int | None = None,
+) -> None:
+    """Convenience function to run the daemon.
+
+    Args:
+        symbols: Symbols to watch. Defaults to ALL_ASSETS.
+        cycle_interval: Seconds between cycles.
+        dry_run: If True, don't execute trades.
+        max_cycles: If set, stop after N cycles.
+    """
+    # Setup logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+    )
+
+    config = LoopConfig(
+        symbols=symbols or ALL_ASSETS.copy(),
+        cycle_interval=cycle_interval,
+        dry_run=dry_run,
+        max_cycles=max_cycles,
+    )
+
+    daemon = DaemonLoop(config=config)
+    daemon.run()
+
+
+if __name__ == "__main__":
+    # Run with defaults
+    run_daemon(dry_run=True, max_cycles=1)

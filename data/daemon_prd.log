@@ -1,0 +1,331 @@
+
+Starting Psychohistory Daemon
+
+  Symbols: ALL
+  Interval: 60s
+  Dry run: False
+  Max cycles: unlimited
+
+Press Ctrl+C to stop
+
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.alerts: No external alert channels configured, using console only
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.history: Loaded daily snapshot for 2026-01-23
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.history: Loaded weekly snapshot for week of 2026-01-19
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.history: Loaded stop loss state: 999 signals since last stop
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.loop: Starting daemon loop...
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.loop: Symbols: ['SOL', 'AVAX', 'LINK', 'DOGE', 'MATIC', 'NVDA', 'COIN', 'MSTR', 'MARA', 'HOOD', 'GME', 'AMC', 'QQQ', 'IWM', 'SQQQ']
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.loop: Cycle interval: 60s
+2026-01-23 16:41:31,606 [INFO] psychohistory.daemon.loop: Dry run: False
+2026-01-23 16:41:32,020 [INFO] psychohistory.daemon.loop: === Cycle 1 at 2026-01-23 16:41:32.019978 ===
+2026-01-23 16:41:32,249 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:41:32,296 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:41:32,296 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (63%)
+2026-01-23 16:41:32,296 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:41:32,296 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (63%)
+2026-01-23 16:41:32,296 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (63%)
+2026-01-23 16:41:32,353 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:41:32,414 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:41:32,462 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:41:32,513 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:42:32,677 [INFO] psychohistory.daemon.loop: === Cycle 2 at 2026-01-23 16:42:32.677203 ===
+2026-01-23 16:42:32,960 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:42:33,016 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:42:33,016 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (62%)
+2026-01-23 16:42:33,016 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:42:33,016 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (62%)
+2026-01-23 16:42:33,017 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (63%)
+2026-01-23 16:42:33,070 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:42:33,114 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:42:33,164 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:42:33,220 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:43:33,381 [INFO] psychohistory.daemon.loop: === Cycle 3 at 2026-01-23 16:43:33.381085 ===
+2026-01-23 16:43:33,641 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:43:33,694 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:43:33,694 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (62%)
+2026-01-23 16:43:33,694 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:43:33,694 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (63%)
+2026-01-23 16:43:33,694 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (63%)
+2026-01-23 16:43:33,747 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:43:33,798 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:43:33,849 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:43:33,896 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:44:34,053 [INFO] psychohistory.daemon.loop: === Cycle 4 at 2026-01-23 16:44:34.052996 ===
+2026-01-23 16:44:34,280 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:44:34,328 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:44:34,329 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (62%)
+2026-01-23 16:44:34,329 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:44:34,329 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (62%)
+2026-01-23 16:44:34,329 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (62%)
+2026-01-23 16:44:34,376 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:44:34,428 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:44:34,475 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:44:34,521 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:45:34,698 [INFO] psychohistory.daemon.loop: === Cycle 5 at 2026-01-23 16:45:34.698378 ===
+2026-01-23 16:45:34,898 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:45:34,942 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:45:34,943 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (62%)
+2026-01-23 16:45:34,943 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:45:34,943 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (62%)
+2026-01-23 16:45:34,943 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (64%)
+2026-01-23 16:45:34,988 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:45:35,054 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:45:35,108 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:45:35,159 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:46:35,291 [INFO] psychohistory.daemon.loop: === Cycle 6 at 2026-01-23 16:46:35.291470 ===
+2026-01-23 16:46:35,503 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:46:35,557 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:46:35,557 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (63%)
+2026-01-23 16:46:35,558 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:46:35,558 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (61%)
+2026-01-23 16:46:35,558 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (59%)
+2026-01-23 16:46:35,607 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:46:35,671 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:46:35,717 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:46:35,763 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:47:35,924 [INFO] psychohistory.daemon.loop: === Cycle 7 at 2026-01-23 16:47:35.924671 ===
+2026-01-23 16:47:36,140 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:47:36,196 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:47:36,197 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (59%)
+2026-01-23 16:47:36,197 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:47:36,197 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (62%)
+2026-01-23 16:47:36,197 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (57%)
+2026-01-23 16:47:36,252 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:47:36,306 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:47:36,357 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:47:36,409 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:48:36,573 [INFO] psychohistory.daemon.loop: === Cycle 8 at 2026-01-23 16:48:36.573293 ===
+2026-01-23 16:48:36,783 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:48:36,820 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:48:36,820 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (72%)
+2026-01-23 16:48:36,820 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:48:36,821 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (56%)
+2026-01-23 16:48:36,821 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (68%)
+2026-01-23 16:48:36,870 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:48:36,935 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:48:36,986 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:48:37,031 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:49:37,166 [INFO] psychohistory.daemon.loop: === Cycle 9 at 2026-01-23 16:49:37.166434 ===
+2026-01-23 16:49:37,386 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:49:37,425 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:49:37,425 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (87%)
+2026-01-23 16:49:37,425 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:49:37,425 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (62%)
+2026-01-23 16:49:37,425 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (1%)
+2026-01-23 16:49:37,471 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:49:37,525 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:49:37,573 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:49:37,625 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:50:37,791 [INFO] psychohistory.daemon.loop: === Cycle 10 at 2026-01-23 16:50:37.790932 ===
+2026-01-23 16:50:38,043 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:50:38,095 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:50:38,095 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (1%)
+2026-01-23 16:50:38,095 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:50:38,095 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (1%)
+2026-01-23 16:50:38,096 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (1%)
+2026-01-23 16:50:38,145 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:50:38,195 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:50:38,251 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:50:38,297 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:51:38,463 [INFO] psychohistory.daemon.loop: === Cycle 11 at 2026-01-23 16:51:38.463108 ===
+2026-01-23 16:51:38,693 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:51:38,739 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:51:38,739 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (1%)
+2026-01-23 16:51:38,739 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:51:38,739 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (1%)
+2026-01-23 16:51:38,739 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (1%)
+2026-01-23 16:51:38,784 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:51:38,854 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:51:38,909 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:51:38,964 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:52:39,152 [INFO] psychohistory.daemon.loop: === Cycle 12 at 2026-01-23 16:52:39.152192 ===
+2026-01-23 16:52:39,387 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:52:39,444 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:52:39,444 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (1%)
+2026-01-23 16:52:39,444 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:52:39,444 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (1%)
+2026-01-23 16:52:39,444 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (1%)
+2026-01-23 16:52:39,492 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:52:39,547 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:52:39,615 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:52:39,663 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:53:39,806 [INFO] psychohistory.daemon.loop: === Cycle 13 at 2026-01-23 16:53:39.806484 ===
+2026-01-23 16:53:40,034 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:53:40,082 [INFO] psychohistory.daemon.loop: Available actions: 4
+2026-01-23 16:53:40,082 [INFO] psychohistory.daemon.loop:   - Exit: SOL signal_flip (1%)
+2026-01-23 16:53:40,082 [INFO] psychohistory.daemon.loop:   - Exit: AVAX signal_flip (1%)
+2026-01-23 16:53:40,082 [INFO] psychohistory.daemon.loop:   - Exit: LINK signal_flip (1%)
+2026-01-23 16:53:40,082 [INFO] psychohistory.daemon.loop:   - Exit: DOGE signal_flip (1%)
+2026-01-23 16:53:40,132 [INFO] psychohistory.daemon.loop: EXIT SOL: OrderStatus.PENDING_NEW
+2026-01-23 16:53:40,190 [INFO] psychohistory.daemon.loop: EXIT AVAX: OrderStatus.PENDING_NEW
+2026-01-23 16:53:40,242 [INFO] psychohistory.daemon.loop: EXIT LINK: OrderStatus.PENDING_NEW
+2026-01-23 16:53:40,297 [INFO] psychohistory.daemon.loop: EXIT DOGE: OrderStatus.PENDING_NEW
+2026-01-23 16:54:40,466 [INFO] psychohistory.daemon.loop: === Cycle 14 at 2026-01-23 16:54:40.466734 ===
+2026-01-23 16:54:40,956 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:54:41,010 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:54:41,010 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 16:55:41,170 [INFO] psychohistory.daemon.loop: === Cycle 15 at 2026-01-23 16:55:41.170037 ===
+2026-01-23 16:55:41,389 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:55:41,440 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:55:41,440 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 16:56:41,601 [INFO] psychohistory.daemon.loop: === Cycle 16 at 2026-01-23 16:56:41.601433 ===
+2026-01-23 16:56:41,864 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:56:41,919 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:56:41,919 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 16:57:42,080 [INFO] psychohistory.daemon.loop: === Cycle 17 at 2026-01-23 16:57:42.080840 ===
+2026-01-23 16:57:42,327 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:57:42,389 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:57:42,389 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 16:58:42,559 [INFO] psychohistory.daemon.loop: === Cycle 18 at 2026-01-23 16:58:42.559539 ===
+2026-01-23 16:58:42,788 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:58:42,837 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:58:42,837 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 16:59:43,002 [INFO] psychohistory.daemon.loop: === Cycle 19 at 2026-01-23 16:59:43.002371 ===
+2026-01-23 16:59:43,225 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 16:59:43,280 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 16:59:43,281 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:00:43,444 [INFO] psychohistory.daemon.loop: === Cycle 20 at 2026-01-23 17:00:43.444257 ===
+2026-01-23 17:00:43,678 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:00:43,730 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:00:43,730 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:01:43,886 [INFO] psychohistory.daemon.loop: === Cycle 21 at 2026-01-23 17:01:43.886278 ===
+2026-01-23 17:01:44,132 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:01:44,189 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:01:44,190 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:02:44,349 [INFO] psychohistory.daemon.loop: === Cycle 22 at 2026-01-23 17:02:44.349661 ===
+2026-01-23 17:02:44,582 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:02:44,628 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:02:44,628 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:03:44,819 [INFO] psychohistory.daemon.loop: === Cycle 23 at 2026-01-23 17:03:44.819052 ===
+2026-01-23 17:03:45,061 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:03:45,117 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:03:45,117 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:04:45,445 [INFO] psychohistory.daemon.loop: === Cycle 24 at 2026-01-23 17:04:45.445455 ===
+2026-01-23 17:04:45,659 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:04:45,705 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:04:45,705 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:05:45,996 [INFO] psychohistory.daemon.loop: === Cycle 25 at 2026-01-23 17:05:45.996475 ===
+2026-01-23 17:05:46,225 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:05:46,275 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:05:46,275 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:06:46,582 [INFO] psychohistory.daemon.loop: === Cycle 26 at 2026-01-23 17:06:46.582409 ===
+2026-01-23 17:06:46,802 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:06:46,929 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:06:46,929 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:07:47,275 [INFO] psychohistory.daemon.loop: === Cycle 27 at 2026-01-23 17:07:47.275186 ===
+2026-01-23 17:07:47,498 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:07:47,542 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:07:47,542 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:08:47,866 [INFO] psychohistory.daemon.loop: === Cycle 28 at 2026-01-23 17:08:47.866502 ===
+2026-01-23 17:08:48,102 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:08:48,151 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:08:48,151 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:10:15,689 [INFO] psychohistory.daemon.loop: === Cycle 29 at 2026-01-23 17:10:15.689103 ===
+2026-01-23 17:10:16,682 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:10:16,755 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:10:16,756 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:12:34,362 [INFO] psychohistory.daemon.loop: === Cycle 30 at 2026-01-23 17:12:34.362941 ===
+2026-01-23 17:12:35,381 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:12:35,623 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:12:35,623 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:13:35,789 [INFO] psychohistory.daemon.loop: === Cycle 31 at 2026-01-23 17:13:35.789096 ===
+2026-01-23 17:13:36,029 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:13:36,074 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:13:36,075 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:14:36,239 [INFO] psychohistory.daemon.loop: === Cycle 32 at 2026-01-23 17:14:36.239402 ===
+2026-01-23 17:14:36,464 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:14:36,508 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:14:36,509 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:15:36,688 [INFO] psychohistory.daemon.loop: === Cycle 33 at 2026-01-23 17:15:36.688548 ===
+2026-01-23 17:15:36,915 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:15:36,973 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:15:36,973 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:16:37,135 [INFO] psychohistory.daemon.loop: === Cycle 34 at 2026-01-23 17:16:37.135764 ===
+2026-01-23 17:16:37,363 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:16:37,401 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:16:37,401 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:17:37,572 [INFO] psychohistory.daemon.loop: === Cycle 35 at 2026-01-23 17:17:37.572464 ===
+2026-01-23 17:17:37,825 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:17:37,867 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:17:37,867 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:18:38,062 [INFO] psychohistory.daemon.loop: === Cycle 36 at 2026-01-23 17:18:38.062592 ===
+2026-01-23 17:18:38,293 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:18:38,346 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:18:38,346 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:19:38,622 [INFO] psychohistory.daemon.loop: === Cycle 37 at 2026-01-23 17:19:38.622535 ===
+2026-01-23 17:19:38,857 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:19:38,914 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:19:38,914 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:20:39,235 [INFO] psychohistory.daemon.loop: === Cycle 38 at 2026-01-23 17:20:39.235331 ===
+2026-01-23 17:20:39,455 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:20:39,539 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:20:39,539 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:21:39,857 [INFO] psychohistory.daemon.loop: === Cycle 39 at 2026-01-23 17:21:39.857034 ===
+2026-01-23 17:21:40,108 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:21:40,149 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:21:40,149 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:22:40,454 [INFO] psychohistory.daemon.loop: === Cycle 40 at 2026-01-23 17:22:40.454128 ===
+2026-01-23 17:22:40,717 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:22:40,761 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:22:40,761 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:23:41,062 [INFO] psychohistory.daemon.loop: === Cycle 41 at 2026-01-23 17:23:41.062669 ===
+2026-01-23 17:23:41,272 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:23:41,316 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:23:41,316 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:25:08,858 [INFO] psychohistory.daemon.loop: === Cycle 42 at 2026-01-23 17:25:08.857972 ===
+2026-01-23 17:25:09,477 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:25:09,525 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:25:09,525 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:26:09,676 [INFO] psychohistory.daemon.loop: === Cycle 43 at 2026-01-23 17:26:09.676531 ===
+2026-01-23 17:26:09,890 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:26:09,940 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:26:09,940 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:27:10,102 [INFO] psychohistory.daemon.loop: === Cycle 44 at 2026-01-23 17:27:10.102615 ===
+2026-01-23 17:27:10,374 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:27:10,422 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:27:10,422 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:28:10,594 [INFO] psychohistory.daemon.loop: === Cycle 45 at 2026-01-23 17:28:10.594599 ===
+2026-01-23 17:28:10,819 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:28:10,898 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:28:10,898 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:29:11,066 [INFO] psychohistory.daemon.loop: === Cycle 46 at 2026-01-23 17:29:11.066616 ===
+2026-01-23 17:29:11,290 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:29:11,356 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:29:11,356 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:30:11,514 [INFO] psychohistory.daemon.loop: === Cycle 47 at 2026-01-23 17:30:11.514032 ===
+2026-01-23 17:30:13,959 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:30:14,025 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:30:14,025 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:31:14,196 [INFO] psychohistory.daemon.loop: === Cycle 48 at 2026-01-23 17:31:14.196065 ===
+2026-01-23 17:31:14,439 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:31:14,484 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:31:14,484 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:32:14,676 [INFO] psychohistory.daemon.loop: === Cycle 49 at 2026-01-23 17:32:14.676105 ===
+2026-01-23 17:32:14,911 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:32:14,963 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:32:14,963 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:33:15,283 [INFO] psychohistory.daemon.loop: === Cycle 50 at 2026-01-23 17:33:15.283665 ===
+2026-01-23 17:33:15,578 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:33:15,627 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:33:15,627 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:34:15,912 [INFO] psychohistory.daemon.loop: === Cycle 51 at 2026-01-23 17:34:15.912232 ===
+2026-01-23 17:34:16,147 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:34:16,211 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:34:16,211 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:35:16,541 [INFO] psychohistory.daemon.loop: === Cycle 52 at 2026-01-23 17:35:16.540997 ===
+2026-01-23 17:35:16,833 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:35:16,893 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:35:16,893 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:36:17,208 [INFO] psychohistory.daemon.loop: === Cycle 53 at 2026-01-23 17:36:17.208185 ===
+2026-01-23 17:36:17,657 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:36:17,714 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:36:17,714 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:37:17,985 [INFO] psychohistory.daemon.loop: === Cycle 54 at 2026-01-23 17:37:17.985066 ===
+2026-01-23 17:37:18,215 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:37:18,267 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:37:18,268 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:38:26,115 [INFO] psychohistory.daemon.loop: === Cycle 55 at 2026-01-23 17:38:26.115090 ===
+2026-01-23 17:38:26,806 [INFO] psychohistory.daemon.loop: Regime: TradingRegime
+2026-01-23 17:38:26,878 [INFO] psychohistory.daemon.loop: Available actions: 1
+2026-01-23 17:38:26,879 [INFO] psychohistory.daemon.loop:   - Observe: Gradient field below threshold
+2026-01-23 17:54:27,690 [INFO] psychohistory.daemon.loop: === Cycle 56 at 2026-01-23 17:54:27.690480 ===
+2026-01-26 20:35:05,166 [INFO] psychohistory.daemon.loop: Shutdown signal received, stopping loop...

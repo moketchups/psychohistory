@@ -1,0 +1,798 @@
+"""Decision Logic Layer for Psychohistory Engine.
+
+Implements PRD v4 rules:
+- Trinity Minimum (3+ layers for SIGNAL)
+- Module Hierarchy (higher layer invalidates lower)
+- Numerology Conflict Resolution
+- Sacred Geometry Activation Checks
+- Aspect Filtering for Actionability
+- Regime Detection (retrogrades, ingresses)
+"""
+
+from dataclasses import dataclass, field
+from datetime import date
+from decimal import Decimal
+from enum import Enum
+from typing import Any
+
+from psychohistory.core.types import (
+    FibonacciLevel,
+    ModuleSignal,
+    PlanetPosition,
+    SignalDirection,
+)
+
+
+class TradeStatus(Enum):
+    """Trade status based on layer confluence."""
+    SIGNAL = "SIGNAL"      # 3+ layers agree - tradeable
+    ALERT = "ALERT"        # 2 layers agree - watch only
+    NO_TRADE = "NO TRADE"  # <2 layers agree - noise
+
+
+class Layer(Enum):
+    """The three voting layers for confluence."""
+    SACRED_GEOMETRY = "sacred_geometry"
+    NUMEROLOGY = "numerology"
+    ASTROLOGY = "astrology"
+    # Note: Archetype is NOT a voting layer - it's a context modifier
+
+
+@dataclass
+class GeometryContext:
+    """Context for sacred geometry analysis."""
+    current_price: Decimal
+    nearest_support: FibonacciLevel | None = None
+    nearest_resistance: FibonacciLevel | None = None
+    at_level: bool = False
+    active_level: FibonacciLevel | None = None
+    activation_reason: str | None = None  # planetary_alignment, time_price_convergence, narrative_match
+
+
+@dataclass
+class NumerologyContext:
+    """Context for numerology analysis."""
+    date_root: int
+    price_root: int
+    date_meaning: str
+    price_meaning: str
+    is_harmonic: bool
+    conflict_resolution: str | None = None  # "price_root_governs" when conflict
+
+
+@dataclass
+class AstrologyContext:
+    """Context for astrology analysis."""
+    dominant_theme: str
+    actionable_aspects: list[dict[str, Any]] = field(default_factory=list)
+    regime_signals: list[dict[str, Any]] = field(default_factory=list)
+    positions: dict[str, PlanetPosition] = field(default_factory=dict)
+
+
+@dataclass
+class ArchetypeContext:
+    """Context for archetypal narrative."""
+    dominant_archetype: str | None = None
+    confidence: float = 0.0
+    supporting_signals: list[str] = field(default_factory=list)
+    active: bool = False
+
+
+@dataclass
+class LayerVote:
+    """A layer's vote on direction."""
+    layer: Layer
+    direction: SignalDirection
+    confidence: float
+    reason: str
+    active: bool = True  # False if layer is in conflict or inactive
+
+
+@dataclass
+class StewardCheck:
+    """Rule 9: Steward's final check - is confluence genuine or manufactured?"""
+    passed: bool
+    confidence_score: float  # 0.0-1.0, higher = more genuine
+    warnings: list[str] = field(default_factory=list)
+    recommendation: str = ""
+
+
+@dataclass
+class DecisionResult:
+    """Final decision output."""
+    symbol: str
+    target_date: date
+    status: TradeStatus
+
+    # Layer contexts
+    geometry: GeometryContext
+    numerology: NumerologyContext
+    astrology: AstrologyContext
+    archetype: ArchetypeContext
+
+    # Confluence
+    layer_votes: list[LayerVote]
+    layers_agreeing: int
+    agreeing_layers: list[Layer]
+    direction: SignalDirection
+
+    # Verdict
+    verdict: str
+    verdict_reason: str
+
+    # Hierarchy conflicts
+    hierarchy_conflicts: list[str] = field(default_factory=list)
+
+    # Steward's check (Rule 9)
+    steward_check: StewardCheck | None = None
+
+
+class DecisionEngine:
+    """Implements PRD v4/v5 decision logic.
+
+    Architecture:
+    - Three VOTING layers: Sacred Geometry, Numerology, Astrology
+    - One CONTEXT layer: Archetype (modifies interpretation, doesn't vote)
+
+    Trinity = 3 voting layers agreeing (all three must align for SIGNAL)
+    """
+
+    # Module hierarchy (highest to lowest) - VOTING LAYERS ONLY
+    # Archetype is NOT in hierarchy - it's a context modifier
+    HIERARCHY = [
+        Layer.SACRED_GEOMETRY,  # Deep structure - highest priority
+        Layer.NUMEROLOGY,       # Harmonic patterns
+        Layer.ASTROLOGY,        # Temporal timing
+    ]
+
+    def decide(
+        self,
+        symbol: str,
+        target_date: date,
+        current_price: Decimal,
+        signals: list[ModuleSignal],
+        geometry: GeometryContext,
+        numerology: NumerologyContext,
+        astrology: AstrologyContext,
+        archetype: ArchetypeContext,
+    ) -> DecisionResult:
+        """Make a trading decision based on all layers.
+
+        Implements:
+        - Rule 1: Trinity Minimum
+        - Rule 2: Module Hierarchy
+        - Rule 3: Numerology Conflict Resolution
+        - Rule 9: Steward's Final Check
+        """
+        # Collect layer votes
+        layer_votes = self._collect_layer_votes(
+            geometry, numerology, astrology, archetype
+        )
+
+        # Hierarchy conflicts disabled - all layers contribute to gradient field
+        # Conflicting signals affect direction voting, don't invalidate layers
+        hierarchy_conflicts = []
+
+        # Count active agreeing layers
+        active_votes = [v for v in layer_votes if v.active]
+
+        # Group by direction
+        direction_counts: dict[SignalDirection, list[LayerVote]] = {
+            SignalDirection.BULLISH: [],
+            SignalDirection.BEARISH: [],
+            SignalDirection.NEUTRAL: [],
+        }
+        for vote in active_votes:
+            direction_counts[vote.direction].append(vote)
+
+        # Find dominant direction
+        max_count = 0
+        dominant_direction = SignalDirection.NEUTRAL
+        agreeing_votes = []
+
+        for direction, votes in direction_counts.items():
+            if direction != SignalDirection.NEUTRAL and len(votes) > max_count:
+                max_count = len(votes)
+                dominant_direction = direction
+                agreeing_votes = votes
+
+        layers_agreeing = len(agreeing_votes)
+        agreeing_layers = [v.layer for v in agreeing_votes]
+
+        # Rule 1: Trinity Minimum
+        status = self._determine_status(layers_agreeing)
+
+        # Generate verdict
+        verdict, verdict_reason = self._generate_verdict(
+            status, dominant_direction, layers_agreeing, agreeing_layers,
+            hierarchy_conflicts, geometry, numerology
+        )
+
+        # Rule 9: Steward's Final Check (includes archetype context modifier)
+        steward_check = self._steward_check(
+            status=status,
+            layer_votes=layer_votes,
+            agreeing_layers=agreeing_layers,
+            geometry=geometry,
+            numerology=numerology,
+            astrology=astrology,
+            archetype=archetype,
+            signals=signals,
+            direction=dominant_direction,
+        )
+
+        # Steward check is informational - doesn't downgrade status
+        # Per gradient field mathematics: only structural limits block trading
+        # Steward warnings are logged but don't prevent action existence
+
+        return DecisionResult(
+            symbol=symbol,
+            target_date=target_date,
+            status=status,
+            geometry=geometry,
+            numerology=numerology,
+            astrology=astrology,
+            archetype=archetype,
+            layer_votes=layer_votes,
+            layers_agreeing=layers_agreeing,
+            agreeing_layers=agreeing_layers,
+            direction=dominant_direction,
+            verdict=verdict,
+            verdict_reason=verdict_reason,
+            hierarchy_conflicts=hierarchy_conflicts,
+            steward_check=steward_check,
+        )
+
+    def _collect_layer_votes(
+        self,
+        geometry: GeometryContext,
+        numerology: NumerologyContext,
+        astrology: AstrologyContext,
+        archetype: ArchetypeContext,
+    ) -> list[LayerVote]:
+        """Collect votes from each layer."""
+        votes = []
+
+        # Sacred Geometry vote
+        if geometry.at_level:
+            # Price is at a Fibonacci level - geometry is active
+            direction = self._geometry_direction(geometry)
+            # Higher confidence if activation reason found
+            confidence = 0.85 if geometry.activation_reason else 0.7
+            reason = f"At {geometry.active_level.label if geometry.active_level else 'level'}"
+            if geometry.activation_reason:
+                reason += f", activated by {geometry.activation_reason}"
+            votes.append(LayerVote(
+                layer=Layer.SACRED_GEOMETRY,
+                direction=direction,
+                confidence=confidence,
+                reason=reason,
+                active=True,
+            ))
+        else:
+            # Not at level - still contributes to gradient with lower weight
+            # Direction based on nearest level
+            if geometry.nearest_support and geometry.nearest_resistance:
+                # Between levels - lean toward nearest
+                dist_to_support = float(geometry.current_price - geometry.nearest_support.price)
+                dist_to_resistance = float(geometry.nearest_resistance.price - geometry.current_price)
+                if dist_to_support < dist_to_resistance:
+                    direction = SignalDirection.BULLISH  # Closer to support
+                else:
+                    direction = SignalDirection.BEARISH  # Closer to resistance
+            elif geometry.nearest_support:
+                direction = SignalDirection.BULLISH
+            elif geometry.nearest_resistance:
+                direction = SignalDirection.BEARISH
+            else:
+                direction = SignalDirection.NEUTRAL
+
+            votes.append(LayerVote(
+                layer=Layer.SACRED_GEOMETRY,
+                direction=direction,
+                confidence=0.3,  # Lower confidence when between levels
+                reason=f"Between levels, leaning {direction.value}",
+                active=True,
+            ))
+
+        # Numerology vote (Rule 3: Conflict Resolution)
+        if numerology.is_harmonic:
+            direction = self._numerology_direction(numerology.price_root)
+            votes.append(LayerVote(
+                layer=Layer.NUMEROLOGY,
+                direction=direction,
+                confidence=0.6,
+                reason=f"Harmonic: date root {numerology.date_root} + price root {numerology.price_root}",
+                active=True,
+            ))
+        else:
+            # Conflict - price root governs, contributes with lower weight
+            direction = self._numerology_direction(numerology.price_root)
+            votes.append(LayerVote(
+                layer=Layer.NUMEROLOGY,
+                direction=direction,
+                confidence=0.3,  # Lower confidence on conflict
+                reason=f"Dissonant: date {numerology.date_root} vs price {numerology.price_root}. "
+                       f"Price root {numerology.price_root} governs.",
+                active=True,  # Still contributes to gradient
+            ))
+
+        # Astrology vote
+        if astrology.actionable_aspects:
+            # Has actionable aspects
+            bullish = sum(1 for a in astrology.actionable_aspects if a.get("direction") == "bullish")
+            bearish = sum(1 for a in astrology.actionable_aspects if a.get("direction") == "bearish")
+
+            if bullish > bearish:
+                direction = SignalDirection.BULLISH
+            elif bearish > bullish:
+                direction = SignalDirection.BEARISH
+            else:
+                direction = SignalDirection.NEUTRAL
+
+            votes.append(LayerVote(
+                layer=Layer.ASTROLOGY,
+                direction=direction,
+                confidence=0.7,
+                reason=f"{astrology.dominant_theme}",
+                active=True,
+            ))
+        else:
+            # No actionable aspects - still contributes based on dominant theme
+            theme_lower = astrology.dominant_theme.lower() if astrology.dominant_theme else ""
+            if "bullish" in theme_lower or "harmonious" in theme_lower or "supportive" in theme_lower:
+                direction = SignalDirection.BULLISH
+            elif "bearish" in theme_lower or "tension" in theme_lower or "challenging" in theme_lower:
+                direction = SignalDirection.BEARISH
+            else:
+                direction = SignalDirection.NEUTRAL
+
+            votes.append(LayerVote(
+                layer=Layer.ASTROLOGY,
+                direction=direction,
+                confidence=0.3,  # Lower confidence without structure confirmation
+                reason=f"Theme: {astrology.dominant_theme} (no structure break)",
+                active=True,  # Still contributes to gradient
+            ))
+
+        # NOTE: Archetype is NOT a voting layer - it's a context modifier
+        # It doesn't participate in confluence voting or hierarchy
+        # Instead, it modifies interpretation via steward's check and narrative
+
+        return votes
+
+    def _check_hierarchy_conflicts(self, votes: list[LayerVote]) -> list[str]:
+        """Check for hierarchy conflicts (Rule 2).
+
+        Higher layer invalidates lower.
+        """
+        conflicts = []
+
+        # Build direction by layer
+        layer_directions = {v.layer: v.direction for v in votes if v.active}
+
+        # Check hierarchy
+        for i, higher_layer in enumerate(self.HIERARCHY[:-1]):
+            if higher_layer not in layer_directions:
+                continue
+
+            higher_direction = layer_directions[higher_layer]
+            if higher_direction == SignalDirection.NEUTRAL:
+                continue
+
+            for lower_layer in self.HIERARCHY[i + 1:]:
+                if lower_layer not in layer_directions:
+                    continue
+
+                lower_direction = layer_directions[lower_layer]
+                if lower_direction != SignalDirection.NEUTRAL and lower_direction != higher_direction:
+                    conflicts.append(
+                        f"{higher_layer.value} ({higher_direction.value}) invalidates "
+                        f"{lower_layer.value} ({lower_direction.value})"
+                    )
+                    # Deactivate the lower layer's vote
+                    for v in votes:
+                        if v.layer == lower_layer:
+                            v.active = False
+                            v.reason += f" [INVALIDATED by {higher_layer.value}]"
+
+        return conflicts
+
+    def _determine_status(self, layers_agreeing: int) -> TradeStatus:
+        """Rule 1: Trinity Minimum."""
+        if layers_agreeing >= 3:
+            return TradeStatus.SIGNAL
+        elif layers_agreeing == 2:
+            return TradeStatus.ALERT
+        else:
+            return TradeStatus.NO_TRADE
+
+    def _generate_verdict(
+        self,
+        status: TradeStatus,
+        direction: SignalDirection,
+        layers_agreeing: int,
+        agreeing_layers: list[Layer],
+        hierarchy_conflicts: list[str],
+        geometry: GeometryContext,
+        numerology: NumerologyContext,
+    ) -> tuple[str, str]:
+        """Generate human-readable verdict."""
+        if status == TradeStatus.SIGNAL:
+            layers_str = ", ".join(l.value for l in agreeing_layers)
+            return (
+                f"SIGNAL: {direction.value.upper()}",
+                f"{layers_agreeing} layers agree ({layers_str})"
+            )
+
+        elif status == TradeStatus.ALERT:
+            layers_str = ", ".join(l.value for l in agreeing_layers)
+
+            # What to watch for
+            watch_for = []
+            if not geometry.at_level:
+                if geometry.nearest_support:
+                    watch_for.append(f"price at {geometry.nearest_support.price:.2f} support")
+                if geometry.nearest_resistance:
+                    watch_for.append(f"price at {geometry.nearest_resistance.price:.2f} resistance")
+            if not numerology.is_harmonic:
+                watch_for.append("numerology conflict resolution")
+
+            watch_str = " or ".join(watch_for) if watch_for else "additional layer alignment"
+
+            return (
+                f"ALERT: Watch for {watch_str}",
+                f"Only {layers_agreeing} layers agree ({layers_str}). Need 3+ for signal."
+            )
+
+        else:  # NO_TRADE
+            reasons = []
+            if layers_agreeing < 2:
+                reasons.append(f"only {layers_agreeing} layer(s) active")
+            if hierarchy_conflicts:
+                reasons.append("hierarchy conflicts present")
+            if not geometry.at_level:
+                reasons.append("price not at key level")
+            if not numerology.is_harmonic:
+                reasons.append("numerology conflict")
+
+            reason_str = "; ".join(reasons) if reasons else "insufficient confluence"
+            return ("NO TRADE", reason_str)
+
+    def _steward_check(
+        self,
+        status: TradeStatus,
+        layer_votes: list[LayerVote],
+        agreeing_layers: list[Layer],
+        geometry: GeometryContext,
+        numerology: NumerologyContext,
+        astrology: AstrologyContext,
+        archetype: ArchetypeContext,
+        signals: list[ModuleSignal],
+        direction: SignalDirection,
+    ) -> StewardCheck:
+        """Rule 9: Steward's Final Check.
+
+        The Steward asks: Is this confluence genuine or manufactured?
+
+        Checks for:
+        1. Signal independence - Are layers truly independent or correlated?
+        2. Conviction quality - Are high-confidence signals or many weak ones?
+        3. Regime awareness - Are we in a treacherous regime?
+        4. Narrative coherence - Does the story make sense?
+        5. Archetype context - What does the market narrative suggest?
+        """
+        warnings = []
+        confidence_score = 1.0
+        narrative_notes = []
+
+        # Check 1: Signal independence
+        # If all signals come from the same underlying event, that's not real confluence
+        active_votes = [v for v in layer_votes if v.active]
+        if len(active_votes) >= 2:
+            # Check if astrology is the only active layer with real signal
+            astro_dominant = (
+                Layer.ASTROLOGY in agreeing_layers and
+                len([l for l in agreeing_layers if l != Layer.ASTROLOGY]) == 0 and
+                not geometry.at_level
+            )
+            if astro_dominant:
+                warnings.append("Confluence driven primarily by astrology without structural confirmation")
+                confidence_score -= 0.2
+
+        # Check 2: Conviction quality
+        # Low confidence across all agreeing layers = weak signal
+        if active_votes:
+            avg_confidence = sum(v.confidence for v in active_votes) / len(active_votes)
+            if avg_confidence < 0.5:
+                warnings.append(f"Low average confidence ({avg_confidence:.0%}) across active layers")
+                confidence_score -= 0.3
+            elif avg_confidence < 0.65:
+                warnings.append(f"Moderate confidence ({avg_confidence:.0%}) - proceed with caution")
+                confidence_score -= 0.1
+
+        # Check 3: Regime awareness
+        # If we're in a major retrograde regime, be extra cautious
+        if astrology.regime_signals:
+            jupiter_rx = any(
+                r.get("planet") == "jupiter" and r.get("condition") == "retrograde"
+                for r in astrology.regime_signals
+            )
+            if jupiter_rx:
+                warnings.append("Jupiter retrograde regime - research mode, not trading mode")
+                confidence_score -= 0.25
+
+            # Multiple outer planet retrogrades = confused market
+            retrograde_count = sum(
+                1 for r in astrology.regime_signals if r.get("condition") == "retrograde"
+            )
+            if retrograde_count >= 3:
+                warnings.append(f"{retrograde_count} outer planets retrograde - high confusion potential")
+                confidence_score -= 0.2
+
+        # Check 4: Narrative coherence
+        # Does numerology conflict with the direction?
+        if numerology.is_harmonic:
+            num_direction = self._numerology_direction(numerology.price_root)
+            active_directions = [v.direction for v in active_votes if v.direction != SignalDirection.NEUTRAL]
+            if active_directions:
+                majority_direction = max(set(active_directions), key=active_directions.count)
+                if num_direction != SignalDirection.NEUTRAL and num_direction != majority_direction:
+                    warnings.append("Numerology direction conflicts with majority layer direction")
+                    confidence_score -= 0.15
+
+        # Check 5: Structure requirement for SIGNAL status
+        if status == TradeStatus.SIGNAL and not geometry.at_level:
+            warnings.append("SIGNAL without price at key geometric level - reduced conviction")
+            confidence_score -= 0.2
+
+        # Check 6: ARCHETYPE CONTEXT MODIFIER
+        # Archetype doesn't vote - it modifies interpretation and confidence
+        if archetype.active and archetype.dominant_archetype:
+            arch = archetype.dominant_archetype.lower()
+
+            if arch == "shadow":
+                # Shadow = capitulation, panic
+                if direction == SignalDirection.BEARISH:
+                    narrative_notes.append("Shadow active: capitulation may be near - watch for reversal")
+                    confidence_score += 0.1  # Bearish into panic often marks bottom
+                elif direction == SignalDirection.BULLISH:
+                    narrative_notes.append("Shadow active: buying into panic - high risk/reward contrarian")
+                    confidence_score += 0.15  # Contrarian opportunity
+
+            elif arch == "hero":
+                # Hero = FOMO, euphoria, late cycle
+                if direction == SignalDirection.BULLISH:
+                    narrative_notes.append("Hero active: FOMO phase - momentum strong but exhaustion near")
+                    warnings.append("Late-cycle euphoria - consider tighter stops")
+                    confidence_score -= 0.1  # Late cycle risk
+                elif direction == SignalDirection.BEARISH:
+                    narrative_notes.append("Hero active but bearish signal: potential top forming")
+                    confidence_score += 0.1  # Good timing for short
+
+            elif arch == "sage":
+                # Sage = smart money accumulation
+                if direction == SignalDirection.BULLISH:
+                    narrative_notes.append("Sage active: smart money accumulating - follow institutions")
+                    confidence_score += 0.15  # High conviction
+                elif direction == SignalDirection.BEARISH:
+                    warnings.append("Sage active but bearish: possible distribution or divergence")
+                    confidence_score -= 0.05
+
+            elif arch == "trickster":
+                # Trickster = deception, false signals
+                warnings.append("Trickster active: HIGH DECEPTION RISK - false signals likely")
+                narrative_notes.append("Trickster: Consider standing aside or reducing size significantly")
+                confidence_score -= 0.3  # Major confidence hit
+
+            elif arch == "destroyer":
+                # Destroyer = regime change, structural death
+                if direction == SignalDirection.BEARISH:
+                    narrative_notes.append("Destroyer active: structural breakdown - don't catch falling knife")
+                    confidence_score += 0.1  # Confirms bearish
+                elif direction == SignalDirection.BULLISH:
+                    warnings.append("Destroyer active but bullish signal: fighting the regime - very risky")
+                    confidence_score -= 0.25  # Against the destruction
+
+        # Clamp confidence score
+        confidence_score = max(0.0, min(1.0, confidence_score))
+
+        # Determine if check passes
+        passed = confidence_score >= 0.5 and len(warnings) <= 3
+
+        # Generate recommendation with archetype narrative
+        if passed:
+            if narrative_notes:
+                recommendation = narrative_notes[0]
+            elif warnings:
+                recommendation = "Proceed with noted cautions"
+            else:
+                recommendation = "Clean confluence - high conviction setup"
+        else:
+            if confidence_score < 0.3:
+                recommendation = narrative_notes[0] if narrative_notes else "Wait for better setup - confluence appears manufactured"
+            else:
+                recommendation = narrative_notes[0] if narrative_notes else "Reduce position size or wait for additional confirmation"
+
+        return StewardCheck(
+            passed=passed,
+            confidence_score=confidence_score,
+            warnings=warnings,
+            recommendation=recommendation,
+        )
+
+    def _geometry_direction(self, geometry: GeometryContext) -> SignalDirection:
+        """Determine direction from geometry context."""
+        if not geometry.active_level:
+            return SignalDirection.NEUTRAL
+
+        # At support = bullish, at resistance = bearish
+        if "support" in geometry.active_level.label.lower():
+            return SignalDirection.BULLISH
+        elif "resistance" in geometry.active_level.label.lower():
+            return SignalDirection.BEARISH
+        else:
+            return SignalDirection.NEUTRAL
+
+    def _numerology_direction(self, root: int) -> SignalDirection:
+        """Determine direction from digital root."""
+        bullish_roots = [3, 6, 9]
+        bearish_roots = [4, 7]
+
+        if root in bullish_roots:
+            return SignalDirection.BULLISH
+        elif root in bearish_roots:
+            return SignalDirection.BEARISH
+        else:
+            return SignalDirection.NEUTRAL
+
+    def _archetype_direction(self, archetype: str) -> SignalDirection:
+        """Determine direction from archetype.
+
+        Archetype directions:
+        - Hero: Bullish (but signals exhaustion - late cycle)
+        - Shadow: Bullish (contrarian - capitulation = bottom)
+        - Sage: Bullish (follow smart money accumulation)
+        - Trickster: Neutral (don't trade deception)
+        - Destroyer: Bearish (avoid falling knives)
+        """
+        archetype_lower = archetype.lower().strip()
+
+        # Map archetypes to directions
+        archetype_directions = {
+            # Bullish archetypes
+            "hero": SignalDirection.BULLISH,      # FOMO phase - ride momentum
+            "shadow": SignalDirection.BULLISH,    # Capitulation = contrarian buy
+            "sage": SignalDirection.BULLISH,      # Smart money accumulating
+
+            # Neutral archetypes
+            "trickster": SignalDirection.NEUTRAL, # False signals - stand aside
+
+            # Bearish archetypes
+            "destroyer": SignalDirection.BEARISH, # Regime death - avoid
+        }
+
+        return archetype_directions.get(archetype_lower, SignalDirection.NEUTRAL)
+
+
+def check_fib_activation(
+    level: FibonacciLevel,
+    planetary_positions: dict[str, PlanetPosition],
+    target_date: date,
+    major_astro_dates: list[date],
+    active_narrative: str | None,
+) -> tuple[bool, str | None]:
+    """Rule 4: Check if a Fib level is activated.
+
+    A Fibonacci level is a setup ONLY when:
+    1. Planetary Alignment - Level aligns with a planetary axis
+    2. Time-Price Convergence - Price hits level on major astrological date
+    3. Narrative Match - Market narrative matches the geometry
+
+    Returns:
+        Tuple of (is_activated, activation_reason)
+    """
+    # Check planetary alignment
+    # (simplified - in reality would check planetary price projections)
+    level_price = float(level.price)
+    for planet, pos in planetary_positions.items():
+        # Example: planetary degree * some factor maps to price
+        # This is a placeholder for real planetary price calculation
+        planetary_price = pos.longitude * 5  # Simplified
+        if abs(planetary_price - level_price) < level_price * 0.01:
+            return True, "planetary_alignment"
+
+    # Check time-price convergence
+    if target_date in major_astro_dates:
+        return True, "time_price_convergence"
+
+    # Check narrative match
+    narrative_geometry_map = {
+        "the_fall": [0.786, 0.618],  # Deep retracement levels
+        "the_hero": [0.382, 0.236],  # Shallow retracement (strength)
+        "the_rebirth": [1.0, 1.272],  # Extension levels
+    }
+
+    if active_narrative:
+        narrative_key = active_narrative.lower().replace(" ", "_")
+        if narrative_key in narrative_geometry_map:
+            if level.level in narrative_geometry_map[narrative_key]:
+                return True, "narrative_match"
+
+    return False, None
+
+
+def check_aspect_actionability(
+    aspect: dict[str, Any],
+    at_key_level: bool,
+    volatility_compressed: bool,
+    archetype_active: bool,
+) -> bool:
+    """Rule 5: Check if an aspect is actionable.
+
+    An aspect matters when:
+    1. It converges with a break in market structure
+    2. It aligns with an active archetypal narrative
+
+    Returns:
+        True if aspect is actionable
+    """
+    has_structure_break = at_key_level or volatility_compressed
+    has_active_narrative = archetype_active
+
+    return has_structure_break and has_active_narrative
+
+
+def get_regime_signals(
+    positions: dict[str, PlanetPosition],
+    target_date: date,
+) -> list[dict[str, Any]]:
+    """Rule 6 & 7: Generate regime signals for retrogrades and ingresses."""
+    signals = []
+
+    # Sign to sector mapping
+    sign_sectors = {
+        "Aries": "defense, startups, pioneers",
+        "Taurus": "banking, agriculture, luxury goods",
+        "Gemini": "media, communications, transportation",
+        "Cancer": "real estate, food, healthcare",
+        "Leo": "entertainment, gold, speculation",
+        "Virgo": "healthcare, analytics, service industries",
+        "Libra": "partnerships, luxury, art",
+        "Scorpio": "insurance, debt, transformation tech",
+        "Sagittarius": "travel, education, publishing",
+        "Capricorn": "government, institutions, legacy corps",
+        "Aquarius": "tech, innovation, disruption",
+        "Pisces": "pharma, oil, entertainment, spirituality",
+    }
+
+    # Check Jupiter retrograde (Rule 7)
+    if "jupiter" in positions:
+        jupiter = positions["jupiter"]
+        if jupiter.is_retrograde:
+            sector = sign_sectors.get(jupiter.sign, "Jupiter's sector")
+            signals.append({
+                "type": "REGIME",
+                "planet": "jupiter",
+                "condition": "retrograde",
+                "sign": jupiter.sign,
+                "message": f"Jupiter Rx in {jupiter.sign}: Take profits in {sector}. Research mode.",
+                "tradeable": False,
+                "action": "reduce_exposure",
+                "sector": sector,
+            })
+
+    # Check other outer planet retrogrades
+    for planet in ["saturn", "uranus", "neptune", "pluto"]:
+        if planet in positions and positions[planet].is_retrograde:
+            signals.append({
+                "type": "REGIME",
+                "planet": planet,
+                "condition": "retrograde",
+                "sign": positions[planet].sign,
+                "message": f"{planet.capitalize()} retrograde: internal review period for {planet} themes",
+                "tradeable": False,
+                "action": "patience",
+            })
+
+    return signals
