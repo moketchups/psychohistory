@@ -26,25 +26,29 @@ This site tracks who is building what, with whose money, using what technology, 
 
 | Tab | Contents |
 |-----|----------|
-| **What Is This** | The thesis, key terms glossary, links to deeper analysis |
-| **The Framework** | How the engine works — 7 dimensions, key concepts, formal theory |
-| **Tactical Forecast** | 2026–2027 pressure windows and near-term peaks |
-| **Predictions** | Year-by-year projections for all 14 cycle years (2027–2040) |
-| **Players** | 100+ individuals and institutions mapped by function |
-| **Divergences** | Where the model disagrees with its own sources |
-| **Live Feed** | Current events scored against the prediction framework |
+| **Home** | The thesis, key terms glossary, links to deeper analysis |
+| **[Framework](https://moketchups.github.io/psychohistory/framework)** | How the engine works — 7 dimensions, key concepts, formal theory |
+| **[Scorecard](https://moketchups.github.io/psychohistory/scorecard)** | Accuracy tracking — where the engine is right, wrong, and honest about both |
+| **[Predictions](https://moketchups.github.io/psychohistory/predictions)** | Year-by-year projections for all 14 cycle years ([2027](https://moketchups.github.io/psychohistory/predictions/2027)–[2040](https://moketchups.github.io/psychohistory/predictions/2040)) |
+| **[Players](https://moketchups.github.io/psychohistory/players)** | 100+ individuals and institutions mapped by function |
+| **[Divergences](https://moketchups.github.io/psychohistory/divergences)** | Where the model disagrees with its own sources |
+| **[Live Feed](https://moketchups.github.io/psychohistory/live)** | Current events scored against the prediction framework |
+| **[Knowledge Graph](https://moketchups.github.io/psychohistory/graph)** | 770 nodes, 1,373 edges — the full map |
+| **[Concepts](https://moketchups.github.io/psychohistory/concepts)** | 22 core concepts explained in plain English |
 
 ## Key Terms
 
-- **Bounded System Theory (BST)** — No system can model its own source. Applies to physics, computation, cognition, and civilization.
-- **The Firmament** — The resolution limit. Where the simulation stops rendering detail.
-- **Phoenix Cycle** — 138-year cycle of civilizational reset. Next: May 15, 2040.
-- **Model Collapse** — When AI trains on AI output, it loses nuance and converges on a distorted mean. Same thing happens to civilizations.
-- **The Technate** — The operational infrastructure: financial rail (BlackRock/Apollo), governance rail (Palantir/DOGE), intelligence rail (Unit 8200/Oracle).
-- **Genesis Mission** — Self-sustaining Data Fortresses powered by SMRs. The Empire's Ark.
-- **Donroe Doctrine** — Donald + Monroe. Hemispheric resource monopolization.
-- **Kayfabe** — Scripted narrative presented as real. The heroes and villains work for the same promoter.
-- **The Steward's Ark** — The counter-architecture. Local, decentralized, human-grounded. Survives by accepting limits, not defying them.
+- **[Bounded System Theory (BST)](https://moketchups.github.io/psychohistory/concepts/bounded-system-theory-bst)** — No system can model its own source. Applies to physics, computation, cognition, and civilization.
+- **[The Firmament](https://moketchups.github.io/psychohistory/concepts/the-firmament)** — The resolution limit. Where the simulation stops rendering detail.
+- **[Phoenix Cycle](https://moketchups.github.io/psychohistory/concepts/phoenix-cycle)** — 138-year cycle of civilizational reset. Next: May 15, 2040.
+- **[Model Collapse](https://moketchups.github.io/psychohistory/concepts/model-collapse)** — When AI trains on AI output, it loses nuance and converges on a distorted mean. Same thing happens to civilizations.
+- **[The Technate](https://moketchups.github.io/psychohistory/concepts/the-technate)** — The operational infrastructure: financial rail (BlackRock/Apollo), governance rail (Palantir/DOGE), intelligence rail (Unit 8200/Oracle).
+- **[Genesis Mission](https://moketchups.github.io/psychohistory/concepts/genesis-mission)** — Self-sustaining Data Fortresses powered by SMRs. The Empire's Ark.
+- **[Donroe Doctrine](https://moketchups.github.io/psychohistory/concepts/donroe-doctrine)** — Donald + Monroe. Hemispheric resource monopolization.
+- **[Kayfabe](https://moketchups.github.io/psychohistory/concepts/kayfabe)** — Scripted narrative presented as real. The heroes and villains work for the same promoter.
+- **[The Steward's Ark](https://moketchups.github.io/psychohistory/concepts/the-stewards-ark)** — The counter-architecture. Local, decentralized, human-grounded. Survives by accepting limits, not defying them.
+
+[All 22 concepts explained in plain English →](https://moketchups.github.io/psychohistory/concepts)
 
 ## Deeper Analysis
 
