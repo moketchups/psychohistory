@@ -49,7 +49,7 @@ def extract_text(filepath):
 def build_export():
     header = """PSYCHOHISTORY PREDICTION ENGINE — FULL PLAIN TEXT EXPORT
 ========================================================
-Site: https://moketchups.github.io/psychohistory/
+Site: https://moketchups.com
 8 independent analytical frameworks. 740+ nodes. 14-year trajectory (2026-2040).
 
 This is a machine-readable plain text export of the full site content.
