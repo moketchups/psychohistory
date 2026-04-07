@@ -1142,6 +1142,13 @@ def run_pipeline():
     print(f"\nSaved -> {out_path}")
     print(f"  {len(deduped)} events, {len(market_data)} market tickers")
 
+    # ── Phase 2: LLM interpretation (drafts pending updates for human review) ─
+    try:
+        from interpret_events import interpret_matched_events
+        interpret_matched_events()
+    except Exception as e:
+        print(f"  interpret_events: skipped ({e})")
+
     # ── Print summary ─────────────────────────────────────────────────────────
     print(f"\n{'─'*60}")
     print("DIMENSION SUMMARY")
