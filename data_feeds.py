@@ -1047,6 +1047,21 @@ def run_pipeline():
     # ── Sort by relevance ─────────────────────────────────────────────────────
     deduped.sort(key=lambda e: e["tags"]["relevance"], reverse=True)
 
+    # ── Phase 1: Engine matching (embedding-based retrieval) ──────────────────
+    # Find which scorecard rows / divergences / predictions / players each
+    # event structurally relates to. Adds 'engine_matches' field per event.
+    # Skips silently if OPENAI_API_KEY is not set.
+    try:
+        from engine_index import build_engine_index, match_events_to_engine
+        idx = build_engine_index()
+        if idx is not None:
+            # Only embed top 50 most relevant events to keep cost low
+            top_for_matching = deduped[:50]
+            match_events_to_engine(top_for_matching, idx)
+            # The function mutates events in place
+    except Exception as e:
+        print(f"  engine_index: skipped ({e})")
+
     # ── Compute dimension summaries ───────────────────────────────────────────
     player_counts = {}
     theater_counts = {}
