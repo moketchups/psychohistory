@@ -38,6 +38,35 @@ import urllib.error
 from datetime import datetime, timedelta
 from pathlib import Path
 
+# ── Auto-load env from known locations ───────────────────────────────────────
+# Order: GitHub Actions env (already set) → moketchups_engine .env → ~/.env
+def _load_env_files():
+    """Load env vars from .env files if not already in environment.
+    Doesn't overwrite existing env vars (so GitHub Actions secrets win)."""
+    candidates = [
+        Path("/Users/jamienucho/moketchups_engine/.env"),
+        Path.home() / ".env",
+        Path(__file__).parent / ".env",
+    ]
+    for envfile in candidates:
+        if not envfile.exists():
+            continue
+        try:
+            with open(envfile) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    key, _, value = line.partition("=")
+                    key = key.strip()
+                    value = value.strip().strip('"').strip("'")
+                    if key and value and key not in os.environ:
+                        os.environ[key] = value
+        except Exception:
+            pass
+
+_load_env_files()
+
 # ── API Keys (from environment variables) ────────────────────────────────────
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
 X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")

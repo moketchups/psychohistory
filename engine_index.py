@@ -26,6 +26,33 @@ ENGINE_DATA_DIR = Path("/Users/jamienucho/psychohistory-v2/data")
 # Cache the index file in the deploy dir so subsequent runs can reuse it
 INDEX_CACHE_PATH = Path(__file__).parent / "engine_index_cache.json"
 
+
+# Auto-load env from known locations if not already set
+def _load_env_files():
+    candidates = [
+        Path("/Users/jamienucho/moketchups_engine/.env"),
+        Path.home() / ".env",
+        Path(__file__).parent / ".env",
+    ]
+    for envfile in candidates:
+        if not envfile.exists():
+            continue
+        try:
+            with open(envfile) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    key, _, value = line.partition("=")
+                    key = key.strip()
+                    value = value.strip().strip('"').strip("'")
+                    if key and value and key not in os.environ:
+                        os.environ[key] = value
+        except Exception:
+            pass
+
+_load_env_files()
+
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 EMBED_MODEL = "text-embedding-3-small"  # 1536 dims, cheap
 SIMILARITY_THRESHOLD = 0.30  # min cosine similarity to count as a match

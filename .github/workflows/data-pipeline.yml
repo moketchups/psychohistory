@@ -19,13 +19,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install tavily-python gnews feedparser yfinance
+        run: pip install tavily-python gnews feedparser yfinance openai
 
       - name: Run data pipeline
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python data_feeds.py
 
       - name: Commit and push if changed
