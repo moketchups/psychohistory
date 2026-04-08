@@ -1290,5 +1290,68 @@ def run_pipeline():
     return output
 
 
+def auto_commit_and_push(event_count):
+    """Commit current_events.json + push if there are real changes.
+    Skipped silently if no changes, no remote, or push fails (so the
+    pipeline never crashes the run on a git issue)."""
+    import subprocess
+    deploy_dir = Path(__file__).parent
+    try:
+        # Check if current_events.json has uncommitted changes
+        result = subprocess.run(
+            ["git", "diff", "--quiet", "current_events.json"],
+            cwd=str(deploy_dir),
+            capture_output=True,
+        )
+        # Exit code 0 = no changes, 1 = changes, anything else = error
+        if result.returncode == 0:
+            print("auto-push: no changes to current_events.json, skipping commit")
+            return
+        if result.returncode != 1:
+            print(f"auto-push: git diff failed (code {result.returncode}), skipping")
+            return
+
+        # Stage and commit
+        subprocess.run(["git", "add", "current_events.json"], cwd=str(deploy_dir), check=True, capture_output=True)
+        ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        msg = f"Auto-update data [{ts}] ({event_count} events)"
+        subprocess.run(["git", "commit", "-m", msg], cwd=str(deploy_dir), check=True, capture_output=True)
+        print(f"auto-push: committed [{msg}]")
+
+        # Pull --rebase to absorb any other commits, then push
+        pull = subprocess.run(
+            ["git", "pull", "--rebase", "origin", "main"],
+            cwd=str(deploy_dir),
+            capture_output=True,
+            text=True,
+        )
+        if pull.returncode != 0:
+            print(f"auto-push: pull --rebase failed:\n{pull.stderr[:500]}")
+            print("auto-push: leaving commit local — run 'git pull --rebase && git push' manually")
+            return
+
+        push = subprocess.run(
+            ["git", "push", "origin", "main"],
+            cwd=str(deploy_dir),
+            capture_output=True,
+            text=True,
+        )
+        if push.returncode != 0:
+            print(f"auto-push: push failed:\n{push.stderr[:500]}")
+            return
+
+        print("auto-push: ✓ pushed to live site")
+    except subprocess.CalledProcessError as e:
+        print(f"auto-push: subprocess error: {e}")
+    except Exception as e:
+        print(f"auto-push: unexpected error: {e}")
+
+
 if __name__ == "__main__":
-    run_pipeline()
+    import sys
+    no_push = "--no-push" in sys.argv
+    output = run_pipeline()
+    if not no_push:
+        auto_commit_and_push(len(output.get("events", [])))
+    else:
+        print("auto-push: skipped (--no-push)")
