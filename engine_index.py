@@ -60,7 +60,19 @@ TOP_K = 3  # top matches to return per event
 
 
 def slugify(text):
-    return (text or "").lower().replace("'", "").replace("$", "").replace("/", "-").replace(" ", "-").replace(",", "")[:60]
+    """Mirror of the frontend slugify rules. MUST stay in sync with
+    src/app/{scorecard,divergences,players}/page.tsx and ConceptsView.tsx."""
+    import re
+    if not text:
+        return ""
+    s = text.lower()
+    s = s.replace("\u2018", "").replace("\u2019", "")
+    s = s.replace("'", "")
+    s = s.replace("$", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    s = re.sub(r"-+", "-", s)
+    s = s.strip("-")
+    return s
 
 
 def _load_engine_elements():

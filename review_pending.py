@@ -58,7 +58,55 @@ def save_pending(pending):
 
 
 def slugify(text):
-    return (text or "").lower().replace("'", "").replace("$", "").replace("/", "-").replace(" ", "-").replace(",", "")[:60]
+    """Mirror of the frontend slugify rules. MUST stay in sync with
+    src/app/{scorecard,divergences,players}/page.tsx and ConceptsView.tsx.
+    Frontend rule: text.toLowerCase()
+                       .replace(/['']/g, "")     # smart quotes
+                       .replace(/[$]/g, "")
+                       .replace(/[^a-z0-9]+/g, "-")  # collapse non-alnum to -
+                       .replace(/^-+|-+$/g, "")  # trim leading/trailing -
+                       .replace(/-+/g, "-")      # collapse multiple -
+    Note: divergences also strips !=, but the [^a-z0-9]+ rule already handles it.
+    No length cap on the frontend — must not truncate here either."""
+    import re
+    if not text:
+        return ""
+    s = text.lower()
+    s = s.replace("\u2018", "").replace("\u2019", "")  # smart quotes
+    s = s.replace("'", "")
+    s = s.replace("$", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    s = re.sub(r"-+", "-", s)
+    s = s.strip("-")
+    return s
+
+
+_BACKED_UP_THIS_SESSION = set()
+DRY_RUN = False
+
+
+def _backup_once(path):
+    """Copy the file to .bak the first time we touch it this session.
+    Subsequent writes don't re-backup (so a session that approves 10 things
+    leaves a single backup of the pre-session state)."""
+    if path in _BACKED_UP_THIS_SESSION:
+        return
+    bak = path.with_suffix(path.suffix + ".bak")
+    import shutil
+    shutil.copy2(path, bak)
+    _BACKED_UP_THIS_SESSION.add(path)
+    print(color(f"  → backup: {bak.name}", DIM))
+
+
+def _write_engine_json(path, data):
+    """Write JSON to engine data file. In dry-run mode, only print what
+    would happen — never touches disk."""
+    if DRY_RUN:
+        print(color(f"  [DRY-RUN] would write {path.name} ({len(data)} top-level entries)", YELLOW))
+        return
+    _backup_once(path)
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 def apply_to_scorecard(element_id, draft_text):
@@ -71,8 +119,7 @@ def apply_to_scorecard(element_id, draft_text):
         if slugify(row.get("topic", "")) == slug:
             existing = row.get("analysis", "")
             row["analysis"] = (existing + "\n\n" + draft_text).strip()
-            with open(path, "w") as f:
-                json.dump(rows, f, indent=2, ensure_ascii=False)
+            _write_engine_json(path, rows)
             return True
     return False
 
@@ -87,8 +134,7 @@ def apply_to_divergence(element_id, draft_text):
             content_field = "content" if "content" in d else "description"
             existing = d.get(content_field, "")
             d[content_field] = (existing + "\n\n" + draft_text).strip()
-            with open(path, "w") as f:
-                json.dump(divs, f, indent=2, ensure_ascii=False)
+            _write_engine_json(path, divs)
             return True
     return False
 
@@ -103,8 +149,44 @@ def apply_to_prediction(element_id, draft_text):
             conditions = p.setdefault("conditions", {})
             existing = conditions.get("watch_for", "")
             conditions["watch_for"] = (existing + "\n\n" + draft_text).strip()
-            with open(path, "w") as f:
-                json.dump(preds, f, indent=2, ensure_ascii=False)
+            _write_engine_json(path, preds)
+            return True
+    return False
+
+
+def apply_to_player(element_id, draft_text):
+    """Append a draft text to a player card. Players have either a 'content'
+    string field or a 'paragraphs' list. Append as a new paragraph in either case."""
+    slug = element_id.split(":", 1)[1]
+    path = ENGINE_DATA_DIR / "players.json"
+    with open(path) as f:
+        sections = json.load(f)
+    for section in sections:
+        for card in section.get("cards", []):
+            if slugify(card.get("name", "")) == slug:
+                if "paragraphs" in card and isinstance(card["paragraphs"], list):
+                    card["paragraphs"].append(draft_text)
+                else:
+                    existing = card.get("content", "")
+                    card["content"] = (existing + "\n\n" + draft_text).strip()
+                _write_engine_json(path, sections)
+                return True
+    return False
+
+
+def apply_to_concept(element_id, draft_text):
+    """Append draft to a concept's definition."""
+    slug = element_id.split(":", 1)[1]
+    path = ENGINE_DATA_DIR / "concepts.json"
+    with open(path) as f:
+        concepts = json.load(f)
+    for c in concepts:
+        name = c.get("term") or c.get("name") or ""
+        if slugify(name) == slug:
+            field = "definition" if "definition" in c else "description"
+            existing = c.get(field, "")
+            c[field] = (existing + "\n\n" + draft_text).strip()
+            _write_engine_json(path, concepts)
             return True
     return False
 
@@ -123,6 +205,10 @@ def apply_draft(draft):
             return apply_to_divergence(eid, text)
         elif etype == "prediction":
             return apply_to_prediction(eid, text)
+        elif etype == "player":
+            return apply_to_player(eid, text)
+        elif etype == "concept":
+            return apply_to_concept(eid, text)
     except Exception as e:
         print(color(f"  Apply error: {e}", RED))
         return False
@@ -130,7 +216,7 @@ def apply_draft(draft):
 
 
 def display_draft(draft, idx, total):
-    """Pretty-print one draft for the user."""
+    """Pretty-print one batched draft for the user."""
     rel = draft.get("relationship", "?").upper()
     rel_color = {"CONFIRMS": GREEN, "CONTRADICTS": RED, "REFINES": YELLOW}.get(rel, WHITE)
     conf = draft.get("confidence", "?").upper()
@@ -141,23 +227,38 @@ def display_draft(draft, idx, total):
     print(f"{color(f'[{idx}/{total}]', BOLD)} "
           f"{color(draft['element_type'].upper(), MAGENTA)} → "
           f"{color(draft['element_label'], BOLD)}")
+    sim_pct = int(draft.get("max_similarity", draft.get("similarity", 0)) * 100)
+    event_count = draft.get("event_count", 1)
+    day = draft.get("day", "")
     print(f"  {color(rel, rel_color)} · {color(conf + ' confidence', conf_color)} · "
-          f"similarity {int(draft.get('similarity', 0) * 100)}%")
+          f"{event_count} signal{'s' if event_count != 1 else ''} on {day} · max sim {sim_pct}%")
     print()
     print(color("DRAFT:", BOLD))
     text = draft.get("edited_text") or draft.get("draft_text", "")
     for line in text.split("\n"):
         print(f"  {line}")
     print()
-    print(color("PASTE-QUOTE FROM SOURCE:", BOLD))
-    quote = draft.get("quote", "")
-    print(f"  {color('“' + quote + '”', CYAN)}")
-    print()
-    print(color("SOURCE:", BOLD))
-    print(f"  {draft.get('source_publisher', 'unknown')} — {draft.get('source_title', '')[:80]}")
-    print(f"  {color(draft.get('source_url', ''), BLUE)}")
+    # New schema: quotes is a list of {url, title, quote}. Old schema: single quote field.
+    quotes = draft.get("quotes")
+    if quotes:
+        print(color(f"PASTE-QUOTES ({len(quotes)} sources):", BOLD))
+        for q in quotes:
+            print(f"  {color('“' + q.get('quote', '') + '”', CYAN)}")
+            print(f"    {color('— ' + (q.get('title', '') or '')[:75], DIM)}")
+            print(f"    {color(q.get('url', ''), BLUE)}")
+            print()
+    else:
+        # Backward compat with old single-quote drafts
+        quote = draft.get("quote", "")
+        if quote:
+            print(color("PASTE-QUOTE FROM SOURCE:", BOLD))
+            print(f"  {color('“' + quote + '”', CYAN)}")
+            print()
+            print(color("SOURCE:", BOLD))
+            print(f"  {draft.get('source_publisher', 'unknown')} — {draft.get('source_title', '')[:80]}")
+            print(f"  {color(draft.get('source_url', ''), BLUE)}")
+            print()
     if draft.get("rationale"):
-        print()
         print(color("RATIONALE:", DIM) + " " + color(draft["rationale"], DIM))
     print()
 
@@ -189,7 +290,7 @@ def main():
 
     # Sort by confidence: high → medium → low
     conf_order = {"high": 0, "medium": 1, "low": 2}
-    pending_items.sort(key=lambda p: (conf_order.get(p.get("confidence", "low"), 3), -p.get("similarity", 0)))
+    pending_items.sort(key=lambda p: (conf_order.get(p.get("confidence", "low"), 3), -p.get("max_similarity", p.get("similarity", 0))))
 
     print(color(f"{BOLD}Psychohistory Engine — Review Queue{RESET}", CYAN))
     print(color(f"{len(pending_items)} pending updates", DIM))
@@ -207,15 +308,19 @@ def main():
             choice = input(color("> ", BOLD)).strip().lower()
             if choice == "a" or choice == "approve":
                 if apply_draft(draft):
-                    draft["status"] = "approved"
-                    draft["decided_at"] = datetime.now().isoformat()
-                    save_pending(pending)
+                    if DRY_RUN:
+                        print(color("✓ [DRY-RUN] would apply (status left as pending)", YELLOW))
+                    else:
+                        draft["status"] = "approved"
+                        draft["decided_at"] = datetime.now().isoformat()
+                        save_pending(pending)
+                        print(color("✓ Applied to engine.", GREEN))
                     applied_count += 1
-                    print(color("✓ Applied to engine.", GREEN))
                 else:
                     print(color("✗ Apply failed (engine element not found?). Marking as rejected.", RED))
-                    draft["status"] = "rejected"
-                    save_pending(pending)
+                    if not DRY_RUN:
+                        draft["status"] = "rejected"
+                        save_pending(pending)
                     rejected_count += 1
                 break
             elif choice == "e" or choice == "edit":
@@ -255,6 +360,9 @@ def main():
 def _offer_finalize(applied_count):
     """If anything was approved, offer to rebuild + push."""
     if applied_count == 0:
+        return
+    if DRY_RUN:
+        print(color("[DRY-RUN] skipping rebuild/push.", YELLOW))
         return
     print()
     answer = input(color(f"Rebuild export.txt and push to live site? [y/N] ", BOLD)).strip().lower()
@@ -301,6 +409,9 @@ def _offer_finalize(applied_count):
 
 
 if __name__ == "__main__":
+    if "--dry-run" in sys.argv or "-n" in sys.argv:
+        DRY_RUN = True
+        print(color("DRY-RUN MODE — no files will be written.", YELLOW))
     try:
         main()
     except KeyboardInterrupt:

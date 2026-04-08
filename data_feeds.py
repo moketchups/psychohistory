@@ -187,6 +187,15 @@ TAVILY_QUERIES = [
     "Cuba Latin America sphere of influence 2026",
     "BRICS dedollarization multipolar order 2026",
     "limits to growth resource depletion overshoot",
+    # ── AI Capability Bifurcation — track the public/gated tier split ──
+    "Anthropic model not releasing capability withheld 2026",
+    "Anthropic Mythos Glasswing dangerous capability gated 2026",
+    "Anthropic responsible scaling policy ASL-3 ASL-4 frontier 2026",
+    "OpenAI internal model not released safety capability 2026",
+    "DOD military Anthropic OpenAI ultimatum unrestricted access",
+    "AI lab withholding model release security national 2026",
+    "DeepSeek China withholding AI model US chipmakers 2026",
+    "frontier AI capability gap public deployed internal 2026",
 ]
 
 RSS_FEEDS = [
@@ -266,29 +275,65 @@ SEARCH_PRIORITIES = {
 
 # ── Fetchers ──────────────────────────────────────────────────────────────────
 
-def fetch_tavily(queries, max_per_query=5):
-    """Search Tavily for prediction-relevant current events."""
+def _extract_date_from_url(url):
+    """Pull a YYYY-MM-DD date from a URL path. Handles /2025/04/10/, /2026-03-19/, etc."""
+    import re
+    if not url:
+        return ""
+    # Format: /2026/04/07/ or /2026-04-07/
+    m = re.search(r'/(20\d{2})[-/](\d{2})[-/](\d{2})', url)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    return ""
+
+
+def fetch_tavily(queries, max_per_query=5, max_age_days=14):
+    """Search Tavily for prediction-relevant current events.
+    Drops results older than max_age_days based on Tavily's published_date OR URL date.
+    Drops results with no parseable date."""
     if not TAVILY_KEY:
         print("  TAVILY_API_KEY not set, skipping Tavily")
         return []
     from tavily import TavilyClient
+    from datetime import datetime, timedelta
     client = TavilyClient(api_key=TAVILY_KEY)
+    cutoff = (datetime.now() - timedelta(days=max_age_days)).date()
     results = []
+    dropped_old = 0
+    dropped_undated = 0
     for q in queries:
         try:
             resp = client.search(q, max_results=max_per_query, search_depth="advanced")
             for r in resp.get("results", []):
+                pub = r.get("published_date", "") or _extract_date_from_url(r.get("url", ""))
+                # Try to parse the date
+                ev_date = None
+                if pub:
+                    for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%SZ"):
+                        try:
+                            ev_date = datetime.strptime(pub[:19] if "T" in pub else pub[:10], fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                if ev_date is None:
+                    dropped_undated += 1
+                    continue
+                if ev_date < cutoff:
+                    dropped_old += 1
+                    continue
                 results.append({
                     "source": "tavily",
                     "query": q,
                     "title": r.get("title", ""),
                     "url": r.get("url", ""),
                     "content": r.get("content", "")[:500],
-                    "published": r.get("published_date", ""),
+                    "published": ev_date.isoformat(),
                     "score": r.get("score", 0),
                 })
         except Exception as e:
             print(f"  Tavily error for '{q[:40]}': {e}")
+    if dropped_old or dropped_undated:
+        print(f"  Tavily: dropped {dropped_old} stale + {dropped_undated} undated results (kept {len(results)})")
     return results
 
 
