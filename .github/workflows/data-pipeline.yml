@@ -2,7 +2,10 @@ name: Data Pipeline
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
+    # Schedule pinned to EST (UTC-5). In summer (EDT) all times shift 1h earlier in local terms.
+    - cron: '0 13-20 * * 1-5'      # Mon-Fri hourly, 8am-3pm ET (8 firings, last at 3pm = pre-close)
+    - cron: '0 2 * * 2-6'           # Mon-Fri 9pm ET (next-day 02:00 UTC)
+    - cron: '0 0,6,12,18 * * 0,6'   # Sat+Sun every 6h (unchanged cadence)
   workflow_dispatch:  # Manual trigger
 
 permissions:
