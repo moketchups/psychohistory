@@ -10,6 +10,12 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   ingest:
@@ -33,13 +39,40 @@ jobs:
         run: python data_feeds.py
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config user.name "psychohistory-bot"
           git config user.email "bot@moketchups.github.io"
           git add current_events.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
-            git commit -m "Auto-update data [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
+            EVENT_COUNT=$(python3 -c "import json; print(len(json.load(open('current_events.json')).get('events',[])))" 2>/dev/null || echo "?")
+            git commit -m "Auto-update data [$(date -u +%Y-%m-%dT%H:%M:%SZ)] ($EVENT_COUNT events)"
             git push
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+  deploy:
+    needs: ingest
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Pull latest
+        run: git pull origin main
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
