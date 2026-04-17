@@ -50,7 +50,27 @@ jobs:
           else
             EVENT_COUNT=$(python3 -c "import json; print(len(json.load(open('current_events.json')).get('events',[])))" 2>/dev/null || echo "?")
             git commit -m "Auto-update data [$(date -u +%Y-%m-%dT%H:%M:%SZ)] ($EVENT_COUNT events)"
-            git push
+
+            # Retry loop: push races with manual commits (e.g. live-feed ripples). On rejection,
+            # fetch-rebase and retry up to 5 times with exponential backoff. current_events.json
+            # is pipeline-owned, so rebasing our single-file commit onto concurrent site commits
+            # is safe (no path conflicts). Fails loudly after 5 attempts.
+            PUSHED=false
+            for attempt in 1 2 3 4 5; do
+              if git push; then
+                echo "Push succeeded on attempt $attempt"
+                PUSHED=true
+                break
+              fi
+              echo "Push rejected on attempt $attempt — fetching and rebasing"
+              git fetch origin main
+              git pull --rebase origin main || { echo "Rebase failed on attempt $attempt"; exit 1; }
+              sleep $((2 ** (attempt - 1)))
+            done
+            if [ "$PUSHED" = "false" ]; then
+              echo "Push failed after 5 attempts — aborting"
+              exit 1
+            fi
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
