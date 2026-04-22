@@ -1,22 +1,22 @@
 {
-  "timestamp": "2026-04-22T16:07:24.861917",
+  "timestamp": "2026-04-22T17:59:20.266730",
   "date": "2026-04-22",
   "meta": {
-    "total_events": 116,
+    "total_events": 117,
     "sources": {
-      "tavily": 1,
+      "tavily": 2,
       "gnews": 85,
       "rss": 30
     },
-    "high_relevance_events": 26,
+    "high_relevance_events": 28,
     "prediction_markets": {
-      "polymarket": 14,
+      "polymarket": 16,
       "manifold": 87
     },
     "x_pulse_total_7d": 0,
     "research_papers": 30,
-    "gdelt_articles": 70,
-    "fred_metrics": 6,
+    "gdelt_articles": 40,
+    "fred_metrics": 5,
     "world_bank_indicators": 6,
     "insider_filings": 51,
     "congress_filings": 161,
@@ -41,44 +41,44 @@
   },
   "market_data": {
     "VIX": {
-      "price": 19.44,
-      "change_5d": 8.36,
+      "price": 19.25,
+      "change_5d": 7.3,
       "high_5d": 20.85,
       "low_5d": 16.87
     },
     "SP500": {
-      "price": 7122.59,
-      "change_5d": 1.15,
+      "price": 7123.29,
+      "change_5d": 1.16,
       "high_5d": 7147.52,
       "low_5d": 7008.52
     },
     "DXY": {
-      "price": 98.56,
-      "change_5d": 0.46,
-      "high_5d": 98.57,
+      "price": 98.55,
+      "change_5d": 0.45,
+      "high_5d": 98.59,
       "low_5d": 97.63
     },
     "Gold": {
-      "price": 4747.8,
-      "change_5d": -2.26,
+      "price": 4755.0,
+      "change_5d": -2.11,
       "high_5d": 4879.7,
       "low_5d": 4676.4
     },
     "Oil": {
-      "price": 93.09,
-      "change_5d": 11.02,
+      "price": 92.81,
+      "change_5d": 10.69,
       "high_5d": 94.45,
       "low_5d": 80.56
     },
     "BTC": {
-      "price": 79332.08,
-      "change_5d": 4.76,
-      "high_5d": 79434.94,
+      "price": 78946.07,
+      "change_5d": 4.25,
+      "high_5d": 79449.66,
       "low_5d": 73775.57
     },
     "TLT": {
-      "price": 86.88,
-      "change_5d": 0.69,
+      "price": 86.83,
+      "change_5d": 0.64,
       "high_5d": 87.21,
       "low_5d": 86.2
     },
@@ -92,24 +92,10 @@
   "prediction_markets": {
     "polymarket": [
       {
-        "question": "Will Elon Musk post 200-219 tweets from April 24 to May 1, 2026?",
-        "outcome_prices": "[\"0.105\", \"0.895\"]",
-        "volume": "9997.427911000002",
-        "liquidity": "29791.5543",
-        "end_date": "2026-05-01T16:00:00Z",
-        "slug": "elon-musk-of-tweets-april-24-may-1-200-219",
-        "priorities": [
-          "player_movements"
-        ],
-        "players": [
-          "Musk"
-        ]
-      },
-      {
         "question": "LoL: FlyQuest vs Sentinels (BO3) - Esports World Cup North America Qualifier Playoffs",
         "outcome_prices": "[\"0.565\", \"0.435\"]",
         "volume": "9.996602",
-        "liquidity": "491.2191",
+        "liquidity": "665.6582",
         "end_date": "2026-04-24T00:00:00Z",
         "slug": "lol-fly-sen-2026-04-23",
         "priorities": [],
@@ -119,9 +105,9 @@
       },
       {
         "question": "Will Elon Musk\u2019s net worth be between $620b and $630b on April 30?",
-        "outcome_prices": "[\"0.075\", \"0.925\"]",
+        "outcome_prices": "[\"0.09\", \"0.91\"]",
         "volume": "9995.509017999995",
-        "liquidity": "2033.9132",
+        "liquidity": "1964.0389",
         "end_date": "2026-04-30T00:00:00Z",
         "slug": "will-elon-musks-net-worth-be-between-620b-and-630b-on-april-30",
         "priorities": [
@@ -132,12 +118,36 @@
         ]
       },
       {
-        "question": "Will Elon Musk post 1040-1079 tweets in April 2026?",
-        "outcome_prices": "[\"0.1585\", \"0.8415\"]",
-        "volume": "99920.44768700002",
-        "liquidity": "2419.37747",
+        "question": "Will FC Barcelona win on 2026-04-25?",
+        "outcome_prices": "[\"0.775\", \"0.225\"]",
+        "volume": "996.468654",
+        "liquidity": "925.1064",
+        "end_date": "2026-04-25T16:15:00Z",
+        "slug": "uwcl-bm-fcb-2026-04-25-fcb",
+        "priorities": [],
+        "players": [
+          "Musk"
+        ]
+      },
+      {
+        "question": "Will ChatGPT be #2 Free App in the US Apple App Store on April 28?",
+        "outcome_prices": "[\"0.245\", \"0.755\"]",
+        "volume": "99.53",
+        "liquidity": "244.023",
+        "end_date": "2026-04-28T00:00:00Z",
+        "slug": "will-chatgpt-be-2-free-app-in-the-us-apple-app-store-on-april-28",
+        "priorities": [],
+        "players": [
+          "Altman"
+        ]
+      },
+      {
+        "question": "Will Elon Musk post 800-839 tweets in April 2026?",
+        "outcome_prices": "[\"0.0005\", \"0.9995\"]",
+        "volume": "99457.16140900004",
+        "liquidity": "27883.58275",
         "end_date": "2026-05-01T04:00:00Z",
-        "slug": "elon-musk-of-tweets-april-2026-1040-1079",
+        "slug": "elon-musk-of-tweets-april-2026-800-839",
         "priorities": [
           "player_movements"
         ],
@@ -146,34 +156,10 @@
         ]
       },
       {
-        "question": "Will Vegas Golden Knights advance to Round 2 of the 2026 NHL Playoffs?",
-        "outcome_prices": "[\"0.6\", \"0.4\"]",
-        "volume": "996.3729819999999",
-        "liquidity": "2312.3337",
-        "end_date": "2026-05-05T00:00:00Z",
-        "slug": "will-vegas-golden-knights-advance-to-round-2-of-the-2026-nhl-playoffs",
-        "priorities": [],
-        "players": [
-          "China"
-        ]
-      },
-      {
-        "question": "Counter-Strike: Atreides vs BASEMENT BOYS (BO3) - ESL Challenger League Europe Cup #4 Playoffs",
-        "outcome_prices": "[\"0.335\", \"0.665\"]",
-        "volume": "9949.029737000003",
-        "liquidity": "8841.752",
-        "end_date": "2026-04-22T19:15:00Z",
-        "slug": "cs2-atreid-bmb-2026-04-22",
-        "priorities": [],
-        "players": [
-          "China"
-        ]
-      },
-      {
         "question": "Will Maxx Crosby play for Los Angeles Rams next?",
         "outcome_prices": "[\"0.0015\", \"0.9985\"]",
         "volume": "9944.185702",
-        "liquidity": "2239.39219",
+        "liquidity": "2165.76332",
         "end_date": "2026-09-01T00:00:00Z",
         "slug": "will-maxx-crosby-play-for-los-angeles-rams-next",
         "priorities": [],
@@ -183,9 +169,9 @@
       },
       {
         "question": "Will Toronto Raptors advance to the Conference Semifinals in the 2026 NBA Playoffs?",
-        "outcome_prices": "[\"0.03\", \"0.97\"]",
+        "outcome_prices": "[\"0.0295\", \"0.9705\"]",
         "volume": "993.7083239999998",
-        "liquidity": "5769.62063",
+        "liquidity": "5767.1395",
         "end_date": "2026-05-03T00:00:00Z",
         "slug": "will-toronto-raptors-advance-to-the-conference-semifinals-in-the-2026-nba-playoffs",
         "priorities": [],
@@ -194,10 +180,22 @@
         ]
       },
       {
+        "question": "Will any AI model reach 1510 Overall Arena Score by September 30, 2026?",
+        "outcome_prices": "[\"0.84\", \"0.16\"]",
+        "volume": "9923.353046000004",
+        "liquidity": "11610.4552",
+        "end_date": "2026-09-30T00:00:00Z",
+        "slug": "will-any-ai-model-reach-1510-overall-arena-score-by-september-30-2026",
+        "priorities": [],
+        "players": [
+          "AI_Industry"
+        ]
+      },
+      {
         "question": "Will Mar\u00eda Corina Machado be the leader of Venezuela end of 2026?",
         "outcome_prices": "[\"0.095\", \"0.905\"]",
-        "volume": "991636.4149530397",
-        "liquidity": "48653.7083",
+        "volume": "991789.6549530397",
+        "liquidity": "54397.0724",
         "end_date": "2026-12-31T00:00:00Z",
         "slug": "will-mara-corina-machado-be-the-leader-of-venezuela-end-of-2026",
         "priorities": [
@@ -209,7 +207,7 @@
         "question": "Will Trump pardon Ghislaine Maxwell before 2027?",
         "outcome_prices": "[\"0.07\", \"0.93\"]",
         "volume": "9915.833873000007",
-        "liquidity": "14199.564",
+        "liquidity": "20336.0544",
         "end_date": "2026-12-31T00:00:00Z",
         "slug": "will-trump-pardon-ghislaine-maxwell-before-2027",
         "priorities": [],
@@ -218,22 +216,34 @@
         ]
       },
       {
-        "question": "Will any AI model reach 1510 Overall Arena Score by September 30, 2026?",
-        "outcome_prices": "[\"0.84\", \"0.16\"]",
-        "volume": "9913.253046000003",
-        "liquidity": "7057.389",
-        "end_date": "2026-09-30T00:00:00Z",
-        "slug": "will-any-ai-model-reach-1510-overall-arena-score-by-september-30-2026",
+        "question": "Will the highest temperature in Beijing be 32\u00b0C or higher on April 24?",
+        "outcome_prices": "[\"0.0025\", \"0.9975\"]",
+        "volume": "991.1094439999999",
+        "liquidity": "11947.60484",
+        "end_date": "2026-04-24T12:00:00Z",
+        "slug": "highest-temperature-in-beijing-on-april-24-2026-32corhigher",
         "priorities": [],
         "players": [
-          "AI_Industry"
+          "China"
+        ]
+      },
+      {
+        "question": "ChatGPT Outage by May 1?",
+        "outcome_prices": "[\"0.33\", \"0.67\"]",
+        "volume": "9.90588",
+        "liquidity": "2949.8035",
+        "end_date": "2026-05-01T00:00:00Z",
+        "slug": "chatgpt-outage-by-may-1-264",
+        "priorities": [],
+        "players": [
+          "Altman"
         ]
       },
       {
         "question": "Will Xi Jinping purge Wang Yi in 2026?",
         "outcome_prices": "[\"0.0605\", \"0.9395\"]",
         "volume": "9902.026521999993",
-        "liquidity": "15757.01867",
+        "liquidity": "15465.92837",
         "end_date": "2026-12-31T00:00:00Z",
         "slug": "will-xi-jinping-purge-wang-yi-in-2026",
         "priorities": [],
@@ -242,29 +252,39 @@
         ]
       },
       {
-        "question": "Will Elon Musk post 800-839 tweets in April 2026?",
-        "outcome_prices": "[\"0.0005\", \"0.9995\"]",
-        "volume": "98990.49140900004",
-        "liquidity": "28370.90509",
-        "end_date": "2026-05-01T04:00:00Z",
-        "slug": "elon-musk-of-tweets-april-2026-800-839",
-        "priorities": [
-          "player_movements"
-        ],
+        "question": "Will Saudi Arabia recognize Israel by June 30?",
+        "outcome_prices": "[\"0.049\", \"0.951\"]",
+        "volume": "9891.617666000002",
+        "liquidity": "14316.57961",
+        "end_date": "",
+        "slug": "will-saudi-arabia-recognize-israel-by-june-30",
+        "priorities": [],
         "players": [
-          "Musk"
+          "Israel"
         ]
       },
       {
-        "question": "Set 1 Winner: Agut vs Tirante",
-        "outcome_prices": "[\"0.0005\", \"0.9995\"]",
-        "volume": "989.628341",
-        "liquidity": "14827.92827",
-        "end_date": "2026-04-29T09:00:00Z",
-        "slug": "atp-agut-tirante-2026-04-22-first-set-winner-Agut-vs-Tirante",
+        "question": "Will Meituan have the best AI model at the end of April 2026?",
+        "outcome_prices": "[\"0.0015\", \"0.9985\"]",
+        "volume": "987468.2245690065",
+        "liquidity": "373375.17626",
+        "end_date": "2026-04-30T00:00:00Z",
+        "slug": "will-meituan-have-the-best-ai-model-at-the-end-of-april-2026",
         "priorities": [],
         "players": [
-          "Iran"
+          "AI_Industry"
+        ]
+      },
+      {
+        "question": "Will Meituan have the #1 AI model at the end of May 2026 (Style Control On)?",
+        "outcome_prices": "[\"0.0025\", \"0.9975\"]",
+        "volume": "986.7152500000001",
+        "liquidity": "2281.25129",
+        "end_date": "2026-05-31T00:00:00Z",
+        "slug": "will-meituan-have-the-1-ai-model-at-the-end-of-may-2026-style-control-on",
+        "priorities": [],
+        "players": [
+          "AI_Industry"
         ]
       }
     ],
@@ -721,8 +741,8 @@
       },
       {
         "question": "Will Elon Musk be worth more than $1 Trillion by Jan 1st, 2029?",
-        "probability": 81.6,
-        "volume": 841402.7822267571,
+        "probability": 83.2,
+        "volume": 854827.7822267571,
         "total_liquidity": 100000,
         "unique_bettors": 385,
         "url": "https://manifold.markets/pixel__/will-elon-musk-be-worth-more-than-1-SuEQdq5zlI",
@@ -1457,306 +1477,6 @@
   "gdelt": {
     "articles": [
       {
-        "title": "C\u00fa s\u1ed1c n\u0103ng l\u01b0\u1ee3ng : Ch\u00e2u \u00c1 , Ch\u00e2u Phi chuy\u1ec3n sang \u0111i\u1ec7n h\u1ea1t nh\u00e2n",
-        "url": "https://vneconomy.vn/cu-soc-nang-luong-khien-chau-a-va-chau-phi-tim-den-dien-hat-nhan.htm",
-        "source_country": "Vietnam",
-        "language": "Vietnamese",
-        "domain": "vneconomy.vn",
-        "seendate": "20260420T131500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Odej\u015bcie od atomu by\u0142o b\u0142\u0119dem . Tak uwa\u017ca wi\u0119kszo\u015b\u0107 Niemc\u00f3w",
-        "url": "https://www.dw.com/pl/odej%C5%9Bcie-od-atomu-by%C5%82o-b%C5%82%C4%99dem-tak-uwa%C5%BCa-wi%C4%99kszo%C5%9B%C4%87-niemc%C3%B3w/a-76881501",
-        "source_country": "Germany",
-        "language": "Polish",
-        "domain": "dw.com",
-        "seendate": "20260421T171500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Nuclear Stock Face - Off : Is Oklo or Cameco the Better Buy Right Now ? ",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/nuclear-stock-face-off-oklo-012500421.html",
-        "source_country": "United States",
-        "language": "English",
-        "domain": "finance.yahoo.com",
-        "seendate": "20260422T020000Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Dependen\u021ba Ucrainei de energia nuclear\u0103 cre\u0219te \u00een timpul r\u0103zboiului",
-        "url": "https://www.mediafax.ro/externe/dependenta-ucrainei-de-energia-nucleara-creste-in-timpul-razboiului-23724195",
-        "source_country": "Romania",
-        "language": "Romanian",
-        "domain": "mediafax.ro",
-        "seendate": "20260422T073000Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Eliminazione del nucleare : quasi un tedesco su due pensa che sia stato un errore",
-        "url": "https://it.euronews.com/my-europe/2026/04/21/eliminazione-del-nucleare-quasi-un-tedesco-su-due-pensa-che-sia-stato-un-errore",
-        "source_country": "United States",
-        "language": "Italian",
-        "domain": "it.euronews.com",
-        "seendate": "20260421T191500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Casi un 50 % de los alemanes considera un error haber abandonado la energ\u00eda nuclear",
-        "url": "https://es.euronews.com/my-europe/2026/04/22/casi-mitad-alemanes-considera-error-haber-abandonado-energia-nuclear",
-        "source_country": "United States",
-        "language": "Spanish",
-        "domain": "es.euronews.com",
-        "seendate": "20260422T101500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Efecto guerra : crece el inter\u00e9s global por ETF de energ\u00eda nuclear",
-        "url": "https://www.ambito.com/economia/efecto-guerra-mas-interes-fondos-etf-energia-nuclear-n6269394",
-        "source_country": "Argentina",
-        "language": "Spanish",
-        "domain": "ambito.com",
-        "seendate": "20260422T141500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "\u4f17\u8d62\u8d22\u5bcc\u901a \uff1a \u4e2d\u56fd\u6838\u7535\u88c5\u673a\u5168\u7403\u7b2c\u4e00\u8d4b\u80fd\u8d22\u7ecf\u65b0\u56fe\u666f _ \u4ea7\u4e1a\u8d44\u8baf _ \u884c\u4e1a _ \u4e2d\u91d1\u5728\u7ebf",
-        "url": "http://hy.stock.cnfol.com/hangyejingcui/20260420/32156235.shtml",
-        "source_country": "China",
-        "language": "Chinese",
-        "domain": "hy.stock.cnfol.com",
-        "seendate": "20260420T043000Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "\u548c\u4f17\u6c47\u5bcc\u7814\u7a76\u624b\u8bb0 \uff1a \u6838\u7535\u88c5\u673a\u5168\u7403\u9886\u8dd1\u8d4b\u80fd\u8d22\u7ecf\u65b0\u56fe\u666f _ \u4ea7\u4e1a\u8d44\u8baf _ \u884c\u4e1a _ \u4e2d\u91d1\u5728\u7ebf",
-        "url": "http://hy.stock.cnfol.com/hangyejingcui/20260420/32156230.shtml",
-        "source_country": "China",
-        "language": "Chinese",
-        "domain": "hy.stock.cnfol.com",
-        "seendate": "20260420T043000Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Nuclear Stock Face - Off : Is Oklo or Cameco the Better Buy Right Now ? ",
-        "url": "https://www.fool.com/investing/2026/04/21/nuclear-stock-face-off-is-oklo-or-cameco/?source=iedfolrf0000001",
-        "source_country": "United States",
-        "language": "English",
-        "domain": "fool.com",
-        "seendate": "20260422T031500Z",
-        "priority": "genesis_mission",
-        "search_term": "nuclear energy"
-      },
-      {
-        "title": "Trumps geheime Aktivit\u00e4ten in Gr\u00f6nland aufgedeckt : Netzwerk aus Vertrauten baut Einfluss aus",
-        "url": "https://www.focus.de/politik/ausland/trumps-geheime-aktivitaeten-in-groenland-aufgedeckt-netzwerk-aus-vertrauten-baut-einfluss-aus_c0ab436f-9282-4f91-b990-b47a089878cc.html",
-        "source_country": "Germany",
-        "language": "German",
-        "domain": "focus.de",
-        "seendate": "20260421T101500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Amerikaner bekr\u00e6fter \u00f8konomisk st\u00f8tte fra MAGA - milj\u00f8et efter anklager om p\u00e5virkning i Gr\u00f8nland",
-        "url": "https://jyllands-posten.dk/indland/ECE19212097/amerikaner-bekraefter-oekonomisk-stoette-fra-magamiljoeet-efter-anklager-om-paavirkning-i-groenland/?fp-exp=60320002&fp-alg=603200020",
-        "source_country": "Denmark",
-        "language": "Danish",
-        "domain": "jyllands-posten.dk",
-        "seendate": "20260419T221500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Amerikaner bekr\u00e6fter \u00f8konomisk st\u00f8tte fra MAGA - milj\u00f8et efter anklager om p\u00e5virkning i Gr\u00f8nland",
-        "url": "https://jyllands-posten.dk/indland/ECE19212097/amerikaner-bekraefter-oekonomisk-stoette-fra-magamiljoeet-efter-anklager-om-paavirkning-i-groenland/?fp-exp=60730012&fp-alg=607300121",
-        "source_country": "Denmark",
-        "language": "Danish",
-        "domain": "jyllands-posten.dk",
-        "seendate": "20260420T130000Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Amerikaner bekr\u00e6fter \u00f8konomisk st\u00f8tte fra MAGA - milj\u00f8et efter anklager om p\u00e5virkning i Gr\u00f8nland",
-        "url": "https://jyllands-posten.dk/indland/ECE19212097/amerikaner-bekraefter-oekonomisk-stoette-fra-magamiljoeet-efter-anklager-om-paavirkning-i-groenland/?fp-exp=60671012&fp-alg=606710121",
-        "source_country": "Denmark",
-        "language": "Danish",
-        "domain": "jyllands-posten.dk",
-        "seendate": "20260419T134500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Grenlandia . Alarm bombowy , ewakuowano lotnisko w Nuuk",
-        "url": "https://tvn24.pl/swiat/grenlandia-alarm-bombowy-ewakuowano-lotnisko-w-nuuk-st9010205",
-        "source_country": "Poland",
-        "language": "Polish",
-        "domain": "tvn24.pl",
-        "seendate": "20260421T213000Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1 : \u0395\u03ba\u03ba\u03ad\u03bd\u03c9\u03c3\u03b7 \u03b1\u03b5\u03c1\u03bf\u03b4\u03c1\u03bf\u03bc\u03af\u03bf\u03c5 \u03c3\u03c4\u03bf \u039d\u03bf\u03cd\u03bf\u03c5\u03ba \u03bc\u03b5\u03c4\u03ac \u03b1\u03c0\u03cc \u03b1\u03c0\u03b5\u03b9\u03bb\u03ae \u03b3\u03b9\u03b1 \u03b2\u03cc\u03bc\u03b2\u03b1",
-        "url": "https://www.athensvoice.gr/epikairotita/diethni/959052/groilandia-ekkenosi-aerodromiou-sto-nououk-meta-apo-apeili-gia-vomva/",
-        "source_country": "Greece",
-        "language": "Greek",
-        "domain": "athensvoice.gr",
-        "seendate": "20260421T193000Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Trumpin operaatio Gr\u00f6nlannissa paljastui",
-        "url": "https://www.iltalehti.fi/ulkomaat/a/e2f0358e-ca24-4618-aacc-46d8ee7d843e",
-        "source_country": "Finland",
-        "language": "Finnish",
-        "domain": "iltalehti.fi",
-        "seendate": "20260420T154500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1 : \u0395\u03ba\u03ba\u03b5\u03bd\u03ce\u03b8\u03b7\u03ba\u03b5 \u03c4\u03bf \u03b1\u03b5\u03c1\u03bf\u03b4\u03c1\u03cc\u03bc\u03b9\u03bf \u03c4\u03b7\u03c2 \u039d\u03bf\u03c5\u03bf\u03cd\u03ba \u03bc\u03b5\u03c4\u03ac \u03b1\u03c0\u03cc \u03b1\u03c0\u03b5\u03b9\u03bb\u03ae \u03b3\u03b9\u03b1 \u03b2\u03cc\u03bc\u03b2\u03b1",
-        "url": "https://www.lifo.gr/now/world/groilandia-ekkenothike-aerodromio-tis-noyoyk-meta-apo-apeili-gia-bomba",
-        "source_country": "Greece",
-        "language": "Greek",
-        "domain": "lifo.gr",
-        "seendate": "20260421T200000Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "Det er ikke bare Trump som kjemper om \u00f8ya . Ogs\u00e5 danskene har spilt h\u00f8yt for \u00e5 beholde Gr\u00f8nland",
-        "url": "https://www.forskning.no/gronland-norsk-utenrikspolitisk-institutt-partner/det-er-ikke-bare-trump-som-kjemper-om-oya-ogsa-danskene-har-spilt-hoyt-for-a-beholde-gronland/2642288",
-        "source_country": "Norway",
-        "language": "Norwegian",
-        "domain": "forskning.no",
-        "seendate": "20260419T081500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "\u0412 \u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u0438 \u043f\u0440\u043e\u0432\u0435\u043b\u0438 \u0440\u0435\u0434\u043a\u0443\u044e \u044d\u0432\u0430\u043a\u0443\u0430\u0446\u0438\u044e \u043b\u044e\u0434\u0435\u0439 \u0438\u0437 - \u0437\u0430  \u0437\u0430\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f  \u0430\u044d\u0440\u043e\u043f\u043e\u0440\u0442\u0430",
-        "url": "https://www.eurointegration.com.ua/rus/news/2026/04/22/7235980/",
-        "source_country": "Ukraine",
-        "language": "Russian",
-        "domain": "eurointegration.com.ua",
-        "seendate": "20260422T074500Z",
-        "priority": "donroe_doctrine",
-        "search_term": "Greenland"
-      },
-      {
-        "title": "\uad11\uc8fc\uad50\ud1b5\uacf5\uc0ac ,  \uc591\ub3d9\uc2dc\uc7a5  \uc774\uc6a9\uc2dc \uc9c0\ud558\ucca0  \ubb34\ub8cc \uc774\uc6a9\uad8c  ",
-        "url": "https://biz.heraldcorp.com/article/10720679",
-        "source_country": "South Korea",
-        "language": "Korean",
-        "domain": "biz.heraldcorp.com",
-        "seendate": "20260420T001500Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u00c9conomie \u00ab fragile \u00bb: \u00ab On nest pas dans l  \u00e9poque du choc p\u00e9trolier des ann\u00e9es 70 \u00bb, nuance un \u00e9conomiste",
-        "url": "https://www.journaldemontreal.com/2026/04/20/economie-fragile-on-nest-pas-dans-lepoque-du-choc-petrolier-des-annees-70-nuance-un-economiste",
-        "source_country": "Canada",
-        "language": "French",
-        "domain": "journaldemontreal.com",
-        "seendate": "20260420T220000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u00c9conomie \u00ab fragile \u00bb: \u00ab On nest pas dans l  \u00e9poque du choc p\u00e9trolier des ann\u00e9es 70 \u00bb, nuance un \u00e9conomiste",
-        "url": "https://www.tvanouvelles.ca/2026/04/20/economie-fragile-on-nest-pas-dans-lepoque-du-choc-petrolier-des-annees-70-nuance-un-economiste",
-        "source_country": "Canada",
-        "language": "French",
-        "domain": "tvanouvelles.ca",
-        "seendate": "20260420T230000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u53f0\u80a1\u53f2\u8a69\u7d1a\u6210\u9577\u4f86\u4e86 \uff01 \u4f46386\u5bb6\u516c\u53f8\u537b\u5728\u8870\u9000 \u9019\u4e9b\u7522\u696d\u7adf\u7136\u6c92\u8ddf\u4e0a | \u8ca1\u7d93 | \u4e09\u7acb\u65b0\u805e\u7db2 SETN . COM",
-        "url": "https://www.setn.com/News.aspx?NewsID=1822661",
-        "source_country": "Taiwan",
-        "language": "Chinese",
-        "domain": "setn.com",
-        "seendate": "20260415T213000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "Experts Warn That Recession Risks Are Increasing . Here What That Means for Investors",
-        "url": "https://www.fool.com/investing/2026/04/18/the-risk-of-a-recession-has-increased-heres-what-t/?source=iedfolrf0000001",
-        "source_country": "United States",
-        "language": "English",
-        "domain": "fool.com",
-        "seendate": "20260418T140000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u0627\u0633\u0679\u0627\u06a9 \u0627\u06cc\u06a9\u0633\u0686\u06cc\u0646\u062c \u0645\u06cc\u06ba \u06c1\u0641\u062a\u06d2 \u06a9\u06d2 \u0622\u063a\u0627\u0632 \u067e\u0631 \u0634\u062f\u06cc\u062f \u0645\u0646\u062f\u06cc \u060c \u0627\u0646\u0688\u06cc\u06a9\u0633 \u0645\u06cc\u06ba 3000 \u0633\u06d2 \u0632\u0627\u0626\u062f \u067e\u0648\u0627\u0626\u0646\u0679\u0633 \u06a9\u06cc \u06a9\u0645\u06cc",
-        "url": "https://dailyaaj.com.pk/news/151337",
-        "source_country": "Pakistan",
-        "language": "Urdu",
-        "domain": "dailyaaj.com.pk",
-        "seendate": "20260420T053000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u4e0a\u6ac3\u516c\u53f8\u71df\u6536\u5e74\u589e22 %\uff01 AI\u6490\u76e4\u771f\u76f8\u6524\u958b \u4f46\u9019\u4e9b\u7522\u696d\u537b\u5d29\u4e86 | \u8ca1\u7d93 | \u4e09\u7acb\u65b0\u805e\u7db2 SETN . COM",
-        "url": "https://www.setn.com/News.aspx?NewsID=1823211",
-        "source_country": "Taiwan",
-        "language": "Chinese",
-        "domain": "setn.com",
-        "seendate": "20260416T223000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u4e0a\u6ac3\u7d2f\u8a08\u71df\u6536\u5e74\u589e19 %\uff01 \u537b\u6709324\u5bb6\u5728\u8870\u9000 \u9019\u4e9b\u7522\u696d\u6158\u6c92\u642d\u4e0a\u8eca | \u8ca1\u7d93 | \u4e09\u7acb\u65b0\u805e\u7db2 SETN . COM",
-        "url": "https://www.setn.com/News.aspx?NewsID=1823694",
-        "source_country": "Taiwan",
-        "language": "Chinese",
-        "domain": "setn.com",
-        "seendate": "20260417T190000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u0410\u0432\u0438\u0430\u044d\u043a\u0441\u043f\u0435\u0440\u0442 \u0438\u0441\u043a\u043b\u044e\u0447\u0438\u043b \u00ab \u0441\u0435\u0440\u044c\u0451\u0437\u043d\u044b\u0439 \u0441\u043f\u0430\u0434 \u00bb \u0432 \u0433\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u043a\u043e\u0439 \u0430\u0432\u0438\u0430\u0446\u0438\u0438 \u0420\u0424 \u0432 \u0442\u0435\u043a\u0443\u0449\u0435\u043c \u0433\u043e\u0434\u0443",
-        "url": "http://govoritmoskva.ru/news/489536/",
-        "source_country": "Russia",
-        "language": "Russian",
-        "domain": "govoritmoskva.ru",
-        "seendate": "20260419T110000Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
-        "title": "\u4ece190\u6b21\u8870\u9000\u770b\u623f\u5730\u4ea7\u5468\u671f",
-        "url": "http://www.ftchinese.com/story/001109506",
-        "source_country": "China",
-        "language": "Chinese",
-        "domain": "ftchinese.com",
-        "seendate": "20260421T041500Z",
-        "priority": "financial_consolidation",
-        "search_term": "recession"
-      },
-      {
         "title": "Elon Musk Quote : Success quote of the day by Elon Musk :  When something is important enough , you do it even if the odds are not in your favor  ",
         "url": "https://timesofindia.indiatimes.com/relationships/success-quote-of-the-day-by-elon-musk-when-something-is-important-enough-you-do-it-even-if-the-odds-are-not-in-your-favor/articleshow/130316459.cms",
         "source_country": "India",
@@ -1897,26 +1617,6 @@
         "search_term": "BRICS"
       },
       {
-        "title": "Russian president Putin to  definitely  attend BRICS Summit in India , Kremlin confirms",
-        "url": "https://www.moneycontrol.com/world/russian-president-putin-to-definitely-attend-brics-summit-in-india-kremlin-confirms-article-13890165.html",
-        "source_country": "India",
-        "language": "English",
-        "domain": "moneycontrol.com",
-        "seendate": "20260415T173000Z",
-        "priority": "brics",
-        "search_term": "BRICS"
-      },
-      {
-        "title": "Putin to attend BRICS Summit in India , Kremlin confirms second visit in a year",
-        "url": "https://economictimes.indiatimes.com/news/india/putin-to-attend-brics-summit-in-india-kremlin-confirms-second-visit-in-a-year/articleshow/130289067.cms",
-        "source_country": "India",
-        "language": "English",
-        "domain": "economictimes.indiatimes.com",
-        "seendate": "20260415T170000Z",
-        "priority": "brics",
-        "search_term": "BRICS"
-      },
-      {
         "title": "India flags mental health , lifestyle diseases as new BRICS priorities | India News",
         "url": "https://timesofindia.indiatimes.com/india/india-flags-mental-health-lifestyle-diseases-as-new-brics-priorities/articleshow/130300083.cms",
         "source_country": "India",
@@ -1953,6 +1653,26 @@
         "language": "English",
         "domain": "newkerala.com",
         "seendate": "20260416T003000Z",
+        "priority": "brics",
+        "search_term": "BRICS"
+      },
+      {
+        "title": "Putin To Visit India For BRICS Summit , Kremlin Confirms",
+        "url": "https://www.businessworld.in/article/putin-to-visit-india-for-brics-summit-kremlin-confirms-602473",
+        "source_country": "India",
+        "language": "English",
+        "domain": "businessworld.in",
+        "seendate": "20260415T201500Z",
+        "priority": "brics",
+        "search_term": "BRICS"
+      },
+      {
+        "title": "Briefing in the Russian Foreign Ministry for representatives of the embassies of BRICS member states and partner countries on the upcoming election of the UN Secretary - General",
+        "url": "https://www.globalsecurity.org/wmd/library/news/russia/2026/04/russia-260415-russia-mfa05.htm",
+        "source_country": "Syria",
+        "language": "English",
+        "domain": "globalsecurity.org",
+        "seendate": "20260416T124500Z",
         "priority": "brics",
         "search_term": "BRICS"
       },
@@ -2057,104 +1777,104 @@
         "search_term": "Christian nationalism"
       },
       {
-        "title": "2026\u4e2d\u56fd \u592a\u5e73\u6d0b\u5c9b\u56fd\u5e94\u5bf9\u6c14\u5019\u53d8\u5316\u5408\u4f5c\u4ea4\u6d41\u5468\u63a8\u52a8\u52a1\u5b9e\u5408\u4f5c",
-        "url": "https://baijiahao.baidu.com/s?id=1862643078268630587",
-        "source_country": "China",
-        "language": "Chinese",
-        "domain": "baijiahao.baidu.com",
-        "seendate": "20260416T234500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "title": "\u0e1b\u0e32\u0e40\u0e25\u0e2a\u0e44\u0e15\u0e19\u0e4c\u0e02\u0e39\u0e48\u0e15\u0e2d\u0e1a\u0e42\u0e15\u0e49\u0e2b\u0e25\u0e31\u0e07\u0e2d\u0e34\u0e2a\u0e23\u0e32\u0e40\u0e2d\u0e25\u0e2a\u0e31\u0e48\u0e07\u0e23\u0e30\u0e07\u0e31\u0e1a\u0e2a\u0e48\u0e07\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e40\u0e02\u0e49\u0e32\u0e40\u0e22\u0e23\u0e39\u0e0b\u0e32\u0e40\u0e25\u0e47\u0e21\u0e15\u0e30\u0e27\u0e31\u0e19\u0e2d\u0e2d\u0e01",
+        "url": "https://www.ryt9.com/s/iq37/12807370",
+        "source_country": "Thailand",
+        "language": "Thai",
+        "domain": "ryt9.com",
+        "seendate": "20260420T041500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "2026\u4e2d\u56fd \u592a\u5e73\u6d0b\u5c9b\u56fd\u5e94\u5bf9\u6c14\u5019\u53d8\u5316\u5408\u4f5c\u4ea4\u6d41\u5468\u63a8\u52a8\u52a1\u5b9e\u5408\u4f5c",
-        "url": "https://world.qianlong.com/2026/0417/8655843.shtml",
-        "source_country": "China",
-        "language": "Chinese",
-        "domain": "world.qianlong.com",
-        "seendate": "20260416T204500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
-      },
-      {
-        "title": "\u0130klim el\u00e7ileri Gaziantepte bulu\u015ftu",
-        "url": "https://www.yeniakit.com.tr/haber/iklim-elcileri-gaziantepte-bulustu-1996088.html",
+        "title": "Yemende on binler Filistin ve L\u00fcbnana destek g\u00f6sterisi d\u00fczenledi",
+        "url": "https://www.yeniakit.com.tr/haber/yemende-on-binler-filistin-ve-lubnana-destek-gosterisi-duzenledi-1996423.html",
         "source_country": "Turkey",
         "language": "Turkish",
         "domain": "yeniakit.com.tr",
-        "seendate": "20260417T083000Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "seendate": "20260419T024500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "Au moins 56 millions denfants vivent dans des milieux expos\u00e9s aux effets du changement climatique en RDC",
-        "url": "https://www.radiookapi.net/2026/04/16/actualite/environnement/au-moins-56-millions-denfants-vivent-dans-des-milieux-exposes-aux",
-        "source_country": "Democratic Republic of the Congo",
-        "language": "French",
-        "domain": "radiookapi.net",
-        "seendate": "20260416T173000Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
-      },
-      {
-        "title": "\u6c60\u4e0a\u5f70\u6c0f \u300c \u30d6\u30e9\u30b8\u30ebCOP30 \u7c73\u56fd\u4e0d\u5728\u3067\u4e2d\u56fd\u304c\u5b58\u5728\u611f \u300d | \u4e00\u6c17\u306b\u308f\u304b\u308b ! \u6c60\u4e0a\u5f70\u306e\u4e16\u754c\u60c5\u52e2 | \u6c60\u4e0a\u5f70",
-        "url": "https://mainichi.jp/premier/business/articles/20260318/biz/00m/020/013000c",
-        "source_country": "Japan",
-        "language": "Japanese",
-        "domain": "mainichi.jp",
-        "seendate": "20260417T224500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
-      },
-      {
-        "title": "Menteri PPN tekankan penyiapan generasi muda hadapi perubahan iklim",
-        "url": "https://www.antaranews.com/berita/5533805/menteri-ppn-tekankan-penyiapan-generasi-muda-hadapi-perubahan-iklim",
+        "title": "Tiga warga Palestina tewas akibat serangan Israel di Gaza - Yerusalem",
+        "url": "https://www.antaranews.com/berita/5530647/tiga-warga-palestina-tewas-akibat-serangan-israel-di-gaza-yerusalem",
         "source_country": "Indonesia",
         "language": "Indonesian",
         "domain": "antaranews.com",
-        "seendate": "20260420T064500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "seendate": "20260417T073000Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "\u200eKayong Utara Gelar Pelatihan Kepemimpinan Mitigasi Perubahan Iklim , Perkuat Kapasitas Desa",
-        "url": "https://pontianak.tribunnews.com/kalbar/1169786/kayong-utara-gelar-pelatihan-kepemimpinan-mitigasi-perubahan-iklim-perkuat-kapasitas-desa",
+        "title": "\u0397\u03bc\u03ad\u03c1\u03b1 \u03a0\u03b1\u03bb\u03b1\u03b9\u03c3\u03c4\u03b9\u03bd\u03af\u03c9\u03bd \u039a\u03c1\u03b1\u03c4\u03bf\u03c5\u03bc\u03ad\u03bd\u03c9\u03bd : \u039c\u03af\u03b1 \u03bc\u03ad\u03c1\u03b1 \u03b3\u03b9\u03b1 \u03b5\u03ba\u03b5\u03af\u03bd\u03bf\u03c5\u03c2 \u03c0\u03bf\u03c5 \u00ab \u03c3\u03b1\u03c0\u03af\u03b6\u03bf\u03c5\u03bd \u00bb \u03c3\u03c4\u03b9\u03c2 \u03c6\u03c5\u03bb\u03b1\u03ba\u03ad\u03c2 \u03c4\u03bf\u03c5 \u0399\u03c3\u03c1\u03b1\u03ae\u03bb , \u03c7\u03c9\u03c1\u03af\u03c2 \u03b4\u03b9\u03ba\u03b1\u03b9\u03bf\u03c3\u03cd\u03bd\u03b7",
+        "url": "https://www.in.gr/2026/04/17/world/imera-palaistinion-kratoumenon-mia-mera-gia-ekeinous-pou-sapizoun-stis-fylakes-tou-israil-xoris-dikaiosyni/",
+        "source_country": "Greece",
+        "language": "Greek",
+        "domain": "in.gr",
+        "seendate": "20260417T194500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
+      },
+      {
+        "title": "Filistin topraklar\u0131n\u0131 gasbeden \u0130srailliler , Bat\u0131 \u015eerian\u0131n kuzeyinde Filistin ambulans\u0131na sald\u0131rd\u0131",
+        "url": "https://www.aa.com.tr/tr/dunya/filistin-topraklarini-gasbeden-israilliler-bati-serianin-kuzeyinde-filistin-ambulansina-saldirdi/3911618",
+        "source_country": "Turkey",
+        "language": "Turkish",
+        "domain": "aa.com.tr",
+        "seendate": "20260419T211500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
+      },
+      {
+        "title": "Lebih dari 23 . 000 warga Palestina di Tepi Barat ditangkap Zionis",
+        "url": "https://www.antaranews.com/berita/5533347/lebih-dari-23000-warga-palestina-di-tepi-barat-ditangkap-zionis",
         "source_country": "Indonesia",
         "language": "Indonesian",
-        "domain": "pontianak.tribunnews.com",
-        "seendate": "20260421T233000Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "domain": "antaranews.com",
+        "seendate": "20260419T160000Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "La representaci\u00f3n guatemalteca intervino junto a naciones de la regi\u00f3n en un espacio que propici\u00f3 acuerdos enfocados en responder a los efectos del clima en la movilidad humana y fortalecer el trabajo conjunto a largo plazo",
-        "url": "https://www.infobae.com/guatemala/2026/04/17/el-gobierno-de-guatemala-promueve-acciones-regionales-sobre-migracion-y-clima/",
-        "source_country": "Argentina",
-        "language": "Spanish",
-        "domain": "infobae.com",
-        "seendate": "20260417T231500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "title": "Filistin topraklar\u0131n\u0131 gasbeden \u0130srailliler , Bat\u0131 \u015eerian\u0131n kuzeyinde Filistin ambulans\u0131na sald\u0131rd\u0131",
+        "url": "https://www.haberler.com/guncel/israil-in-filistin-ambulansina-saldirisi-saglik-gorevlisi-yasananlari-anlatti-19765261-haberi/",
+        "source_country": "Turkey",
+        "language": "Turkish",
+        "domain": "haberler.com",
+        "seendate": "20260419T203000Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "Debatt , Beredskap | Helgheims fantasiverden truer v\u00e5r sikkerhet",
-        "url": "https://www.dt.no/helgheims-fantasiverden-truer-var-sikkerhet/o/5-57-2829657",
-        "source_country": "Norway",
-        "language": "Norwegian",
-        "domain": "dt.no",
-        "seendate": "20260417T154500Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "title": "Yemende on binler Filistin ve L\u00fcbnana destek g\u00f6sterisi d\u00fczenledi",
+        "url": "https://www.haberler.com/guncel/yemen-de-israil-e-karsi-buyuk-destek-gosterisi-19759781-haberi/",
+        "source_country": "Turkey",
+        "language": "Turkish",
+        "domain": "haberler.com",
+        "seendate": "20260417T183000Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       },
       {
-        "title": "En Castex comenz\u00f3 la plantaci\u00f3n de 700 especies nativas pampeanas",
-        "url": "https://www.laarena.com.ar/la-pampa/en-castex-comenzo-la-plantacion-de-700-especies-nativas-pampeanas-202641520560",
-        "source_country": "Argentina",
-        "language": "Spanish",
-        "domain": "laarena.com.ar",
-        "seendate": "20260416T023000Z",
-        "priority": "club_of_rome",
-        "search_term": "climate change"
+        "title": "Trump sevdas\u0131 - Naim Bab\u00fcro\u011flu",
+        "url": "https://www.sozcu.com.tr/trump-sevdasi-p310598",
+        "source_country": "Turkey",
+        "language": "Turkish",
+        "domain": "sozcu.com.tr",
+        "seendate": "20260416T044500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
+      },
+      {
+        "title": "\uc774\uc2a4\ub77c\uc5d8\uad70 \uc131\ud3ed\ub825\uc5d0 \ucad3\uaca8\ub098\ub294 \ud314\ub808\uc2a4\ud0c0\uc778\uc778 \u2026 \ubc94\uc8c4 \uc601\uc0c1 \uc788\ub294\ub370 \uae30\uc18c \ucde8\ud558\ub3c4",
+        "url": "https://www.pressian.com/pages/articles/2026042216171113479",
+        "source_country": "South Korea",
+        "language": "Korean",
+        "domain": "pressian.com",
+        "seendate": "20260422T154500Z",
+        "priority": "pax_judaica",
+        "search_term": "Israel Palestine"
       }
     ],
     "source_owner": "GDELT (Kalev Leetaru / Google Jigsaw) \u2014 global news monitor, inherits media editorial bias"
@@ -2174,13 +1894,6 @@
         "date": "2025-07-01",
         "sdt_category": "popular_immiseration",
         "series_id": "WFRBSB50215"
-      },
-      "labor_share_gdp": {
-        "label": "Labor compensation share of GDP",
-        "value": "0.568302690982819",
-        "date": "2023-01-01",
-        "sdt_category": "popular_immiseration",
-        "series_id": "LABSHPUSA156NRUG"
       },
       "median_household_income": {
         "label": "Real median household income",
@@ -4721,60 +4434,34 @@
   "dimension_summary": {
     "WHO": {
       "China": 24,
-      "Trump_Admin": 15,
-      "Iran": 11,
+      "Trump_Admin": 14,
+      "Iran": 12,
       "Altman": 7,
-      "Israel": 5,
-      "Musk": 4,
-      "Genesis_Mission": 3,
-      "AI_Industry": 3,
+      "Israel": 6,
+      "Musk": 3,
+      "Genesis_Mission": 2,
+      "AI_Industry": 2,
       "DOGE": 1
     },
     "WHERE": {
-      "Europe": 30,
-      "Domestic_US": 18,
-      "Middle_East": 15,
-      "Indo_Pacific": 4,
-      "Dead_Internet": 3,
-      "Energy_Markets": 2,
+      "Europe": 33,
+      "Domestic_US": 23,
+      "Middle_East": 17,
+      "Energy_Markets": 4,
+      "Indo_Pacific": 2,
+      "Latin_America": 2,
       "Fortress_Hemisphere": 1,
-      "Latin_America": 1,
+      "Dead_Internet": 1,
       "Financial_System": 1
     },
     "WHY": {
-      "Bifurcation_Signals": 6,
-      "Military_Tech": 4,
       "Compute_Control": 4,
-      "Energy_Infrastructure": 1
+      "Bifurcation_Signals": 4,
+      "Military_Tech": 3,
+      "Financial_Consolidation": 1
     }
   },
   "events": [
-    {
-      "source": "gnews",
-      "topic": "WORLD",
-      "title": "Exclusive: Ukraine says some Russian missiles fly near Chornobyl, risking major accident - Reuters",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQV0dBYWpKN290S2hPVXpIYTQ2bXZVX2drRjVUQUk3MWplTzJ2clZId2ZiMW5xR1FrcHo2RGs2SVV4ZUg2VGdtbzE1Qk95WlF4dDg4R2lRZWczNXpyNGk5WU00YzhIdkw1NXk1VHMzcmw1ZkxMYXJJN0ZrckY2bWg2RndwQXpvOFItal9BS0k0bkNfQVZ4X09CQkJ0dmNSdC1qdmlUT0tGLWZtU29ZUGptRk1XZHAzckJJejZiUkpuV2ZhMEN4RXUyYy1CdjA3dkdtUlJYWUJn?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Exclusive: Ukraine says some Russian missiles fly near Chornobyl, risking major accident  ReutersUkraine war live: Kyiv sounds the alarm over missiles nearing Chernobyl power plant  The IndependentChornobyl diver and wife face new trauma of Russian drone strikes  YahooRussia accused of risking major accident by flying missiles near Chernobyl  The IndependentUkraine says some Russian missiles fly near Chernobyl, risking major incident  The Japan Times",
-      "published": "Wed, 22 Apr 2026 06:05:00 GMT",
-      "publisher": "Reuters",
-      "tags": {
-        "players": [
-          "China"
-        ],
-        "theaters": [
-          "Indo_Pacific",
-          "Europe"
-        ],
-        "incentives": [
-          "Energy_Infrastructure",
-          "Military_Tech"
-        ],
-        "relevance": 5,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
     {
       "source": "gnews",
       "topic": "WORLD",
@@ -4802,24 +4489,23 @@
     },
     {
       "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "Stock Market Today: Dow Gets Boost On Trump Ceasefire; GE Vernova Soars (Live Coverage) - Investor's Business Daily",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNY2xBeGpQUF9hWURXQU9GekZ2LUZoNDk5QlBTUzNGdjZxaUF5djRhZzBYZVpCMXdRVWxseVNsc3VlY3RvVkl5REVCdEY1aUNSWVBVYUw2Qmxvci1JOE5RUk1yRnd3WjRHbWJUaE9WcjJiS29icU5LMHJXS0g2M1lxN0l2cjFSRVpPZVZmN0lDZnlPMVpJclVHNWpjLTJaM0hybWhORGp5Q3VRaXBVRzdhaV9pWlBYTkpBNHc?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Stock Market Today: Dow Gets Boost On Trump Ceasefire; GE Vernova Soars (Live Coverage)  Investor's Business DailyStock market today: Dow, S&P 500, Nasdaq rise after Trump extends US-Iran ceasefire  Yahoo FinanceGold Steadies as Trump Extends Iran Ceasefire, Peace Talks Stall  Bloomberg.comMorning Bid: Another deadline dodged  ReutersUS stocks climb, but so do oil prices with uncertainty rising about the war with Iran  Baltimore Sun",
-      "published": "Wed, 22 Apr 2026 14:53:00 GMT",
-      "publisher": "Investor's Business Daily",
+      "topic": "WORLD",
+      "title": "AP Exclusive: Cyprus president says the EU needs a clear playbook on helping members under attack - AP News",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxObGhhV1YtSEVBYnhnNGJkU2RkYzB0c3hMZkFPeXBOY3Z4RG10OVNqVVM0aGVFdGc5bS00UmdjUWZyR0lFYTQxTHJGWDhsVDhqck1mMTByYUlrcFVEejZEMHpzQzlnVUM4YUQ3VC00U0ZfU3RaY2J4anduQnRERjF5U3p2eTdETmxqUUtfSUZ0QzF0Sm10Q1BCNTFyTksxa0kxYnc?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "AP Exclusive: Cyprus president says the EU needs a clear playbook on helping members under attack  AP NewsCosta steps up pressure to break EU budget deadlock  politico.euZelenskyy to crash EU summit after calling Orb\u00e1n\u2019s bluff in \u20ac90bn loan row  Financial TimesCyprus summit will struggle to exit EU crisis doom loop  EuractivInformal meeting of heads of state or government of 23-24 April 2026 - Invitation letter by President Ant\u00f3nio Costa to the members of the European Council  consilium.europa.e",
+      "published": "Wed, 22 Apr 2026 15:46:00 GMT",
+      "publisher": "AP News",
       "tags": {
         "players": [
-          "Trump_Admin",
-          "Iran"
+          "Altman",
+          "China"
         ],
         "theaters": [
-          "Middle_East",
-          "Europe",
-          "Energy_Markets"
+          "Domestic_US",
+          "Europe"
         ],
         "incentives": [],
-        "relevance": 5,
+        "relevance": 4,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
       },
@@ -4830,7 +4516,7 @@
       "topic": "WORLD",
       "title": "Most serious cyberattacks against the UK now from Russia, Iran and China, cyber chief says - AP News",
       "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPWWJJX1ZrTzZXTmxqa2xPazRwR25QOHVLRVF1QUlTTWxteFVyelM3ckk2VktETXZiV0t6V05pSUUweTU0TkV0Z0xqUG9CWlZsZW54aTMzT0NVOHdSbk1GRkVpMUJiRzRFX3A0LWhPLWRVaGhWWF9YOEVxVnNiWndFR3hCWGo1UmlzdGtlQ2d5RFJ0TUJORTRfRnd3?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Most serious cyberattacks against the UK now from Russia, Iran and China, cyber chief says  AP NewsUK intelligence: 100 nations have spyware that can hack Britain  politico.euUK could face \u2018hacktivist attacks at scale\u2019, says head of security agency  The GuardianUK must brace for rise in state-backed cyberattacks, security chief says  ReutersUK Says Iran, China Drive Regular Significant Cyberattacks  Bloomberg.com",
+      "content": "Most serious cyberattacks against the UK now from Russia, Iran and China, cyber chief says  AP NewsView Full Coverage on Google News",
       "published": "Wed, 22 Apr 2026 12:03:00 GMT",
       "publisher": "AP News",
       "tags": {
@@ -4875,15 +4561,15 @@
     },
     {
       "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "Iran war: Jet fuel crisis deepens as Lufthansa cuts flights - dw.com",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPSGZ1bW1fVzJ5Z01KS1dYOUNONW9kMUVGN19DQ29tSG81UEZEVk1ieXlaaDVIZ29oUENnRndJclpsaUJ3UGpuelVBMm5lekxPSjViRkx3MnNtR2w4U1BWVGlsMUYxVkJFQTRTZWpNYmxzS3lua19ZbW4tN1ZWWlkwMWt6Q1FxU3N4M21sOWdJQTNSM29PMFHSAZYBQVVfeXFMT3RTc1d1V1JzWW45d244cG4zZEI3eVdtNnlXR2FEZnpBbWlqZzlUeXBTUTEwYjJaZUh0cnVCeUhteHJJQUFmSmhwM1d0VEVDTnpkY1pzQktHV1J4LXdtU0pQNEpFTm9XMUlzZ2t6MVZFeUlNbUpKWkJNRXVNUnY0RHVFRzFfSk9IcVRFS3RGZ1EyZUsxWWlR?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Iran war: Jet fuel crisis deepens as Lufthansa cuts flights  dw.comLufthansa Cuts 20,000 Flights to Save Fuel Amid Iran War Price Surge  The New York TimesLufthansa Group optimises flight offering in summer across all six Hubs  Lufthansa GroupGermany news: Lufthansa scraps 20,000 flights  dw.comLufthansa to Cut Capacity, Ground Inefficient Aircraft to Tackle Higher Costs  WSJ",
-      "published": "Wed, 22 Apr 2026 12:45:00 GMT",
-      "publisher": "dw.com",
+      "topic": "WORLD",
+      "title": "Germany and Italy reject push by EU allies to end association deal with Israel - The Times of Israel",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNSHZTS3F5cEd4ZVZBc2hUSzRhaGJfaHNqSFNxc0d6Z3Y0RURYX3Ezam4weHF6QWYxa2pCZnZqMXJYLW5jdUZ5SklnbXN6TE9PQWtmc1lCSFFIdmlYMzRxdGE1dmRkeF94VWlVYkU0YV8zVkxhVlo1b0ZfRGVORkw5TmJ3ZkUxbVViSVNaaHA3cDV2YUtlUG1VNHNZTFB4bUNlQzVOSG4xRWpvSm93Y2fSAbMBQVVfeXFMT1d4enZDVzd5WWtGalZHNkRpd3J4YmtBTmQ5Tk80NVhBVFhKQmlvS0FYLXg0WlVPVi1sUlB6THEwYkNOM2tLYnJBd0U5WUE5NXJrbXRWSXd5aG85VUg2aHhldGMxRUZpRVoyTUhVZThZaFVCd2daRnlSVXhhQWZFRUstS0xGdjZwN2VMTG92ZnJSY3pzU3hzSDMwYUxrQkpxTWU3Q0JINkJNU2Z1U1NCRlpnNG8?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Germany and Italy reject push by EU allies to end association deal with Israel  The Times of IsraelA 42bn-euro dilemma: What is stopping EU from holding Israel to account?  Al JazeeraEU foreign ministers reject proposal to suspend association agreement with Israel  The Guardian'Not a Useful Tool': Germany and Italy Block EU Push to Reconsider Trade Ties With Israel  HaaretzEU: Failure to suspend EU-Israel Association Agreement shows contempt for civilian lives  Amnesty International",
+      "published": "Tue, 21 Apr 2026 13:52:00 GMT",
+      "publisher": "The Times of Israel",
       "tags": {
         "players": [
-          "Iran"
+          "Israel"
         ],
         "theaters": [
           "Domestic_US",
@@ -4900,22 +4586,21 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Trump admin shifts course on Medicare GLP-1 coverage - Axios",
-      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5UMnNmc0Naa21hamw3U2l6YXBpVVZiZDl4TG5saFAtWUFNb3l5cWZkQkd2ei1sTC1oN2VfcUxFNXhGeE1CMUJsTHlzcEZqWXpYLWNXSGpieHpJVjZjUV9Wa05tZXluZEhwS3EtMmdwa1JWTDlKQUE?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Trump admin shifts course on Medicare GLP-1 coverage  AxiosUnitedHealth flags challenges in Medicare obesity drug pilot  ReutersHow CVS And Amazon Chipped Away At Eli Lilly, Novo Nordisk Stocks  Investor's Business DailyUnitedHealth Sees \u2018Challenges\u2019 With Medicare Obesity Program  Bloomberg.comMedicare indefinitely delays pilot plan to cover weight loss drugs  Endpoints News",
-      "published": "Wed, 22 Apr 2026 09:33:32 GMT",
-      "publisher": "Axios",
+      "title": "S&P 500 rises, Nasdaq hits new high after U.S. extends Iran ceasefire: Live updates - CNBC",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBESktpb2N6M2dtQ1JRQkI3bFJnelRzaGNreHV5NG83d05hUzFMakM5MnlEWU5NZWhiT0d4eERPaGhrTHpidjdrc3ZJUk9wZnpJeVltU1dnLVhlQVJrUzQ5RTRhYi1ZNHhKLW52RWpLSGJPclFqZjU4?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "S&P 500 rises, Nasdaq hits new high after U.S. extends Iran ceasefire: Live updates  CNBCStock market today: Dow, S&P 500, Nasdaq rise, oil climbs after Trump extends US-Iran ceasefire  Yahoo FinanceGold Steadies as Trump Extends Iran Ceasefire, Peace Talks Stall  Bloomberg.comUS stocks climb, but so do oil prices with uncertainty rising about the war with Iran  Baltimore SunPrice gains for gold, silver amid friendly outside markets  KITCO",
+      "published": "Wed, 22 Apr 2026 17:50:00 GMT",
+      "publisher": "CNBC",
       "tags": {
         "players": [
           "Trump_Admin",
-          "China"
+          "Iran"
         ],
         "theaters": [
-          "Europe"
+          "Middle_East",
+          "Energy_Markets"
         ],
-        "incentives": [
-          "Compute_Control"
-        ],
+        "incentives": [],
         "relevance": 4,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
@@ -4925,11 +4610,11 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Fuel shortage wreaks havoc on summer air travel. Here\u2019s what to know. - The Washington Post",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPTmFmYThiUUZnLVJ3LXpSTC1FSVJXWUZxSk5pY1lJSHFORkJWX2hiNDRFVG12emdOeC1FcktxZDVqZWctQVZmQV83RVlMb0xZa2RpNDJiMzFIY0g4aW5lcUNRTUpwcm1TN3ROcFljbkcybWw3dXUwUEptQTZvQXFNMUNveTFJZw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Fuel shortage wreaks havoc on summer air travel. Here\u2019s what to know.  The Washington PostAirlines are about to run out of jet fuel because of the Iran war  CNNAir fares soar by nearly 25% as Iran war forces flights to re-route  BBCWhat a looming jet fuel shortage could mean for summer travel  CNBCIran war fuel hike adds $100 to long-haul flight cost, study says  Reuters",
-      "published": "Wed, 22 Apr 2026 16:00:22 GMT",
-      "publisher": "The Washington Post",
+      "title": "Lufthansa cuts 20,000 summer flights as fuel prices surge - BBC",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA5QmtMNEJRSmxINVVPWXBQWnREMklrR21QVHFfblQwTjU0RDRFVTBKRnBUd1E0R2phXzJmXzBxcmF6SnpIY1B2cGVoZGxYbmpBcmRJZjFlLWFGQQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Lufthansa cuts 20,000 summer flights as fuel prices surge  BBCLufthansa Cuts 20,000 Flights to Save Fuel as Iran War Fallout Spreads  The New York TimesLufthansa Group optimises flight offering in summer across all six Hubs  Lufthansa GroupGermany news: Lufthansa scraps 20,000 flights  DW.comMajor European airline axes 20,000 flights after jet fuel price soars  The Independent",
+      "published": "Wed, 22 Apr 2026 10:31:29 GMT",
+      "publisher": "BBC",
       "tags": {
         "players": [
           "Iran"
@@ -4943,6 +4628,53 @@
         "relevance": 4,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "BUSINESS",
+      "title": "Iran attacks oil tankers in Hormuz, sending oil back above $100 a barrel - MarketWatch",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNMG8tZERWUndJNFc4UWpydXV2a2cyeTdPenVFZEVVLWNkeFBYeXlWN1RRTTVXT0FwUjUxM3loZ2tFLW1IQzFyZ2FGd3pZOUp0UFlHX0Q3bldRb1BiS1RRa0JCT0ZyRlZXTnAwRnhyS04zbEFaNGhiUXBFdWZ2cEJiMllOUzJIckp6SmpCODZQTXhnNWhySjdHZEVoTW1SUXV6SVl6cy1zbDFSdUk0SF9fYS1Rc1FwR2NvRU9FTnJKX3h3eDJNcm52OURST2xEVXAwLUE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Iran attacks oil tankers in Hormuz, sending oil back above $100 a barrel  MarketWatchBrent oil rises above $100 after Iran seizes container ships, U.S. maintains naval blockade  CNBCOil prices jump $3 after EIA shows drop in US fuel stocks, reports gunfire hits container ships in Hormuz  ReutersBrent Above $100 a Barrel After Iran Attacks Three Ships in Hormuz  WSJOil Slips as Iran Set to Attend Negotiations With US in Pakistan  Bloomberg.com",
+      "published": "Wed, 22 Apr 2026 15:08:00 GMT",
+      "publisher": "MarketWatch",
+      "tags": {
+        "players": [
+          "Iran"
+        ],
+        "theaters": [
+          "Middle_East",
+          "Europe",
+          "Energy_Markets"
+        ],
+        "incentives": [],
+        "relevance": 4,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "rss",
+      "feed": "Al Jazeera",
+      "title": "A 42bn-euro dilemma: What is stopping EU from holding Israel to account?",
+      "url": "https://www.aljazeera.com/economy/2026/4/22/a-42bn-euro-dilemma-what-is-stopping-eu-from-holding-israel-to-account?traffic_source=rss",
+      "content": "Trade, history, internal rifts: Inside European deadlock over suspending lucrative association agreement with Israel.",
+      "published": "Wed, 22 Apr 2026 16:33:22 +0000",
+      "tags": {
+        "players": [
+          "Israel"
+        ],
+        "theaters": [
+          "Domestic_US",
+          "Middle_East",
+          "Europe"
+        ],
+        "incentives": [],
+        "relevance": 4,
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -4971,11 +4703,11 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Iran fires on 2 ships in Strait of Hormuz after Trump extends ceasefire - Fox News",
-      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5HdTg0YW9GY1M2Tzk5c3F4YV9fWlBiZklFXzJVX1J2ejlJWTBNeHlJYzg4ZjZGV0tFVkNhbUtSbmpnaUM1NURfZnh5YnFTRGZXb1BfSU1aODJ0OUthVjcxRF9uX1pfZV95ejBuS1pWOFJwMzA5eDNlUHpB0gF_QVVfeXFMTzl4Wk5ZLVJWTjE3SEpwelBmLWRFNFdTdTUwSi1SSUUwMWVSQkxwdHdlazFjUTRtRmRFR1JrUWJnQzJGWFFZYWlKcy1sSnltTE1zQlRyOEtHS2hMdFF3M21sVllJUUtvY0JCcDNEODlHU3gtNzNmR2RsYWF2MUI4Yw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Iran fires on 2 ships in Strait of Hormuz after Trump extends ceasefire  Fox NewsIran War Live News Updates: Three Ships Attacked in Strait of Hormuz, Escorting Two to Its Coast  WSJIndia-Bound Ship Among 2 Seized By Iran's Revolutionary Guards  NDTVIran War Live Updates: Iranian Forces Claim Seizure of 2 Ships Near Strait of Hormuz After Trump Extends Cease-Fire  The New York TimesIran says it has seized two ships in Strait of Hormuz after U.S. extends ceasefire  CNBC",
-      "published": "Wed, 22 Apr 2026 13:52:51 GMT",
-      "publisher": "Fox News",
+      "title": "Middle East crisis live: Iran says it has seized two ships in strait of Hormuz after Trump extends ceasefire - The Guardian",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPYzBweDVLbkNBQzVKQVRTQ3lFWEN4dE9KS25HWFFnTXVKcmFUMWh0RXJmX0FOcWYwYnNUaWtpYnFRblJrSGp0OFFTT3FwQlBOUWZIY1lVdG5TT1JtQzlXeE5CN3J1QzN6akJTbjdrNk9pRGVzcGIteTloQXRaeDh4d2NMNjRMTzM1c1YwLXk2MGdNTDRKX3RhYm8wampnb3dKMmpJOTh2US15eFpVUW85QzNjcDlHY2pJcTZGOF9EdHhybzN3Q1lEdUFvM2RFaDA?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Middle East crisis live: Iran says it has seized two ships in strait of Hormuz after Trump extends ceasefire  The GuardianIran War Live Updates: Iranian Forces Claims to Seize 2 Ships Near Strait of Hormuz After Trump Extends Truce  The New York TimesTracking ships under fire in Strait of Hormuz  BBCLive updates: Iran attacks 3 ships in the Strait of Hormuz as Trump indefinitely extends ceasefire  AP NewsIran says it seized ships in Strait of Hormuz as U.S. blockade continues amid ceasefire  NPR",
+      "published": "Wed, 22 Apr 2026 16:55:00 GMT",
+      "publisher": "The Guardian",
       "tags": {
         "players": [
           "Trump_Admin",
@@ -4994,42 +4726,18 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Pope calls for justice and closing income gap in Equatorial Guinea Mass with presidential family - AP News",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQeFdlemExZE9OV3diQW5XM2xSRFZIM04tXzhiRUVoU1pjN2FnWXN1S2p5cXBjSnh5aVlNeVhteC1faEg3U3RDWHhqcUtWOTFJVVdGQnlXZnJBSjJKZGtfVGhXTk1Qc1lKV3BkQ2xXcnN1TzJuMVJPUFg4OFdJLXdtSnRDZWMwVU1fU0U2b2lnck9XYjZEYnc?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Pope calls for justice and closing income gap in Equatorial Guinea Mass with presidential family  AP NewsPope Leo Is Skipping Some of Africa\u2019s Biggest Catholic Nations  The New York TimesPope at Mass in Mongomo: Humanity hungers for justice and peace  Vatican NewsPope decries inequality, prison conditions on whirlwind last day in Africa  ReutersFrom Africa, Pope Leo warns humanity's future is 'tragically compromised'  Yahoo",
-      "published": "Wed, 22 Apr 2026 13:51:00 GMT",
-      "publisher": "AP News",
-      "tags": {
-        "players": [
-          "AI_Industry"
-        ],
-        "theaters": [
-          "Europe"
-        ],
-        "incentives": [
-          "Bifurcation_Signals"
-        ],
-        "relevance": 3,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "WORLD",
-      "title": "ICC judges reject bid to release former Philippine President Duterte - Reuters",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNWGZyQ0RUQ0lJNzJnNTN5ZEE4Ql85dV9nd0tLX0tWLTNSODRZdkliLXpKSlYyejlKWDNBS3A2c1Fmcml5Slg3QXhya3cwNjZaRWg2S2UwLWg3VC1OZUJOeTcxR1l6aGgwSzFBY3hmT3ZHRzY1d1I4WFppQUNBQnR5a0hFSTVQeFFBR0JWcHNibV9BQnhUaHA5VkQwMjFuck5TSXE2YTJtUF9xb0VXOUthT09LNlV4N0pUNTYxRjd3?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "ICC judges reject bid to release former Philippine President Duterte  ReutersICC Appeals Chamber confirms jurisdiction in Duterte case  | International Criminal CourtICC judges reject bid to release former Philippines president Rodrigo Duterte  Australian Broadcasting Corporation\u2018Vindication\u2019: ICC chamber rules case against Rodrigo Duterte to proceed  South China Morning PostWar Crimes Court Rejects Bid to Free Philippines\u2019 Duterte  Bloomberg.com",
-      "published": "Wed, 22 Apr 2026 12:39:15 GMT",
-      "publisher": "Reuters",
+      "title": "Druzhba pipeline restarts Russian oil flows to Europe, unblocking E.U. loan for Kyiv - NBC News",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQMjJ0T1kwNmpnN1BITWFfOGdnakotbUE0Y29aVmVBbC1TQmVXVGhKOHhIN3VGbV95WjhROHFYNDF4MmZ5UzhTY2xhMWNFaERYWjdrU0RMdUdWS09nTHpaSWFraEk4VjB5aENkVTZ3Z0RkbE5Lek54QVZpcDZHMEtrQ3ZtMjJXX08tYndlbG5FUTlpOGVtUDkyQ0tMbkVsT2ozdmFpTkxIWkFsUVJCZ2wxWkdKY0FzRmY3U0E?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Druzhba pipeline restarts Russian oil flows to Europe, unblocking E.U. loan for Kyiv  NBC NewsEU approves \u20ac90bn loan for Ukraine as pipeline is turned on ending deadlock  BBCUkraine restarts Russian oil to Europe, unblocking 90-billion-euro EU loan  Al JazeeraOil Flows via Druzhba Set To Restart Today  Crude Oil Prices Today | OilPrice.com\"Druzhba\" restored - expert explained why Hungary and Slovakia do not refuse Russian oil  \u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0456 \u041d\u0430\u0446\u0456\u043e\u043d\u0430\u043b\u044c\u043d\u0456 \u041d\u043e\u0432\u0438\u043d\u0438 (\u0423\u041d\u041d)",
+      "published": "Wed, 22 Apr 2026 13:21:27 GMT",
+      "publisher": "NBC News",
       "tags": {
         "players": [
           "China"
         ],
         "theaters": [
-          "Indo_Pacific",
-          "Europe"
+          "Europe",
+          "Energy_Markets"
         ],
         "incentives": [],
         "relevance": 3,
@@ -5041,11 +4749,34 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "China hails countries for blocking Taiwan president's flight - dw.com",
+      "title": "Palestinian schoolboy among two killed by Israeli settlers, amid spate of attacks on education in the West Bank - CNN",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSzFnNXpVVDVnTVBobS16bkFsQVE0dk0zOFlJOHVqWkhpV3M0WkEydVVQczg0MEk0eWZMWGYwMUlDcC1rVDFvdTFDT0FtSDVzc2lMRElUbGFZeEE3VHpETVNtOVRDdUF2OGNqRHM1UUtqZU9oLVdxT1NzZjg0NWxaY1NyRG0?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Palestinian schoolboy among two killed by Israeli settlers, amid spate of attacks on education in the West Bank  CNNTwo Palestinians Killed in Israeli Shooting Near West Bank School  The New York TimesPalestinian boy, 14, among two killed in settler attack near West Bank school  The GuardianTwo Palestinians killed during settler attack on West Bank village, officials say  BBCA Palestinian School Day Ended With Israeli Settlers\u2019 Gunfire. A Boy Was Killed, Just as His Father Was 7 Years Ago  Zeteo",
+      "published": "Wed, 22 Apr 2026 07:31:03 GMT",
+      "publisher": "CNN",
+      "tags": {
+        "players": [
+          "Israel"
+        ],
+        "theaters": [
+          "Domestic_US",
+          "Middle_East"
+        ],
+        "incentives": [],
+        "relevance": 3,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "WORLD",
+      "title": "China hails countries for blocking Taiwan president's flight - DW.com",
       "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPYnRlMEM5S2pmUnZRQkYtcl9IOTJHMVFpTlN3b2d0Z2Y4LW1mbC1weDdqeUhCZHZHalJoazhpUTZBTC1vYWRXYTUzYWUxcWVwMzhJcUF1d1R0RjJtNFB1Tm9XbGl1VDNES2JXNUhFRi1Cc1IzLWZRZU1uNWFSblVILTQwWG1SZTdHZWpCWjY0Q2ZDNHNlWEpv0gGXAUFVX3lxTFBFQS0xVWVVbFQyZTNER0RUOUkyelNYR2FZLVlRNFZLczNmZ1piQV9ZQWpKc0VDN3dDVWg2dFo1N0tOWnFKakwxUXNuZWY2WjBEWktCbzZQbllHX3hySW1xUzlicVZnTUNmb3lYTzUzdWZXSmhUYWZyQ3FjUlJqS0QwSUFzdngyYmUxOXl2WnpZZHVaNGFHQzA?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "China hails countries for blocking Taiwan president's flight  dw.comLai Ching-te: Taiwan president cancels trip after African countries revoke flight permits  BBCChina praises blocking of Taiwan president's Africa trip, Taipei defiant  ReutersTaiwan Abruptly Cancels Lai Trip, Citing China\u2019s Interference  Bloomberg.comTaiwan president blames China for forced cancellation of Eswatini trip  The Guardian",
+      "content": "China hails countries for blocking Taiwan president's flight  DW.comLai Ching-te: Taiwan president cancels trip after African countries revoke flight permits  BBCChina praises blocking of Taiwan president's Africa trip, Taipei defiant  ReutersTaiwan Abruptly Cancels Lai Trip, Citing China\u2019s Interference  Bloomberg.comTaiwan\u2019s leader Lai delays Africa trip after 3 nations revoke flight permission  South China Morning Post",
       "published": "Wed, 22 Apr 2026 08:31:13 GMT",
-      "publisher": "dw.com",
+      "publisher": "DW.com",
       "tags": {
         "players": [
           "China"
@@ -5086,41 +4817,18 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Palestinian boy, 14, among two killed in settler attack near West Bank school - The Guardian",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxONnRhTnVjRWVieHJNRTRvbk9xNDhrTzcxQU1Zc2JNc2ZxSnJDRnZrdjNSeE5zV01rT3BBRG51WVhGbFR2Q3FKUEpza01BTmRHczVNcm1yZ19tamJtRlBINXFuVjA0a1dUN3oweGtQZV9BNzFQYmU4QVNtRi11NXV0UnRSSUctQ0hvX2xGYXNSWEh2Z3lpRGE3a1ZfVkJLcFQ0cjlxUG44MUlOZEM1VDFYV0NlMTQtakE?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Palestinian boy, 14, among two killed in settler attack near West Bank school  The GuardianPalestinian schoolboy among two killed by Israeli settlers, amid spate of attacks on education in the West Bank  CNNTwo Palestinians Killed in Israeli Shooting Near West Bank School  The New York TimesIsraeli army reservist kills 2 Palestinians, including a 14-year-old, in the occupied West Bank  AP NewsTwo Palestinians killed during settler attack on West Bank village, officials say  BBC",
-      "published": "Wed, 22 Apr 2026 14:09:00 GMT",
-      "publisher": "The Guardian",
-      "tags": {
-        "players": [
-          "Israel"
-        ],
-        "theaters": [
-          "Domestic_US",
-          "Middle_East"
-        ],
-        "incentives": [],
-        "relevance": 3,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "F.A.A. Investigates Near Miss Between Passenger Jets at J.F.K. Airport - The New York Times",
-      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9vUTR0Zzd3LUlEOUhoVVdXaW9mMVR2M1QyejJhWHhBbkEwUEV6Ylo1dzM0bU5qRTZOX3hybTluUGl2bzZtYzJQdktJQWNNRmdyNmdOSXdEQVRXaTJWVlAxSHh0ZlFFMzVCQUsycTYzODhvWWRYWmxWdVpPaGJ0b0E?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "F.A.A. Investigates Near Miss Between Passenger Jets at J.F.K. Airport  The New York TimesJFK Airport close call in NYC as American Airlines, Air Canada Jazz planes abort landings  ABC7 New York2 Commercial Planes Abort Landing in Emergency After Near-Collision  People.comClose call between two planes being investigated at New York\u2019s JFK airport  The Guardian2 jets narrowly avoid midair collision near JFK Airport  Newsday",
-      "published": "Wed, 22 Apr 2026 14:23:51 GMT",
-      "publisher": "The New York Times",
+      "title": "The end of oil? As fuel shocks cascade, 53 nations gather to plan a fossil fuel phaseout - The Conversation",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOdWduaE0wa203b3RScG5fTVI1bFowMjdwV2w0VGk4SGUzUlJyVUpiNVJTdzZ0SFpVRG1VamdRX2pTdEFfM0s3U0g2bng0dUtRNUxYSW1KbmRDa1Z5WDd2eXFSSXlQU1BpSUFkV2xSVUNtWlAzcnhJUVZRZkpNTFlYQ3BsSnBUbkgyNHVIeV93MUpSei1ZbmJOQXVDTERwSDU2UHFzV2o5UUNzcTQ3TXBRV3dBUElXazJkMVVEcG9R?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The end of oil? As fuel shocks cascade, 53 nations gather to plan a fossil fuel phaseout  The ConversationColombia convenes climate \u2018coalition of the willing\u2019 to break global fossil fuel deadlock  The GuardianRevealed: Scientists tell Colombia fossil-fuel transition summit to \u2018halt new expansion\u2019  Carbon Brief\u2018A ray of hope\u2019: EU governments gathering to plan way out of fossil fuel reliance  Euronews.comFossil fuel phaseout will fail without real de\u2011risking capital from Europe  Devex",
+      "published": "Tue, 21 Apr 2026 20:10:58 GMT",
+      "publisher": "The Conversation",
       "tags": {
         "players": [
           "China"
         ],
         "theaters": [
-          "Domestic_US",
-          "Fortress_Hemisphere"
+          "Europe",
+          "Latin_America"
         ],
         "incentives": [],
         "relevance": 3,
@@ -5132,11 +4840,11 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Crypto Billionaire Accuses Trump Family\u2019s World Liberty of \u2018Criminal Extortion\u2019 - WSJ",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQYlZqRzVrQlJzUUFOakx6U3ZmZjZYNXhVakNIeHdqOEo1SF9EZXpiRXNVNGJGcXVJeG10TFBmX09EWTZkaGp6UDVIaHl1aFg2VzVkSWdvTjd3WW5DWHZvLWRLc1hOVjllTjdlRUxVV01uT0kxcmxLMzJjR2hLZ2JuM3dfODlEZGg2TEpOU185Y1NJTDFHemE0VlY3aXBiZlludk1hX0VHMXBVYWJnVDJKQy1xSFp2eTRzR0NQTUNoNDJkZw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Crypto Billionaire Accuses Trump Family\u2019s World Liberty of \u2018Criminal Extortion\u2019  WSJBillionaire sues digital currency venture co-founded by Trump and sons for illegal account freezing  The GuardianCrypto Entrepreneur Justin Sun Sues Trump Family\u2019s World Liberty Financial, Accusing It of Fraud  The New York TimesTrump family's crypto firm sued over alleged 'extortion'  BBCBillionaire investor sues Trump crypto project  The Hill",
-      "published": "Wed, 22 Apr 2026 13:52:00 GMT",
-      "publisher": "WSJ",
+      "title": "Spirit Airlines nears deal with Trump administration for $500 million rescue package - NBC News",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMy1Cb1Zvb3A5Q2ZyTXBrY2owcjdnYU1fY1BMWURiTGt1MnlRNW9PblBQUjQ0LWVvQlJ6ZXZfUDNpZmpZSkZiOUlaMWxqT0pjeG5sbFhPR0h4VmVqVk54YmJ4R2RNM1V1N2d5RWFxSDgxUndQTGRNWkhCejJ4QWk1LV9HUW1XWmpXUG9FQkdnal9sX1RaUjJta292QQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Spirit Airlines nears deal with Trump administration for $500 million rescue package  NBC NewsWhite House close to deal of up to $500m to rescue ailing Spirit Airlines  The GuardianSaving Spirit Airlines possibly puts 'good money after bad', Transportation head Duffy says  ReutersTrump administration in advanced talks for Spirit Airlines rescue package, sources say  CNBCExclusive | Trump Administration Nearing Rescue Deal for Spirit Airlines  WSJ",
+      "published": "Wed, 22 Apr 2026 17:27:25 GMT",
+      "publisher": "NBC News",
       "tags": {
         "players": [
           "Trump_Admin"
@@ -5155,18 +4863,18 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Trump media company replaces ex-congressman Nunes as CEO after stock plunge that wiped out billions - AP News",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOb3p5TThXVFU2TERyVHVDVjAyd0pzalBxdzJZNnNQaEVyMWZLM0J6VHoxTDhHNDluZ3FDQ2d6UDZQQV96bmI2djZvRGN5NmdSOTg3Zmc5aG5jWm5UaUdFd0FXYjZlbUFjRkl1T2piZHBTa3lQdlYyMHo4WF9RZ3VRazhZcDhHVmNHRk5pajhucERCSDV0T1RjMmIwakNuRXhFdDRN?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Trump media company replaces ex-congressman Nunes as CEO after stock plunge that wiped out billions  AP NewsDevin Nunes Departs Trump Media After 4 Years as C.E.O.  The New York TimesEx-Congressman turned CEO of Trump Media Devin Nunes removed after stock slide  The IndependentFormer Republican Rep. Devin Nunes out as Trump Media CEO  PoliticoDevin Nunes steps down as head of Trump\u2019s struggling media company  CNN",
-      "published": "Wed, 22 Apr 2026 10:23:00 GMT",
-      "publisher": "AP News",
+      "title": "Scoop: Trump set to reclassify marijuana soon - Axios",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBybmk3RVJoMEM0dnZadTNCRzY3NnZpV2w4WkRKaGJFcEdWOGtFSy1kcDhGdWFLZ2lLdFA5MF9mb04wdFItMEk1dnU0MGQ4V29QQ3UzYmE1VnNQSHNXVkpqellBZVhGVlI4OU1MeA?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Scoop: Trump set to reclassify marijuana soon  AxiosCannabis: DOJ Expected to Ease Marijuana Restrictions as Soon as Wednesday  Bloomberg.comUS set to reclassify marijuana as early as Wednesday, Axios reports  ReutersTrump Administration Ready To Move Ahead On Marijuana Rescheduling, Four Months After President's Executive Order, Report Says  Marijuana MomentWhite House pushes imminent easing of controls on marijuana  The Washington Post",
+      "published": "Wed, 22 Apr 2026 15:49:03 GMT",
+      "publisher": "Axios",
       "tags": {
         "players": [
-          "Trump_Admin",
-          "China"
+          "Trump_Admin"
         ],
         "theaters": [
-          "Domestic_US"
+          "Domestic_US",
+          "Europe"
         ],
         "incentives": [],
         "relevance": 3,
@@ -5178,20 +4886,67 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Google Cloud Releases New TPU Chip Lineup in Bid to Speed Up AI - Bloomberg.com",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQN1NHbVhzcFpvT3Q0WjlfT3I2QzBwU3h2NU9tdmptSEJHYllJdzZUME5UcFpIYW9iblExZjFSN2dVYjZrOTZLdWNscDhDU2xIQ1RJc0dGVmNDLUZyZVNYSFNLd1gtS2t3M0FHTGNDNVpzN0FoMFJQOE5MWFNVRjkyOVNBeHFLbmVIWjNBeTBsOWxOQkxiUllORHhYSzNBQk15UVRmWGh1Q1VpNkhwWHhrbUdtX1A?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Google Cloud Releases New TPU Chip Lineup in Bid to Speed Up AI  Bloomberg.comGoogle unveils chips for AI training and inference in latest shot at Nvidia  CNBCGoogle Steps Up Its Long Running Challenge to Nvidia With New AI Chips  Barron'sOur eighth generation TPUs: two chips for the agentic era  blog.googleGoogle Introduces Specialized Chip for New Wave of AI Computing  WSJ",
-      "published": "Wed, 22 Apr 2026 13:01:36 GMT",
-      "publisher": "Bloomberg.com",
+      "title": "How CVS And Amazon Chipped Away At Eli Lilly, Novo Nordisk Stocks - Investor's Business Daily",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOU290MW1RTEZYd0o1cUZfQnl4aHRsaXd0aE9ROEVKX0lzc1R4MVk4ZXVUc2lRb3diWkdfR05DcEd2NkVTWjVEcXQ0X1E2Wk5GVjlORm1UZ19zeFVKMEl1VXd1ajBCUVNGWVdOMTM5VlZDQlNaejdRYjc1MW12R3pHaVptU2hRWWN4V0lQNVU3NDd0S3lVbktHaUo2RWxKNG5oSU1jYlc0WTlhU0dOTW84?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "How CVS And Amazon Chipped Away At Eli Lilly, Novo Nordisk Stocks  Investor's Business DailyTrump admin shifts course on Medicare GLP-1 coverage  AxiosGLP-1 weight-loss drugs will still be cheap with Medicare, but there's a catch  USA TodayDelay in Medicare pilot for obesity drugs may not hurt near-term demand, analysts say  ReutersUnitedHealth Sees \u2018Challenges\u2019 With Medicare Obesity Program  Bloomberg.com",
+      "published": "Tue, 21 Apr 2026 20:17:00 GMT",
+      "publisher": "Investor's Business Daily",
       "tags": {
-        "players": [],
+        "players": [
+          "Trump_Admin"
+        ],
         "theaters": [
-          "Domestic_US",
           "Europe"
         ],
         "incentives": [
           "Compute_Control"
         ],
+        "relevance": 3,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "BUSINESS",
+      "title": "S&P 500, Nasdaq on Pace for New Closing Highs - Barron's",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5xX3kwblpUMkhxY1RaTm5KREtzTERLN3FmWmhScl93YkhpTWtZNVhNcmM5ZE81TFpibDNVQlVkdkp3VEU1eTNFdURDMGpIQnR1YTQ4MndyNVlUbi1wUS1Ob0ttcWxMREdFS2prbnp3ZU0wZ2dBOFE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "S&P 500, Nasdaq on Pace for New Closing Highs  Barron'sNo Peace Plan, No Problem: Why the Wartime Market Keeps Rising  WSJUS stocks rise toward more records while Brent oil tops $100 on uncertainty about the Iran war  AP NewsStocks Rise on Big Earnings Day as Brent Hits $100: Markets Wrap  Bloomberg.comStock market today: Dow, S&P 500, Nasdaq slip amid Warsh hearing, Apple CEO change, Iran uncertainty  Yahoo Finance",
+      "published": "Wed, 22 Apr 2026 17:25:00 GMT",
+      "publisher": "Barron's",
+      "tags": {
+        "players": [
+          "China",
+          "Iran"
+        ],
+        "theaters": [
+          "Middle_East"
+        ],
+        "incentives": [],
+        "relevance": 3,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "Remedy releases Control on iPhone and iPad with touch controls, reworked gameplay systems, and ray tracing - Eurogamer.net",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPQzJWQXdobnVraGtrRmhOZTh1OGk5TWZYSm1reHdQMjlzZGp4RkVtVjF5Q2ZvVkp1TkhOQ194UHUzWDhoYjdiTk9GcTh2QzZTMy1vUThDTGd5a0VTbXRlc0tmS0dPWDB2ZmZMXzJYa0xoaXBWR0w2R2hfYzlxb0xRT0dPQXVsOWRVM2stdzhB?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Remedy releases Control on iPhone and iPad with touch controls, reworked gameplay systems, and ray tracing  Eurogamer.netControl: Ultimate Edition is out for the iPhone and iPad  EngadgetTake control anywhere anytime, Control Ultimate Edition is now available on iPhone and iPad  GamingTrendControl: Ultimate Edition is Now Available on iPhone and iPad  iPhone in CanadaControl Ultimate Edition iPhone and iPad: Price, Requirements, and What's Unconfirmed  Gadget Hacks",
+      "published": "Wed, 22 Apr 2026 12:30:55 GMT",
+      "publisher": "Eurogamer.net",
+      "tags": {
+        "players": [
+          "China"
+        ],
+        "theaters": [
+          "Fortress_Hemisphere",
+          "Europe"
+        ],
+        "incentives": [],
         "relevance": 3,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
@@ -5219,6 +4974,28 @@
         "relevance": 3,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "rss",
+      "feed": "Al Jazeera",
+      "title": "How Israel is destroying Lebanon\u2019s water infrastructure",
+      "url": "https://www.aljazeera.com/features/2026/4/22/how-israel-is-destroying-lebanons-water-infrastructure?traffic_source=rss",
+      "content": "Israel is &#039;deliberately&#039; attacking Lebanon&#039;s water, experts say, aiming to displace or kill south Lebanon&#039;s population.",
+      "published": "Wed, 22 Apr 2026 16:00:51 +0000",
+      "tags": {
+        "players": [
+          "China",
+          "Israel"
+        ],
+        "theaters": [
+          "Middle_East"
+        ],
+        "incentives": [],
+        "relevance": 3,
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -5276,28 +5053,6 @@
       "tags": {
         "players": [
           "Israel",
-          "Iran"
-        ],
-        "theaters": [
-          "Middle_East"
-        ],
-        "incentives": [],
-        "relevance": 3,
-        "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "What is uranium enrichment and how quickly could Iran build a nuclear bomb?",
-      "url": "https://www.aljazeera.com/news/2026/4/22/what-is-uranium-enrichment-and-how-quickly-could-iran-build-a-nuclear-bomb?traffic_source=rss",
-      "content": "Al Jazeera spoke with MIT professor Ted Postol about what Iran could do with its 440kg of 60 percent enriched uranium.",
-      "published": "Wed, 22 Apr 2026 13:52:41 +0000",
-      "tags": {
-        "players": [
-          "Genesis_Mission",
           "Iran"
         ],
         "theaters": [
@@ -5379,7 +5134,7 @@
       "topic": "WORLD",
       "title": "Mexico to beef up security at tourist sites after shooting at pyramids - NPR",
       "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOU0wyTU5sN2QzUk1iZDVOOTZuY05hYjlnVWUwalRMRVViQ2xZT2dxdHB2c1JGNW1CMGhmbE45cDUtTXdESlluRlFrZ2FqV2FGNkhkOEZsRU9kSDJzSlc2ZFozVllXaDJ4aEdDaG5kTWVXUnhjYkgyVjlDcGhWX25UUy1kU3V5enJRZUpMaTRLdw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Mexico to beef up security at tourist sites after shooting at pyramids  NPRCanadian killed, six Americans among injured as gunman shoots tourists at Mexico\u2019s Teotihuacan pyramids  CNNMexico pyramid attack prompts new concerns beyond cartels  BBCGunman in deadly Mexican tourist site shooting was influenced by violent acts in US: Officials  ABC News - Breaking News, Latest News and VideosMexico pyramid gunman carried notes on US mass shootings, officials say  KOMO",
+      "content": "Mexico to beef up security at tourist sites after shooting at pyramids  NPRMexico to Increase Security at Tourist Sites After Pyramids Shooting, Ahead of 2026 FIFA World Cup  People.comJulio C\u00e9sar Jasso Ram\u00edrez: The Teotihuac\u00e1n shooter who celebrated the Columbine massacre and the fascist far right  EL PA\u00cdS EnglishGunman in deadly Mexican tourist site shooting was influenced by violent acts in US: Officials  ABC News - Breaking News, Latest News and VideosGunman seen behind B.C. tourists in phot",
       "published": "Wed, 22 Apr 2026 05:23:28 GMT",
       "publisher": "NPR",
       "tags": {
@@ -5398,16 +5153,15 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Threat of Evictions Darkens Russia\u2019s Rosy Picture of Occupied Ukraine - The New York Times",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOOXBqUGlCaTNUU2ZPcmlNdXNzQTRlbnRXSWFDdktQTEotNHp1VGt2UmlXQVNQUDBGOFFPX21fUk9yVGlHTFhZazhOZWRPc2F4Q05uNjdJNUV6WXd2bmZkWjZFa3FBcDRqVUF3MkJQTDduM0xaUmdTTXpNeldZc0tBX1hQUjF4Y0xKZ1QydnpPeWVDSU0?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Threat of Evictions Darkens Russia\u2019s Rosy Picture of Occupied Ukraine  The New York TimesRussia Cancels Property Deals in Occupied Crimea, Dozens of Families Face Eviction  UNITED24 MediaOccupiers recognized policy of displacing local population in TOT - CCD  ukranews.comRussian occupiers seize Crimean land and homes, 80 families face demolition  mezha.netHow Russia steals homes from Ukrainians in the occupied territories \u1409 News from Fakti.bg - World  fakti.bg",
-      "published": "Wed, 22 Apr 2026 09:00:21 GMT",
-      "publisher": "The New York Times",
+      "title": "Russia to block Kazakh oil flows to Germany via key pipeline - DW.com",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPZGVVZmVwR2V4WjhyZ2RwUFlvdTVWekd1clVOREtsckwzRFBlRUF4TUJIUWR0cWF2LWhtdWN3Vjl4QVhUSDF5YzRHd3B2aUpGNkd2a1ZoSGZxbWRpLUtORUthdk83SGpxZi1KQjZ0a2lhYkRzTzByUXJxX25hcHN3QVZKSTV5ZGh4bnp0TGVrckE4a3dRRnM0aVItSWhEZ0XSAZ8BQVVfeXFMTXdlSHVCYThENmk5ZjdvRWZ5V1FmOFN3OTdHZzg4Tm9ZYWRHaU5mOUNzdFdUZU4yajR5X2VEZ2VmSlc4ekZQM3hQZzVGeVlJaWN0emlLOHBBSkdXcURtTk82bFB0THFQYVNyeEFhbGRYdG93RGJUcnZCQnlxZDRzUlB3elY1cU9OSmpSNDg1RVZGWElDdEZremViR2ZfczJV?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Russia to block Kazakh oil flows to Germany via key pipeline  DW.comFlow of Kazakh oil through Russia to Germany facing disruption  YahooRussia says will halt flow of Kazakh oil to Germany  Kuwait TimesKazakhstan officially confirmed that Russia is preventing it from supplying oil to Europe  \u041d\u0430\u0448\u0430 \u041d\u0456\u0432\u0430",
+      "published": "Wed, 22 Apr 2026 12:39:20 GMT",
+      "publisher": "DW.com",
       "tags": {
-        "players": [
-          "China"
-        ],
+        "players": [],
         "theaters": [
+          "Domestic_US",
           "Europe"
         ],
         "incentives": [],
@@ -5420,11 +5174,11 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Hungary\u2019s anti-LGBTQ+ legislation violates EU law, court finds - AP News",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPdTFOODNTbHhpOXQ3amdvWnpUVkhUV0tqRTNvbFJpYndXMEZtZW1sMHIzeXRkNnk0TVR5bGtOalRuWE81UVhNSnhrY2tjc1cydzZVUEdNZkZqaHhkY0RleW9SSHJ2X2h6d3ZNaEhRZlZyQVBfb3RNRjExNGZyQVRTTVZ0MEhRX0djcFZtVUtPa2ZWT0l6UXNqdA?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Hungary\u2019s anti-LGBTQ+ legislation violates EU law, court finds  AP NewsUnprecedented ruling finds Hungary's anti-LGBTQ laws in breach of EU values  BBCEU court rules Hungary\u2019s LGBTQ law violates human rights  Al Jazeera'I told Orb\u00e1n his LGBT law was homophobic,' says Luxembourg's Bettel  Euronews.comEU\u2019s top court finds Hungary\u2019s anti-LGBTQ+ law in breach of key values  The Guardian",
-      "published": "Tue, 21 Apr 2026 20:06:13 GMT",
-      "publisher": "AP News",
+      "title": "EU top court strikes down Hungary\u2019s anti-LGBTQ+ rules - politico.eu",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOZzdQWnFDWXFtM2traHV1SEtJdFhqaFNWTWUyWGdyOC05SkVON1UyTEdzM0lzMGIyeU1PTHhvU0FrY0VIYmNValBEbXFQZEZDemJONmp4M01uZVJKZXJ3NVRadEEzVmYzdFF0WU9MWVZOZTBWdU5ZaUlWSEk5QjVFU0Joa1RVVnVBRW5IYw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "EU top court strikes down Hungary\u2019s anti-LGBTQ+ rules  politico.euUnprecedented ruling finds Hungary's anti-LGBTQ laws in breach of EU values  BBC'I told Orb\u00e1n his LGBT law was homophobic,' says Luxembourg's Bettel  Euronews.comEU court rules Hungary\u2019s LGBTQ law violates human rights  Al JazeeraEU\u2019s top court finds Hungary\u2019s anti-LGBTQ+ law in breach of key values  The Guardian",
+      "published": "Tue, 21 Apr 2026 09:13:00 GMT",
+      "publisher": "politico.eu",
       "tags": {
         "players": [
           "Altman"
@@ -5441,19 +5195,41 @@
     },
     {
       "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "Framework\u2019s first eGPUs turn its laptop into a desktop PC - The Verge",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOQk5PbF9SX2IzS2Y3Z2ZkUUVTYlZPcDZORzc1Zm1TTkRkdklLTjVxbDlpb2g2dWs3Xy1EZ1AyR2J1UlhjeHdBMjcyVUFFVTgxbVVuaHNCN0NWYXBoSzctU2hzZzB5d2JBengzcmY0Qm84bG02MVVCVnFsSmpleUxGMzVqR0RhUXM?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Framework\u2019s first eGPUs turn its laptop into a desktop PC  The VergeFramework announces Laptop 13 Pro, \u2018the MacBook Pro for Linux users\u2019  The VergeFramework\u2019s CEO on the RAM crisis and creating a \u201cMacBook Pro for Linux users\u201d  Ars Technica\u2018The MacBook Pro for Linux users\u2019 both copies and contrasts with Apple  9to5MacFramework launches the Laptop 13 Pro with Intel's new Panther Lake chips  Engadget",
-      "published": "Tue, 21 Apr 2026 18:07:24 GMT",
-      "publisher": "The Verge",
+      "topic": "BUSINESS",
+      "title": "Trump family crypto firm sued over alleged 'extortion' - BBC",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA3OVZxN2JqMkpJTXdpME9FR2VPMEEyZGdlc0RuLXhFNVNUNWNEOTg3UkttT3d3QkxaTkJ4OHZhX0xOR1JFNU44WWZZWXlnRkJRbGtyQUctaTBYdw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Trump family crypto firm sued over alleged 'extortion'  BBCCrypto Entrepreneur Files Fraud Suit Against Trump Family Firm  The New York TimesBillionaire sues digital currency venture co-founded by Trump and sons for illegal account freezing  The GuardianBlockchain billionaire Sun takes Trump family\u2019s crypto firm to court  ReutersSyed Sameer steps in as power broker in Justin Sun\u2013WLFI standoff  Bitget",
+      "published": "Wed, 22 Apr 2026 16:14:20 GMT",
+      "publisher": "BBC",
+      "tags": {
+        "players": [
+          "Trump_Admin"
+        ],
+        "theaters": [
+          "Europe"
+        ],
+        "incentives": [],
+        "relevance": 2,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "BUSINESS",
+      "title": "Deutsche Telekom and T-Mobile in early talks for mega merger, sources say - Reuters",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNVWZGRXJWM1Q0aHlRZDRzR1VxVGNKSFg2ZjhuX3lyOGJ5QXpyVU5nbEV3OE4xYXNSbDM3bnZ5UEUybUZHSW9kN3pleFQyaGQzWHVUdkFlQW9GZjJWTjlNR0xvSnkzdDZwcDRRRlFvMm84YV82cnFUb1h1RDg4LWpPQXRLd2N4ekk1ZFRNZXVNOEZ0YVZESDNDZWtmNllRbEZLV2NSeTZCLUgyUlZqbkltUlVsak5oM0lwWHU4TQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Deutsche Telekom and T-Mobile in early talks for mega merger, sources say  ReutersT-Mobile Has Plenty to Gain From a $260 Billion German Merger  Bloomberg.comDeutsche Telekom Shares Fall on Reports of Potential Merger With T-Mobile US  WSJT-Mobile Stock Falls on Report of Possible Deutsche Telekom Combination  Barron'sDeutsche Telekom eyes full combo with T-Mobile US  Fierce Network",
+      "published": "Wed, 22 Apr 2026 17:13:58 GMT",
+      "publisher": "Reuters",
       "tags": {
         "players": [],
         "theaters": [
-          "Dead_Internet"
+          "Europe"
         ],
         "incentives": [
-          "Compute_Control"
+          "Financial_Consolidation"
         ],
         "relevance": 2,
         "source_owner": "gnews",
@@ -5463,18 +5239,19 @@
     },
     {
       "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "iPhone 18 Pro to Kick Off Apple's Four-Part Camera Upgrade Plan - MacRumors",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNd2JfMnAzNkFFSkVYZENES1dFaHdBOUhQb3FpNWxoUHFTcnFvODhSbS03UWlmdWdNb1NaN2dINldzVDB2Rnh6UFhzQkpESVRtOVZabl9FMU4xbE51ZnVrUW5BMTRpRFM5anpDQUl3WjN3ZWtfbE1QUmkwcG9xTW45Z1lleVM?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "iPhone 18 Pro to Kick Off Apple's Four-Part Camera Upgrade Plan  MacRumorsLeaker shares iPhone 18 Pro\u2019s new camera feature, plus future upgrades  9to5MacHow iPhone 18 Pro's rumored variable aperture will supercharge your photography  AppleInsiderApple has begun manufacturing the new camera components for the iPhone 18 Pro  The Jerusalem PostSupply Chain Leaks Confirm iPhone 18 Pro To Receive Radical Camera Upgrade  Forbes",
-      "published": "Wed, 22 Apr 2026 12:09:11 GMT",
-      "publisher": "MacRumors",
+      "topic": "BUSINESS",
+      "title": "Convenience store owner Yesway is stealing customers from fast-food chains, CEO says - CNBC",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNeTJ4Smpia3g4ZkpqUzFQb19nWXNuVE8yRE92VC1JRlg5bXdzSDZvOWJsOXItOU9IMUdjWmU5LW1ac3hwVVA5ZFdrbGZIcndocXBNZFZFZzh5WjU5d0NKZ0VoNGl5MnVjNkhWekNncnVITW1QZ1dNeDZrejlKaHZpZ3J6NnJTbXhq0gGOAUFVX3lxTFBpQk9CVGdZNW1fTzV6SnBEUUlIb3R3R0ptYWtXdEYzOTE4TmVPaTQ1c2FjcXJQM0NrWXVmUHEyLU15Sk11VkVRNjNXZDlaSkhWUFdaM1NTdnVwTmZRN0o3bnBGT2tVWGdGNkdzTDhGSzlYZWZicnp0NVZxTV96VjFIaUJuQ01mTmpPcGJYWVE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Convenience store owner Yesway is stealing customers from fast-food chains, CEO says  CNBCConvenience Store Chain Yesway Climbs 10% After $280 Million IPO  Bloomberg.comYesway IPO: Stock price will be closely watched today as the convenience store chain makes its Nasdaq debut  Fast CompanyStore Chain Yesway Leads the SpaceX Queue as it Raises $280M in IPO  TipRanksYesway Rings the Opening Bell  Nasdaq",
+      "published": "Wed, 22 Apr 2026 16:37:39 GMT",
+      "publisher": "CNBC",
       "tags": {
         "players": [
-          "Altman",
-          "China"
+          "Musk"
         ],
-        "theaters": [],
+        "theaters": [
+          "Europe"
+        ],
         "incentives": [],
         "relevance": 2,
         "source_owner": "gnews",
@@ -5484,16 +5261,38 @@
     },
     {
       "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "Samsung Galaxy S26 Plus vs. Galaxy S26 Ultra - GSMArena.com",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPank5ZXk5S1d2V1dGdFpVMXFvNGJQQTZ3TVFZemF2NS04RjYzWlAyNk9SREx6aGd6RlVvQlpKVVRWaklVRHpPVUlLdE0yNGczS041RnVuaENKM2N5c00xbUdxWGVYMlVQN0pqZ1NGMUkxZ05LcVlXREJ3UUMzVXJmQU8tWmI1al9UVV9GeV9DdXhjYjNCcFpMcUVtcEhpRHVDb09PQzltclhIeDlvbDFtSW01aDVpQ051MDZ6Vw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Samsung Galaxy S26 Plus vs. Galaxy S26 Ultra  GSMArena.comSamsung says Galaxy S26 vertical camera is a \u2018core identity\u2019 \u2014 it\u2019s also a core problem  9to5GoogleHow Samsung Galaxy S26 Series keeps you one step ahead  samsung.comPhone Comparisons: Samsung Galaxy S26+ vs OnePlus 15  Android HeadlinesSamsung Galaxy S26 vs. Google Pixel 10: We Tested Both and It's a Close Call  PCMag UK",
-      "published": "Tue, 21 Apr 2026 07:30:02 GMT",
-      "publisher": "GSMArena.com",
+      "topic": "BUSINESS",
+      "title": "Anthropic is investigating 'unauthorized access' of its Mythos cybersecurity tool - Engadget",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPSlFwdFNJVFA2ZGhTS0NIaEVaMkxkX1dfMFpXSkQ0ejB0SGpkOTM0ay1KclZTME5Ia0JUZnJfOUVsdVZ1Yjd0WWZ2ODB1NXRJSDJqY1hoMjAtSHMtZVVaMHBJaEY4MWNINHhiek5KZW0zWDVhSlJWalJaeWw5QUVTQU5GUWYtSi1OX3hrREdIbGhtcExTQUFMZkh2bkdZMGk2UFByVjZVNmkzZ2JsYnh4YjV0aFIyeGFXSGZ0cmIybw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Anthropic is investigating 'unauthorized access' of its Mythos cybersecurity tool  EngadgetAnthropic\u2019s New Mythos A.I. Model Sets Off Global Alarms  The New York TimesAnthropic investigating report of 'unauthorized access' of powerful Mythos model  Yahoo FinanceUnauthorized group has gained access to Anthropic's exclusive cyber tool Mythos, report claims  TechCrunchCyberwar\u2019s New Frontier  Foreign Affairs",
+      "published": "Wed, 22 Apr 2026 09:10:17 GMT",
+      "publisher": "Engadget",
       "tags": {
         "players": [],
         "theaters": [
-          "Dead_Internet",
+          "Europe"
+        ],
+        "incentives": [
+          "Bifurcation_Signals"
+        ],
+        "relevance": 2,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "BUSINESS",
+      "title": "Boeing\u2019s Commercial Jet Business Improves, Reducing Quarterly Loss - WSJ",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOajRwcU03c1NqZ2w3YXJObVAzblR2enhNNndIaU5OQ29aRHhEMlBocXJMRnlvYkIwTGtsaTZDRXBtYlZqbWNHdFlqSERORDd5OFhoR0lpZkk3S25QSnVqc20zZlJSTjRrRndyeHNxdGFSWm9UR1VIVnlScl9IM19KNGpaTTBrYzlNeTgzUXhGVQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Boeing\u2019s Commercial Jet Business Improves, Reducing Quarterly Loss  WSJBoeing CEO says 'all systems are go' to increase 737 production as company narrows loss  CNBCBoeing regains delivery lead over Airbus as revenues jump  Financial TimesBoeing Trounces Estimates, FAA Sees Path To Key Certifications  Investor's Business DailyBoeing posts smaller-than-expected loss as recovery gains traction, shares jump  Reuters",
+      "published": "Wed, 22 Apr 2026 13:58:00 GMT",
+      "publisher": "WSJ",
+      "tags": {
+        "players": [],
+        "theaters": [
+          "Domestic_US",
           "Europe"
         ],
         "incentives": [],
@@ -5506,17 +5305,39 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "The Expanse: Osiris Reborn plays like a Mass Effect-like sci-fi adventure in fine form, but its developer's use of AI raises some difficult questions - Eurogamer.net",
-      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQSVhidlllVE0xZ2tRNVY2azZDOEduWlBnTndfc3R0VDJnVUNoNnBxc2dMNXpCSGpUS3BQM2w5ZHl4QXU4WGxHU3cwTkFYU3FsN1hVb1F6QlRQWl9SSml3RnV4Y3NsY01ZQ0p0dUhEd1hzbmxnUTFMZWh2c0VEdGxmY015dW55LWJCNWMtd1BoSFVYNVFUcmlsX3h5SF9NamtDV1VxLUZ0bHpQbkNXdHlyeThfZWp3UmhQY3BURnN3bGtUOVh0SGJIZ294UEpEV2ZMRzRCQXRHNmhmS2VOeUxEa2h4VDdUNUcteEJVSHlRQkJlNVhDZ2JHbjd5bExsdnFpMHc?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "The Expanse: Osiris Reborn plays like a Mass Effect-like sci-fi adventure in fine form, but its developer's use of AI raises some difficult questions  Eurogamer.netThe New \u2018Expanse\u2019 Game Could Be More Than Just a \u2018Mass Effect\u2019 Riff  GizmodoThe new Expanse game beats Mass Effect in one major way for sci-fi games  Polygon.comFor $80, You Too Can Play The Expanse: Osiris Reborn's Beta Today  CNETHands-On Preview: The Expanse: Osiris Reborn  DualShockers",
-      "published": "Wed, 22 Apr 2026 14:22:13 GMT",
-      "publisher": "Eurogamer.net",
+      "title": "Xbox cuts prices for Game Pass but ends day-one Call of Duty access - BBC",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9XSWhfakxYdjBZYlNpV05QUlhrd1RCZm1zZ2p5RVdDNlVxemVNcS1rQ0p1OWNORkFLTTRJRmRPOHZiU2ZVd2tvMkV5UUxUX254S1BlbW9HNkJxdw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Xbox cuts prices for Game Pass but ends day-one Call of Duty access  BBCXbox Game Pass Ultimate Price Update  Xbox WireMicrosoft cuts Game Pass subscription prices after new Xbox CEO promises to 'recommit' to gamers  CNBCThe Sharma memo  SuperJoost PlaylistXbox Game Pass \u2018has become too expensive,\u2019 says Microsoft\u2019s new gaming chief in leaked memo  The Verge",
+      "published": "Wed, 22 Apr 2026 12:03:10 GMT",
+      "publisher": "BBC",
+      "tags": {
+        "players": [
+          "China"
+        ],
+        "theaters": [],
+        "incentives": [
+          "Bifurcation_Signals"
+        ],
+        "relevance": 2,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "OnePlus Watch 4 makes a surprise debut with a major software upgrade - Android Authority",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9kUHZpYXhxWklaQlV1LXBKX1I1YzllU0VyWUhVcmV4MkZKa2NFaHoxWExMTV9iZTQ0SEdLaERsZHNUeFd4V0w0c2drREZGQUFMOEM3eEQ0SEZfVEFXUU9LNV9yWXJRQkUtVlZBbHBiT2FldllqQjNoY2J5UWo?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "OnePlus Watch 4 makes a surprise debut with a major software upgrade  Android AuthorityOnePlus Watch 4 officially brings Wear OS 6 in a titanium body, mysterious launch plans [Gallery]  9to5GoogleNew OnePlus luxury smartwatch rears its head before release  NotebookcheckOnePlus Watch 4 goes official with titanium body and Wear OS 6  Gadgets & WearablesTechnology News | \u26a1Check OnePlus Watch 4 Price in US, Specifications and Features  LatestLY",
+      "published": "Wed, 22 Apr 2026 08:26:02 GMT",
+      "publisher": "Android Authority",
       "tags": {
         "players": [
           "China"
         ],
         "theaters": [
-          "Europe"
+          "Domestic_US"
         ],
         "incentives": [],
         "relevance": 2,
@@ -5528,17 +5349,39 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "The year\u2019s weirdest game is hard to explain and even harder to put down - The Verge",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNTEYyelFLVW9hZ0dKSkRma1p1TTV5TmI1ZHV5Y05ldDdqNmdtN0xPcENVZktyczl5aC1sZF9LV3l1bENLZ2JhU2s1QUxVdHM3NVpUbGZNTXNUaTNEQ0NYRmZGOTlISUl4WkViRUZCaDBfVDhoeEpxWnNVLTdZTkhVZzlmeWU?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "The year\u2019s weirdest game is hard to explain and even harder to put down  The VergeTitanium Court is a most rare video game vision  AV Club2026 has a worthy Blue Prince contender that also plays like Candy Crush  Polygon.com\u2018Titanium Court\u2019 Review: AP Thomson\u2019s Surreal, Impish, and Tragic Anti-Roguelite  Slant MagazineTitanium Court review  PC Gamer",
-      "published": "Wed, 22 Apr 2026 13:00:00 GMT",
-      "publisher": "The Verge",
+      "title": "Gamers sue Nintendo over tariff refunds, saying consumers should get the money back - Game File | Stephen Totilo",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFB6Q29YcDRIbDFFaDVydDJ5VWlqZFdYRWs0Rk10djI0bmhYR1JadkJXREFRalZMRUI0MW5UaDdHS2swdEY3bUpWbEkxWk5GSFJSdXZzeC1aSlpGYkVTXzhkOTRvMWIwcGRUZ20zMFZfYWcyZERpeGc?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Gamers sue Nintendo over tariff refunds, saying consumers should get the money back  Game File | Stephen TotiloFans Sue Nintendo to Demand Tariff Refunds Are Returned to Customers  IGNNintendo sued by players who say they should get any tariff refunds received by the US government  Video Games ChronicleGamers Suing Nintendo To Get Tariff Refund Money  KotakuGamers Sue Nintendo To Get Tariff Money Back  Aftermath",
+      "published": "Wed, 22 Apr 2026 13:57:31 GMT",
+      "publisher": "Game File | Stephen Totilo",
       "tags": {
         "players": [
-          "China",
-          "AI_Industry"
+          "Trump_Admin",
+          "China"
         ],
         "theaters": [],
+        "incentives": [],
+        "relevance": 2,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "Google Maps is about to get a big dose of AI - TechCrunch",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOVGhwOTZFVmtCOGZaVlJwbnpKSXY2c1BxT08tNzRLbVlMeWQtSjN1c295QTducVdSRW9tV01DWlE0TVFjU2xJcEQtMF84NFlZS1F1R1BYTUc3VmMxdDY0RGNrMURNTGEtTUxIcUNoN2hpdG5qaEZMcVlPSkhWX3NOeUNpbWF3Zw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Google Maps is about to get a big dose of AI  TechCrunchI finally get the hype about Gemini in Google Maps  Android PoliceI used Gemini in Google Maps to find hidden local gems \u2014 now I\u2019m hooked  Tom's GuideGoogle Maps abandons the flat map and gains 3D navigation with transparent buildings, visible traffic lights, and a chat assistant with artificial intelligence that understands questions as if it were a normal conversation.  CPG Click Petr\u00f3leo e G\u00e1sGoogle's new AI tools put film scouting in St",
+      "published": "Wed, 22 Apr 2026 12:00:00 GMT",
+      "publisher": "TechCrunch",
+      "tags": {
+        "players": [
+          "AI_Industry"
+        ],
+        "theaters": [
+          "Domestic_US"
+        ],
         "incentives": [],
         "relevance": 2,
         "source_owner": "gnews",
@@ -5549,8 +5392,29 @@
     {
       "source": "rss",
       "feed": "Al Jazeera",
+      "title": "Iran says \u2018fully prepared\u2019 for football team\u2019s World Cup participation",
+      "url": "https://www.aljazeera.com/news/2026/4/22/iran-says-fully-prepared-for-football-teams-world-cup-participation?traffic_source=rss",
+      "content": "Tehran says all necessary arrangements have been made for participation in the tournament cohosted by the US.",
+      "published": "Wed, 22 Apr 2026 16:39:02 +0000",
+      "tags": {
+        "players": [
+          "Iran"
+        ],
+        "theaters": [
+          "Middle_East"
+        ],
+        "incentives": [],
+        "relevance": 2,
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+      },
+      "windows": []
+    },
+    {
+      "source": "rss",
+      "feed": "Al Jazeera",
       "title": "Israeli settlers block Palestinian children from school in the West Bank",
-      "url": "https://www.aljazeera.com/videos/2026/4/22/israeli-settlers-block-palestinian-children-from-school-in-the-west-bank?traffic_source=rss",
+      "url": "https://www.aljazeera.com/news/2026/4/22/israeli-settlers-block-palestinian-children-from-school-in-the-west-bank?traffic_source=rss",
       "content": "Students, teachers and families stage daily peaceful sit-ins at the site of the fence near Umm al-Khair village.",
       "published": "Wed, 22 Apr 2026 15:44:26 +0000",
       "tags": {
@@ -5610,43 +5474,22 @@
     },
     {
       "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "Beyond the desecrated statue: What truly demands our outrage",
-      "url": "https://www.aljazeera.com/opinions/2026/4/22/beyond-the-desecrated-statue-what-truly-demands-our-outrage?traffic_source=rss",
-      "content": "Destruction of a statue of Jesus in Lebanon is disturbing, but Israel\u2019s genocide is what really demands our outrage.",
-      "published": "Wed, 22 Apr 2026 13:20:17 +0000",
+      "feed": "Ars Technica",
+      "title": "Tabloid reports linking 10 missing and dead scientists spur FBI probe",
+      "url": "https://arstechnica.com/tech-policy/2026/04/tabloid-reports-linking-10-missing-and-dead-scientists-spur-fbi-probe/",
+      "content": "FBI suspects foreign spies may be targeting scientists with access to government secrets.",
+      "published": "Wed, 22 Apr 2026 16:46:31 +0000",
       "tags": {
-        "players": [
-          "Israel"
-        ],
+        "players": [],
         "theaters": [
-          "Middle_East"
+          "Domestic_US"
         ],
-        "incentives": [],
+        "incentives": [
+          "Bifurcation_Signals"
+        ],
         "relevance": 2,
         "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "Deadly Israeli settler attack on school kills two in Ramallah",
-      "url": "https://www.aljazeera.com/video/newsfeed/2026/4/22/deadly-israeli-settler-attack-on-school-kills-two-in-ramallah?traffic_source=rss",
-      "content": "Two people have been killed after Israeli settlers opened fire on a school in the occupied West Bank.",
-      "published": "Wed, 22 Apr 2026 12:41:45 +0000",
-      "tags": {
-        "players": [
-          "Israel"
-        ],
-        "theaters": [
-          "Middle_East"
-        ],
-        "incentives": [],
-        "relevance": 2,
-        "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -5665,27 +5508,6 @@
           "Dead_Internet"
         ],
         "incentives": [],
-        "relevance": 2,
-        "source_owner": "rss",
-        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Ars Technica",
-      "title": "Microsoft removes Call of Duty from Game Pass, lowers subscription pricing",
-      "url": "https://arstechnica.com/gaming/2026/04/microsofts-game-pass-gets-cheaper-loses-launch-day-call-of-duty-access/",
-      "content": "New Xbox CEO says subscription \"has become too expensive for too many players.\"",
-      "published": "Tue, 21 Apr 2026 18:18:27 +0000",
-      "tags": {
-        "players": [
-          "China"
-        ],
-        "theaters": [],
-        "incentives": [
-          "Bifurcation_Signals"
-        ],
         "relevance": 2,
         "source_owner": "rss",
         "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
@@ -5755,7 +5577,7 @@
       "topic": "WORLD",
       "title": "UK bans a generation of children from smoking: How it works - Al Jazeera",
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQeHRYMmhjZUNITkRySVY3MFd0dDBHdlpvcm9lVU5jZHJzUEZZZ21LTFRZTGhMUWZ4cHBBSHlKNHVRRlJRaHNnUHRmbTBESXZRaHVnQjFYNS0wWW9SbjNySGVoM3Vzalk0SDZ6TWxmZkxPT0ZXTVRGZWt0M28ycnRncGx3SHJDWFRzZUxWVGpPOFY0d3VkYTJ1c29XM0hhaGkyaFdDY2hn0gGrAUFVX3lxTE9LcnB6NF9DZEduSnI2OXBqUWRYZXF3QTBteEw5OHZzb1VFNGl5RG53U2VxbE9vNjIwLWdXNVZYajRDVE52R2JWV1JRRG9RWnY0a3hJTDh4Z0pRUWl5SjFveWhmWW11bTJFVXd2b213SE9ZdE4tOVo1ZDJPMVZRQjNwS2p4eTBMVjBFQzRsOFJvVV9RQmM1U2VqYkdpZmF3UHlENjhsRjZXS2hMUQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "UK bans a generation of children from smoking: How it works  Al JazeeraProposed Lifetime Smoking Ban to Become Law in Britain  The New York TimesUK passes bill that will eventually ban cigarette purchases  AP NewsBill banning people born after 2008 from buying tobacco clears UK parliament  The GuardianSmoking ban for people born after 2008 in the UK agreed  BBC",
+      "content": "UK bans a generation of children from smoking: How it works  Al JazeeraProposed Lifetime Smoking Ban to Become Law in Britain  The New York TimesLifetime cigarette ban advances in UK as vaping rules tighten  USA TodayBill banning people born after 2008 from buying tobacco clears UK parliament  The GuardianUK passes bill that will eventually ban cigarette purchases  AP News",
       "published": "Wed, 22 Apr 2026 12:01:56 GMT",
       "publisher": "Al Jazeera",
       "tags": {
@@ -5773,31 +5595,11 @@
     {
       "source": "gnews",
       "topic": "WORLD",
-      "title": "Druzhba pipeline restarts Russian oil flows to Europe, unblocking E.U. loan for Kyiv - NBC News",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQMjJ0T1kwNmpnN1BITWFfOGdnakotbUE0Y29aVmVBbC1TQmVXVGhKOHhIN3VGbV95WjhROHFYNDF4MmZ5UzhTY2xhMWNFaERYWjdrU0RMdUdWS09nTHpaSWFraEk4VjB5aENkVTZ3Z0RkbE5Lek54QVZpcDZHMEtrQ3ZtMjJXX08tYndlbG5FUTlpOGVtUDkyQ0tMbkVsT2ozdmFpTkxIWkFsUVJCZ2wxWkdKY0FzRmY3U0E?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Druzhba pipeline restarts Russian oil flows to Europe, unblocking E.U. loan for Kyiv  NBC NewsEU approves \u20ac90bn loan for Ukraine as pipeline is turned on ending deadlock  BBCEU agrees to unblock \u20ac90bn loan for Ukraine after Hungary lifts veto  The GuardianDruzhba pipeline restarts Russian oil flows to Europe, unblocking \u00a3105B EU loan for Kyiv  CNNWhat's in the EU's 20th package of sanctions against Russia  Reuters",
-      "published": "Wed, 22 Apr 2026 13:21:27 GMT",
-      "publisher": "NBC News",
-      "tags": {
-        "players": [],
-        "theaters": [
-          "Europe"
-        ],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "WORLD",
-      "title": "Tucker Carlson turns on Trump, apologizes for \u2018misleading people\u2019 - The Seattle Times",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNaXRFVm9KQXZ5N3ZGQkdVZ0ZkN2pzUnRaRjZPaG5sWnhDeHpaWkhwcWdHWmRWeFRPcW5iS0VvaGtaeC1nRnpMZnFuMTdQa2o0dTJuV2tsMG1hbTQ2ZTRuanRaakdtTXI0a2dsQU55OV9iQVVaNWpVQTJZcXh1eE9oT2JEclJqT1ZFNUpVWm1PRGM0OFlLZ05uTmtCeVQ4ajlVQTZDNmdLdzNuUQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Tucker Carlson turns on Trump, apologizes for \u2018misleading people\u2019  The Seattle TimesTucker Carlson Says He Is \u2018Tormented\u2019 by His Past Support for Trump  The New York TimesTucker and Trump\u2019s marriage of convenience heads for divorce court  The GuardianOpinion | Tucker Carlson\u2019s apology for supporting Trump is just hot air  MS NOWTucker Carlson apologizes for 'misleading' people on Trump: 'We're implicated in this for sure'  NBC News",
-      "published": "Tue, 21 Apr 2026 19:47:02 GMT",
-      "publisher": "The Seattle Times",
+      "title": "Tucker Carlson Says He Is \u2018Tormented\u2019 by His Past Support for Trump - The New York Times",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPOFl1YlJlUjJQYnR0NHJYT0RlMlJJWnhORDgxZmlyeGNrM0Zhb0dYYWtwcE45VGItV1NpcVB0Z0lwQ0pJRURmYTA1NkF5eHlYMG9sQ2U5OW15Nkxnc3dvMGlsWnRpQm1EYS1ha2FDT1Bud2Q1RVV6RG5MbEJ3T2xPaWtTOVFkUGs?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Tucker Carlson Says He Is \u2018Tormented\u2019 by His Past Support for Trump  The New York TimesTucker and Trump\u2019s marriage of convenience heads for divorce court  The GuardianOpinion | Tucker Carlson\u2019s apology for supporting Trump is just hot air  MS NOWTucker Carlson apologizes for 'misleading' people on Trump: 'We're implicated in this for sure'  NBC NewsThe Real Reason Tucker Carlson Is Turning on Trump  Mother Jones",
+      "published": "Tue, 21 Apr 2026 22:54:21 GMT",
+      "publisher": "The New York Times",
       "tags": {
         "players": [
           "Trump_Admin"
@@ -5832,50 +5634,10 @@
     },
     {
       "source": "gnews",
-      "topic": "WORLD",
-      "title": "Zelenskyy announces Druzhba oil pipeline repaired and 'can resume operation' - Euronews.com",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNQS1nb2IyZnRUQzNBVHgtREtfckw4empsZ2ZEbjd4MTFaRlhkVTlSbVg5WVVNbzdvUG9kcGwwOU1IeHlWSE5fcUpqWmJaZXVfdmRIeFprbmNpbHRXazBTcDZ5dWdCMUY4b3JDVXpNal82MEdFNVJSTjV1OTFOLVp1dkluenJRRXZXajhJTVVidGVMX3NRa1ZRekJoRmpqdzJkckF0YVF0V0RxektXT1czd0pYYzVwVlFRS1JMYg?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Zelenskyy announces Druzhba oil pipeline repaired and 'can resume operation'  Euronews.comView Full Coverage on Google News",
-      "published": "Tue, 21 Apr 2026 14:49:44 GMT",
-      "publisher": "Euronews.com",
-      "tags": {
-        "players": [],
-        "theaters": [
-          "Europe"
-        ],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "Trump administration in advanced talks for Spirit Airlines rescue package, source says - CNBC",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOWC1CYVdqSzhJa05WcmduOERkbWhBc3NfcFZ6SUdsd3N1SVJpVnVjX2Y3NEw3bkRaWDViRkZFMWlWX3JlUmk2T3pCMExJZEZZME50RXVPUWlxcTRTMHA5VExjZkFic0E1aG5QZjZ5c2FmRUNmSEJlQ3UxTFBsNmVXalVHc3JMYzDSAYwBQVVfeXFMT2xGQXVnUWVZelRyQ095RG5BM0hiS1RZZzFnYTVUcWxZOTNOY3RsZHJiWTNjX0VuUktyTEVqb3hXV1RwR3ViM3lxaDRJR0VRY21BalpHcGctVGR0aE1Dd0t3cHNQY0tWa21DTVJ3Y01kcXlWdDkxSUlXbzJ3WEFyQnNSc2RQbXZjaTV3ay0?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Trump administration in advanced talks for Spirit Airlines rescue package, source says  CNBCHow the airline industry could be impacted if Spirit Airlines is liquidated  NPRTrump Administration Nears $500 Million Spirit Rescue Package  Bloomberg.comTrump urges buyer for Spirit Airlines as bankruptcy pressure grows  USA TodayExclusive | Trump Administration Nearing Rescue Deal for Spirit Airlines  WSJ",
-      "published": "Wed, 22 Apr 2026 14:47:23 GMT",
-      "publisher": "CNBC",
-      "tags": {
-        "players": [
-          "Trump_Admin"
-        ],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
       "topic": "BUSINESS",
       "title": "Kevin Warsh, Trump\u2019s Fed Pick, Has Tough Task Shedding \u2018Sock Puppet\u2019 Label - The New York Times",
       "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPTjkwUnNHbnpvdVB0UjF4bGhmLWtWdFpzQzEtcUh5SjVGWXQ3UnRJR0N5UGI3Yk1CcWVBakkwOFRyRjdfUkdONXB4QkNRWHpLYjAyYm1MN1hudnp1bFVQWXA5UkVabmhRZUJVczE1Y2pZRm9ZU0tSQy1VRzJ6dzRmdTI2dw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Kevin Warsh, Trump\u2019s Fed Pick, Has Tough Task Shedding \u2018Sock Puppet\u2019 Label  The New York TimesWarren asks Trump's Fed chair nominee who won 2020 election  CNNOpinion | How to Ease the Fed off Quantitative Easing  WSJWATCH: Sen Warren unloads on Trump\u2019s Fed nominee Kevin Warsh in explosive hearing showdown  Fox NewsKevin Warsh says he will not be Trump's 'sock puppet' if confirmed as Fed chairman  BBC",
+      "content": "Kevin Warsh, Trump\u2019s Fed Pick, Has Tough Task Shedding \u2018Sock Puppet\u2019 Label  The New York TimesWarren asks Trump's Fed chair nominee who won 2020 election  CNNOpinion | How to Ease the Fed off Quantitative Easing  WSJTrump\u2019s Fed pick Kevin Warsh signals approach to rates \u2014 what a leadership change means for consumers  CNBCKevin Warsh\u2019s Nomination Hearing Focuses on Affordability  Cato Institute",
       "published": "Wed, 22 Apr 2026 14:47:34 GMT",
       "publisher": "The New York Times",
       "tags": {
@@ -5893,31 +5655,11 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Boeing\u2019s Commercial Jet Business Improves, Reducing Quarterly Loss - WSJ",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOajRwcU03c1NqZ2w3YXJObVAzblR2enhNNndIaU5OQ29aRHhEMlBocXJMRnlvYkIwTGtsaTZDRXBtYlZqbWNHdFlqSERORDd5OFhoR0lpZkk3S25QSnVqc20zZlJSTjRrRndyeHNxdGFSWm9UR1VIVnlScl9IM19KNGpaTTBrYzlNeTgzUXhGVQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Boeing\u2019s Commercial Jet Business Improves, Reducing Quarterly Loss  WSJBoeing CEO says 'all systems are go' to increase 737 production as company narrows loss  CNBCBoeing Q1 results top estimates as improving jet deliveries cut losses  Yahoo FinanceBoeing narrows Q1 earnings loss as aircraft deliveries rise  qz.comBoeing regains delivery lead over Airbus as revenues jump  Financial Times",
-      "published": "Wed, 22 Apr 2026 13:58:00 GMT",
-      "publisher": "WSJ",
-      "tags": {
-        "players": [],
-        "theaters": [
-          "Domestic_US"
-        ],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "SpaceX nears deal with Cursor - Axios",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0xLTFkNWtjdHNZTU1fQ2EyZ1JydXEwZjJnNmNMeDhOMjg0dEcwYUtLa1FvOE5sNUFsQUZSQld2UGVzanJCNTZjeWRVLWtodGktX2MyRFNJTktpSHFtbGc2RjAxekU?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "SpaceX nears deal with Cursor  AxiosSpaceX strikes $60 billion deal for the right to buy AI coding startup Cursor  Yahoo FinanceSpaceX says it can buy AI coding tool Cursor for $60B later this year  AP NewsInside the AI startup Elon Musk is betting $60 billion on  Business InsiderThe Consequences of SpaceX\u2019s Latest A.I. Moonshot  The New York Times",
-      "published": "Wed, 22 Apr 2026 14:16:16 GMT",
-      "publisher": "Axios",
+      "title": "SpaceX says it can buy AI coding tool Cursor for $60B later this year - AP News",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPWmY0ZXFfR01nRkVFc1IxcDVwSGxIMVhXbmtqSzljTXJHSUxscFZXTjZwQnJCUzd5UEh0U0k5Nk9sU0RScVNOd2d6R21nSVlodVRXYTFfbWRJeHRKdExEY1pJM3U5allYU3J0WlJxTzE2SEpxb3NicEJWYm1DT25RXzZXN0cwUUtmaFJ2YU40MTU5cHhraFZN?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "SpaceX says it can buy AI coding tool Cursor for $60B later this year  AP NewsView Full Coverage on Google News",
+      "published": "Wed, 22 Apr 2026 15:02:00 GMT",
+      "publisher": "AP News",
       "tags": {
         "players": [
           "Musk"
@@ -5933,51 +5675,11 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Anthropic investigating claim of unauthorised access to Mythos AI tool - BBC",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB2NzZaZlJ3Y21VbHdvNm43anJ4SU41WS10cjAxb3NaSWFFOFlDSWFIRDR0MUtfQ1NXVmJkUFhGWVlkYnlzUmtRbDBsQTktYzhWakRHVlFYSjBPQQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Anthropic investigating claim of unauthorised access to Mythos AI tool  BBCAnthropic\u2019s New Mythos A.I. Model Sets Off Global Alarms  The New York TimesUnauthorized group has gained access to Anthropic's exclusive cyber tool Mythos, report claims  TechCrunchClaude Mythos and the AI Cybersecurity Wake-Up Call  Bain & CompanyAnthropic\u2019s Mythos Model Is Being Accessed by Unauthorized Users  Bloomberg.com",
-      "published": "Wed, 22 Apr 2026 10:13:35 GMT",
-      "publisher": "BBC",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [
-          "Bifurcation_Signals"
-        ],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "Tech leaders, Trump, and more react to Tim Cook stepping down as Apple CEO - 9to5Mac",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOSXZHUzJ1elhrWHdJd0gzc2g2Rl9xT1JQOEstSXdqRFlNd0JROTN3M01DRVV3ckF0UHRfcTFLWVpKVzFKWjBSWlVFRlYza2NDaDktOTJIV21kZzVvY2JQd3NZWTRERVUyOU4xMkFPZjlCaVBaOHNxeW1Nby1ZM0dnVTMzOXc5UWJ5NDdZdmM5SnNwX3pHNGdUMlBB?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Tech leaders, Trump, and more react to Tim Cook stepping down as Apple CEO  9to5MacJohn Ternus, the man stepping into Tim Cook and Steve Jobs' shoes, is a 25-year Apple veteran with zero LinkedIn posts  FortuneAI and Apple: An uncertain future as CEO Tim Cook prepares to step away  NBC NewsTim Cook to become Apple Executive Chairman John Ternus to become Apple CEO  AppleApple\u2019s New CEO Will Need to Stave Off Exodus of Top Talent  Bloomberg.com",
-      "published": "Tue, 21 Apr 2026 20:45:00 GMT",
-      "publisher": "9to5Mac",
-      "tags": {
-        "players": [
-          "Trump_Admin"
-        ],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "BUSINESS",
-      "title": "Why these treatments for one of the deadliest cancers are stirring such hope - The Washington Post",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQcC1NWEtkLUNLVkJoV2tjcHg2RWVVYVhMSXFOU0hIcFpPcFI1akJNMGFqclhlc2NoazFjZnBzMi05bERlSXFCdEt3MWRCdDFVNGx1T0JDSGpqOUlMcUhzVk1BVk43MVBIYUY1dDNkOE9ocUw3OHFCajJGLWxpektxLUEyZkRjN3Jib2RjS3FnZHEtSFlXTTVj?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Why these treatments for one of the deadliest cancers are stirring such hope  The Washington PostTwo Drugs Stir Hope for Treatment of Deadly Pancreatic Cancer  The New York TimesAt AACR, more strong results for Revolution Medicine's KRAS drug, plus assurance from NCI's director  statnews.comAACR: Revolution sees pancreatic cancer win as 'tip of the iceberg' as RAS wave rises  Fierce BiotechExperimental drug doubles one-year survival in pancreatic cancer  Live Science",
-      "published": "Wed, 22 Apr 2026 13:31:50 GMT",
-      "publisher": "The Washington Post",
+      "title": "UBS Faces $20 Billion Hike in Capital Needs as Swiss Split Grows - Yahoo Finance",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxONUVTVC0zd2hQakpfNUp5TTZBTENSQm93Y3VMc3lXb1JfUUdURnJHUnB4YmtsbElXTkQ2cjcxQVFBNVJhRXBIU01EZUp0U1hZbXp6TmNEQks3NDN6bzlSb1pRb05DdkdXZ241QmNaUUdQR2pHcC1PODd5blBZTW5qVG9EMGgxa0N4TExfUHFwVU1LX3d5?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "UBS Faces $20 Billion Hike in Capital Needs as Swiss Split Grows  Yahoo FinanceSwitzerland hits UBS with proposed $20bn capital increase  Financial TimesA Swiss banking proposal could leave UBS holding $37bn more capital  Stock TitanSwitzerland\u2019s New Bank Capital Push Puts UBS In Focus  FinimizeSwitzerland Eases New Capital Demands on UBS  WSJ",
+      "published": "Wed, 22 Apr 2026 17:16:16 GMT",
+      "publisher": "Yahoo Finance",
       "tags": {
         "players": [],
         "theaters": [
@@ -5993,11 +5695,11 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "The most interesting startups showcased at Google Cloud Next 2026 - TechCrunch",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxON1lnUzJ4Y2U4Wm1TWDh6amtVdjV4aW9kWXpaVXd4WFJkSXRfTWduakk0Z1FNOHJuZlpIU3NDeFZ3aklrdzdxbGJtMUx1WjFKVkhlZHoxOUw1S0NkejdabWNabTAxOVZLODh3Q1JNNmU1aXZDTnFoWVU2RXA5R2JodXQwWlFHUjJBU1NiaGV0dFdRam45WERhT2FSc2lvWTZzZ2c?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "The most interesting startups showcased at Google Cloud Next 2026  TechCrunchCloud Next \u201826: Momentum and innovation at Google scale  blog.googleGoogle Cloud Commits $750 Million to Accelerate Partners' Agentic AI Development  Google Cloud Press CornerGoogle puts AI agents at heart of its enterprise money-making push  ReutersThe modern data stack was built for humans asking questions. Google just rebuilt its for agents taking action.  VentureBeat",
-      "published": "Wed, 22 Apr 2026 12:00:00 GMT",
-      "publisher": "TechCrunch",
+      "title": "The Gates Foundation is hiring an investigator to probe its Epstein connections - CNN",
+      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1yVkZkLVlTWVZDazNpd3M3Vm40T3VOZWpwcnVyMjBIWnlISW9uaFhoeE8zaU9HbzFFeEEwNnlaWFhRaGRZQXQzQ3JWQVU4Z1h5Q1dUdEk3S2s3VEVGaE84MUxneWJ3amtZUHBacmplbDhhMGZiS3VlaUJ3?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The Gates Foundation is hiring an investigator to probe its Epstein connections  CNNExclusive | Gates Foundation to Cut 20% of Staff, Review Epstein Ties  WSJThe Gates Foundation is reviewing its Epstein ties as released emails raise questions for funders  ClickOnDetroit | WDIV Local 4Gates Foundation launched outside review of Bill Gates\u2019 Epstein ties  The Seattle TimesGates Foundation says it has opened external review of Epstein ties  Reuters",
+      "published": "Wed, 22 Apr 2026 13:04:32 GMT",
+      "publisher": "CNN",
       "tags": {
         "players": [],
         "theaters": [
@@ -6013,17 +5715,17 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Our favorite gear at Sea Otter Classic wasn\u2019t the bikes\u2014it was the accessories - Ars Technica",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQNGVXNmk2TW1peGVENzcyYXA5WlM4ZFpuUDN2bXRSOWhVNUoxNk5hckpfRlFxdC1GX0pBUkZHT2Z4cXRWdTVIcnpOaDFZZ2t5dHdoQ29SdUwtLUdVLTh6WmxmdWNiTjFxaEFRZDJ6VTg1cHRvRzA2QTZ0WU5RQW9zWWhhamkzM0VYT285V1hxZDh0S19qZElmM3V0YVVUTUxfdDY2WUppeXM5VjZTVC02OUhKU0JsQQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Our favorite gear at Sea Otter Classic wasn\u2019t the bikes\u2014it was the accessories  Ars TechnicaStephane's Randoms Part 3: Sea Otter 2026  Pinkbike2026 Sea Otter Classic \u2013 Tech gallery assortments  Escape Collective32\u201d Mountain Bikes of Sea Otter 2026: All the Big Wheeled Bikes We Could Find  BikerumorVideo: Fresh Finds at Sea Otter 2026 (Part 5)  BIKEPACKING.com",
-      "published": "Wed, 22 Apr 2026 11:15:49 GMT",
-      "publisher": "Ars Technica",
+      "title": "Best Buy names Jason Bonfig as new CEO, replacing Corie Barry in late October - CNBC",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9NVWVFR1doaFlLMV9HR01XV3FINlVYVXAyeGVrLW8zQkJzQkQtUGZ6cDZNaG5ZTi1tNGZlR2lEN0duaUxuTW9JQXBFa1VrN1JWdW11TmZJbzhoS24zSGttX0JCTGd4YjRyUmU0MGoxdlozSkt6VHhCNldkTEF5anPSAYQBQVVfeXFMT3FzaWlQR1lTN1NjRkxfOVcyZzROenA5MHFsZVdhTVk0b2N0UG9UZ2VydlczYm1idGxkemtCQXlnOXM5S2ZlOEluWTdTZG1UdlJoQ3l6OHhVT0pBSmhjM0FwVmNacXQ2LU43Qi1ZQnJMT1ZCTHZENERLVWdIZlREVzhJVm1t?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Best Buy names Jason Bonfig as new CEO, replacing Corie Barry in late October  CNBCBest Buy taps insider Jason Bonfig as new CEO, Corie Barry steps down  Yahoo FinanceBest Buy Announces Chief Executive Officer Succession Plans  Best Buy Corporate\u2018You learn from change\u2019: Best Buy\u2019s outgoing CEO, her replacement talk future of tech retail  Star TribuneBest Buy CEO to step down in October, with successor already tapped  CBS News",
+      "published": "Wed, 22 Apr 2026 11:00:27 GMT",
+      "publisher": "CNBC",
       "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [
-          "Bifurcation_Signals"
+        "players": [
+          "China"
         ],
+        "theaters": [],
+        "incentives": [],
         "relevance": 1,
         "source_owner": "gnews",
         "owner_note": "Google News \u2014 Google controls ranking and visibility"
@@ -6035,7 +5737,7 @@
       "topic": "BUSINESS",
       "title": "BMW\u2019s flagship 7 Series gets its \u2018Neue Klasse\u2019 upgrade - The Verge",
       "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNREdhWGp0SldraEtVNTZZeS1obDNvRDBQUkxlTjlxMWxsclkxTlFFSENnWEt0ZmpFcThlUjdzTllQTUxydmZsYkRSeGN2S09iM0lzNUhRU0tyQ254X1BUbXoxWUcwUXkyV2k5cEZWLUxJbGN6WkZuMUhiMnRFWTJ5MVdtRkV0LW16a0VZVDRoaE93Ums?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "BMW\u2019s flagship 7 Series gets its \u2018Neue Klasse\u2019 upgrade  The VergeView Exterior Photos of the 2027 BMW i7  Car and DriverBMW's new i7 xDrive EVs will offer longer range and faster charging  EngadgetWatch out S-Class: this is the \u2018bold\u2019 new electric and hybrid BMW 7 Series saloon  Top GearBMW\u2019s New 7 Series Is Hand-Painted and Packed With Screens You Might Actually Want  Autoblog",
+      "content": "BMW\u2019s flagship 7 Series gets its \u2018Neue Klasse\u2019 upgrade  The VergeView Exterior Photos of the 2027 BMW i7  Car and DriverBMW 7-Series (2027)  NetCarShow.comWatch out S-Class: this is the \u2018bold\u2019 new electric and hybrid BMW 7 Series saloon  Top GearBMW's new i7 xDrive EVs will offer longer range and faster charging  Engadget",
       "published": "Wed, 22 Apr 2026 13:00:00 GMT",
       "publisher": "The Verge",
       "tags": {
@@ -6053,14 +5755,14 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Tesla Earnings, Elon Musk Due With Stock Near Key Levels; What To Look For - Investor's Business Daily",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOYzFDaG90eV9heVVPZ1RpMThNeTg4SDJQRmhyODQxTHBReEdoaTR2OHo5ZF80ZjFfUHUzQmZvR00yOGw3TFRDUEFkQ2RhM3kzWVgyVzR5dGoxVGZTdl9Xa3RWazZta0M5WVFEZnNSQ01HSHZENzRBdFVhTld4VTFQemNB?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Tesla Earnings, Elon Musk Due With Stock Near Key Levels; What To Look For  Investor's Business DailyOne Elon Musk superpower to remember on Tesla earnings day  Yahoo FinanceTesla\u2019s Cooling AI Hype Makes Investors Yawn at Blowout Earnings  Bloomberg.comTesla delivery miss puts margins and cash flow in focus  Sherwood NewsHere\u2019s what will really matter to Tesla investors when the company reports earnings  MarketWatch",
-      "published": "Wed, 22 Apr 2026 15:04:00 GMT",
-      "publisher": "Investor's Business Daily",
+      "title": "The most interesting startups showcased at Google Cloud Next 2026 - TechCrunch",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxON1lnUzJ4Y2U4Wm1TWDh6amtVdjV4aW9kWXpaVXd4WFJkSXRfTWduakk0Z1FNOHJuZlpIU3NDeFZ3aklrdzdxbGJtMUx1WjFKVkhlZHoxOUw1S0NkejdabWNabTAxOVZLODh3Q1JNNmU1aXZDTnFoWVU2RXA5R2JodXQwWlFHUjJBU1NiaGV0dFdRam45WERhT2FSc2lvWTZzZ2c?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The most interesting startups showcased at Google Cloud Next 2026  TechCrunchCloud Next \u201826: Momentum and innovation at Google scale  blog.googleGoogle Cloud Commits $750 Million to Accelerate Partners' Agentic AI Development  Google Cloud Press CornerPartnering with industry leaders to accelerate AI transformation  Google DeepMindGoogle Releases New AI Agents to Challenge OpenAI and Anthropic  Bloomberg.com",
+      "published": "Wed, 22 Apr 2026 12:00:00 GMT",
+      "publisher": "TechCrunch",
       "tags": {
         "players": [
-          "Musk"
+          "Altman"
         ],
         "theaters": [],
         "incentives": [],
@@ -6075,7 +5777,7 @@
       "topic": "TECHNOLOGY",
       "title": "Google announces \u2018Workspace Intelligence\u2019 and TPU 8t + 8i chips - 9to5Google",
       "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFA0dDN2ZlZKOFZwclYwa0J4emFMRVB0S0QwM2ZkZjVuNXFTdVA1SWF5MDdLNld5UW5iYjQxakRpd2pBVl9Ramt5NDl3bktPcTdlN0ZkbXRpNXQ3WE5OcjYwb050VFd3Z195eHl2RHZtMERNUQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Google announces \u2018Workspace Intelligence\u2019 and TPU 8t + 8i chips  9to5GoogleGoogle Meet adding in-person \u2018Take Notes for me\u2019 and Drive \u2018projects\u2019  9to5GoogleGoogle\u2019s New Workspace Intelligence Is About to Be Your Ultimate AI Co-Worker  inc.comGoogle debuts Workspace Intelligence for Gemini Workspace  TestingCatalogGoogle Chat becomes an agent interface for Workspace  Computerworld",
+      "content": "Google announces \u2018Workspace Intelligence\u2019 and TPU 8t + 8i chips  9to5GoogleGoogle Meet will take AI notes for in-person meetings too  The VergeGoogle debuts Workspace Intelligence for Gemini Workspace  TestingCatalogGoogle Chat becomes an agent interface for Workspace  ComputerworldGoogle\u2019s New Workspace Intelligence Is About to Be Your Ultimate AI Co-Worker  inc.com",
       "published": "Wed, 22 Apr 2026 12:00:00 GMT",
       "publisher": "9to5Google",
       "tags": {
@@ -6093,16 +5795,16 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "Xbox cuts prices for Game Pass but ends day-one Call of Duty access - BBC",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9XSWhfakxYdjBZYlNpV05QUlhrd1RCZm1zZ2p5RVdDNlVxemVNcS1rQ0p1OWNORkFLTTRJRmRPOHZiU2ZVd2tvMkV5UUxUX254S1BlbW9HNkJxdw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Xbox cuts prices for Game Pass but ends day-one Call of Duty access  BBCXbox Game Pass Ultimate Price Update  Xbox WireCall of Duty never made much sense for Xbox Game Pass  The VergeMicrosoft cuts Game Pass subscription prices after new Xbox CEO promises to 'recommit' to gamers  CNBCXbox should put every Call of Duty game on Game Pass before it's too late  Polygon.com",
-      "published": "Wed, 22 Apr 2026 12:03:10 GMT",
-      "publisher": "BBC",
+      "title": "Framework\u2019s first eGPUs turn its laptop into a desktop PC - The Verge",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOQk5PbF9SX2IzS2Y3Z2ZkUUVTYlZPcDZORzc1Zm1TTkRkdklLTjVxbDlpb2g2dWs3Xy1EZ1AyR2J1UlhjeHdBMjcyVUFFVTgxbVVuaHNCN0NWYXBoSzctU2hzZzB5d2JBengzcmY0Qm84bG02MVVCVnFsSmpleUxGMzVqR0RhUXM?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Framework\u2019s first eGPUs turn its laptop into a desktop PC  The VergeFramework announces Laptop 13 Pro, \u2018the MacBook Pro for Linux users\u2019  The VergeFramework\u2019s Laptop 13 Pro Is No MacBook, but It\u2019s Making PCs Better for Everyone  GizmodoFramework\u2019s CEO on the RAM crisis and creating a \u201cMacBook Pro for Linux users\u201d  Ars TechnicaFramework launches the Laptop 13 Pro with Intel's new Panther Lake chips  Engadget",
+      "published": "Tue, 21 Apr 2026 18:07:24 GMT",
+      "publisher": "The Verge",
       "tags": {
         "players": [],
         "theaters": [],
         "incentives": [
-          "Bifurcation_Signals"
+          "Compute_Control"
         ],
         "relevance": 1,
         "source_owner": "gnews",
@@ -6115,7 +5817,7 @@
       "topic": "TECHNOLOGY",
       "title": "Hands-on with ChatGPT's powerful new image engine - Axios",
       "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBBQngzdnQ3Q2JpNllWNUsyVEtiQUlUcUNGMFIzWUdjcm9HWGhGU2Y3bWZ1NU1ZTVFabmprZmcyNmNScEgzUUhJWU8wSWRjeU9IZVJHSy1SbjJlY2lYUE9GZXhNZTEtVUtxWmJLR3VWOUQzSGVMeVpQanZyVQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Hands-on with ChatGPT's powerful new image engine  AxiosOpenAI says its new image tool can make complex charts and diagrams  Los Angeles TimesChatGPT\u2019s new Images 2.0 model is surprisingly good at generating text  TechCrunchOpenAI's ChatGPT Images 2.0 is here and it does multilingual text, full infographics, slides, maps, even manga \u2014 seemingly flawlessly  VentureBeatOpenAI Takes Aim at Google with New Image Model  The Information",
+      "content": "Hands-on with ChatGPT's powerful new image engine  AxiosChatGPT\u2019s new Images 2.0 model is surprisingly good at generating text  TechCrunchOpenAI Beefs Up ChatGPT\u2019s Image Generation Model  WIREDChatGPT Images 2.0 is better at rendering non-Latin text  EngadgetOpenAI Takes Aim at Google with New Image Model  The Information",
       "published": "Wed, 22 Apr 2026 09:30:56 GMT",
       "publisher": "Axios",
       "tags": {
@@ -6133,11 +5835,11 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "Google Wallet adds Live Update for flight tracking - 9to5Google",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5IVldvVlFiR1g3TEtwQzJPQ2VWand4ZUlFYlI4ZW83MVFVRXNQdTRVUk93anFnejMxbkdYUTgwaEwwcVltSGVNVm9vX1d2aWpoOHdDb0hoV0hPbmM3UFhQa0NFeTY2U0VtQjk2ZXBWcG9RRkZNRlRR?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Google Wallet adds Live Update for flight tracking  9to5GoogleGoogle Wallet's latest update is all about easing your flight anxiety  Android CentralGoogle Wallet just got a big upgrade ahead of the busy travel season  Android PoliceGoogle Wallet now lets you track flights from the lock screen, here's what it looks like  Android AuthorityHeading Out of Town? Google Wallet Now Displays Flight Status on the Lock Screen  PCMag",
-      "published": "Tue, 21 Apr 2026 20:55:00 GMT",
-      "publisher": "9to5Google",
+      "title": "Leaker shares iPhone 18 Pro\u2019s new camera feature, plus future upgrades - 9to5Mac",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQSmM5dFdYQk5zQWZMM1Z4cnNyampvY3B1aFN1SWVkWXExM25kVVVISXJRRko5OVZBX1JMZ05HNl9hbzlUNm5zdGo3SEZ2TTNUMm1NQ2xadGg5T3VGLWdReGlWd3RMMWNaVlUzdHlFdDZxYVhPWXlLQS1FY3RjYXNGTGJDRE5DM1pUSmZqUWlQcHlvRkVuRnotSWdfMDVHdVJ4anc?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Leaker shares iPhone 18 Pro\u2019s new camera feature, plus future upgrades  9to5MacHow iPhone 18 Pro's rumored variable aperture will supercharge your photography  AppleInsideriPhone 18 Pro to Kick Off Apple's Four-Part Camera Upgrade Plan  MacRumorsApple has begun manufacturing the new camera components for the iPhone 18 Pro  The Jerusalem PostApple gears up for a game-changing iPhone camera system overhaul  MacDailyNews",
+      "published": "Wed, 22 Apr 2026 15:04:00 GMT",
+      "publisher": "9to5Mac",
       "tags": {
         "players": [
           "China"
@@ -6153,11 +5855,11 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "Google Maps is about to get a big dose of AI - TechCrunch",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOVGhwOTZFVmtCOGZaVlJwbnpKSXY2c1BxT08tNzRLbVlMeWQtSjN1c295QTducVdSRW9tV01DWlE0TVFjU2xJcEQtMF84NFlZS1F1R1BYTUc3VmMxdDY0RGNrMURNTGEtTUxIcUNoN2hpdG5qaEZMcVlPSkhWX3NOeUNpbWF3Zw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Google Maps is about to get a big dose of AI  TechCrunchThis Google Maps feature is now my secret weapon for planning date nights  Android PoliceI used Gemini in Google Maps to find hidden local gems \u2014 now I\u2019m hooked  Tom's GuideI finally get the hype about Gemini in Google Maps  Yahoo TechI\u2019ve been using \u201cAsk Maps,\u201d and it has forever changed Google Maps for me  Digital Trends",
-      "published": "Wed, 22 Apr 2026 12:00:00 GMT",
-      "publisher": "TechCrunch",
+      "title": "Yoshi and the Mysterious Book gets first gameplay on Nintendo Switch 2 - Nintendo Everything",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQUEFzUEh2VEFRZTkzdGw5cFhFV0ZsTUZLV0lOeEhhQnVUaUV3WDdxNUVTdGozZ3VDZDBUVGQxdGNGMC0zLXd5V01DY2VnX3ZpUG5ZX0JSdFE2RDZ0ZVcyVE9mTlNJV3RjTWxnQmEtcndQZ0x1MGJrVFk1dGNuWU1sT2VlVldlY2EzLTJ0MU8tWEtyeUQ5YjRGbW9ENnNCMDdwY3dkeA?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Yoshi and the Mysterious Book gets first gameplay on Nintendo Switch 2  Nintendo EverythingI played 'Yoshi and the Mysterious Book' and felt like a kid again  MashableYoshi's New Game Rethinks What A Platformer Can Be  GameSpotYoshi and the Mysterious Book preview: A choose-your-own-adventure even adults can love  EngadgetNintendo\u2019s new Yoshi game makes a controversial decision for platformers  Polygon.com",
+      "published": "Wed, 22 Apr 2026 13:55:20 GMT",
+      "publisher": "Nintendo Everything",
       "tags": {
         "players": [
           "China"
@@ -6173,31 +5875,11 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "'Yoshi And The Mysterious Book' Is More Than Just A Pretty Face - Nintendo Life",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQSTlsbTg5dHRlUlBYdVVhcDduS1U2a2JvS1JKNmVaNEJMbHNXREhpLVpyUm1wWnR1aV9KRVNGOHdKeUlvVGV2eHJyYXh2VUNBVDEyeTNOY2ZRS1MtUWVReWh6REUzWVZNeFVfQkZCRVdmcjRucXdrNUJWY2dvalpoX3lORkdLZlYtUWdaUzlNQ1ZRVFp0OG4wcC1IejIyNDlz?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "'Yoshi And The Mysterious Book' Is More Than Just A Pretty Face  Nintendo LifeI played 'Yoshi and the Mysterious Book' and felt like a kid again  MashableYoshi's New Game Rethinks What A Platformer Can Be  GameSpotYoshi and the Mysterious Book preview: A choose-your-own-adventure even adults can love  EngadgetNintendo\u2019s new Yoshi game makes a controversial decision for platformers  Polygon.com",
-      "published": "Wed, 22 Apr 2026 13:00:00 GMT",
-      "publisher": "Nintendo Life",
-      "tags": {
-        "players": [
-          "China"
-        ],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "Deezer says 44% of new music uploads are AI-generated, most streams are fraudulent - Ars Technica",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNY2h2amlFa2JicGVFX1FMaG10bUc3ZlJXN19pN3VnbFVfVjl0WW04WTFSQUd1a0RhX3RWZy1VN1R4RS0yRnROZnlwVUQ2dTJlWWJ0VFR1ZEFEUHhzWnpYMzQwamZESmdHcUJGSkF6TGt3LV8yaTVraDl6UlI4NmhmSDIxcUZONXJ1WFhmSWZ3VlFPZU5YeThOTzBpbU5WbzdMdEt5eW1WVWJRUElVaWg5cG1rcl9iU1k?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Deezer says 44% of new music uploads are AI-generated, most streams are fraudulent  Ars TechnicaDeezer: AI-generated tracks now represent 44% of all new uploaded music  Deezer NewsroomNearly Half Of All Songs Uploaded To Music Streaming Platform Deezer Are Now AI-Generated  NDTVDeezer says AI-made songs make up 44 percent of daily uploads  EngadgetIs AI Taking Over Our Music Platforms?  digit.fyi",
-      "published": "Mon, 20 Apr 2026 17:15:51 GMT",
-      "publisher": "Ars Technica",
+      "title": "The Expanse: Osiris Reborn closed beta now available - Gematsu",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQRnR1MlRGOHRSS3pIUmZleTMzU3Eta0UzOG53ZlFxQTZjUDI0NUhnZHhJVnQtSnNoMThsUmx2bVVKcW4tVVVvelZmd250aDkzU3BsckFQdEc3bVdja1Yzd2VwYzk0aXBkS0MtbDhBMnJaQXZURVNOWjBLaDJRUFJDYUVZbUNQWGRrOXg4?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The Expanse: Osiris Reborn closed beta now available  GematsuFor $80, You Too Can Play The Expanse: Osiris Reborn's Beta Today  CNETThe New \u2018Expanse\u2019 Game Could Be More Than Just a \u2018Mass Effect\u2019 Riff  GizmodoThe new Expanse game beats Mass Effect in one major way for sci-fi games  Polygon.comThe Expanse: Osiris Reborn Hands-On Preview: A Genuine Mass Effect Competitor in the Making  GameRant",
+      "published": "Wed, 22 Apr 2026 14:27:50 GMT",
+      "publisher": "Gematsu",
       "tags": {
         "players": [
           "China"
@@ -6215,7 +5897,7 @@
       "topic": "TECHNOLOGY",
       "title": "Gran Turismo 7 April 2026 Update: Renault Twingo, Porsche 964 Turbo S, Yangwang U9 - GTPlanet",
       "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQdzJvZnRYWTBIM3ZUaUpyejJQNmhZUTFuRXhMcmR5Znczdy0yLU9tRHJ1azgyY0QyU3hySF9VdFFGUXpsOE1kb1Z1Q0xpNWtBSlFncjl3dlMzeldicEJENXdDczZ6bHpsVU1BbUhJYS00ZjFhVUJINmVMNW9RQkVsUmpXOVp2WnRBSUVXbGl4U1lvc1dUMnRDRUg4UC14TW5Ock80OUtYdlI?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Gran Turismo 7 April 2026 Update: Renault Twingo, Porsche 964 Turbo S, Yangwang U9  GTPlanetGran Turismo 7 update 1.69 available today, first 2026 Gran Turismo World Series details  PlayStation.BlogThe Gran Turismo 7 April Update: Three New Cars, Three New Races and New Power Pack Features!  gran-turismo.comNew GT7 Update Coming Soon: What Are the Three Cars?  autoevolutionGran Turismo 7 introduces a paid reward system with update 1.69.  PlayFront",
+      "content": "Gran Turismo 7 April 2026 Update: Renault Twingo, Porsche 964 Turbo S, Yangwang U9  GTPlanetThe Gran Turismo 7 April Update: Three New Cars, Three New Races and New Power Pack Features!  gran-turismo.comGT7 Is Getting the Renault Twingo and Some Other Cars People Probably Care About  The DriveGran Turismo 7 update 1.69 available today, first 2026 Gran Turismo World Series details  PlayStation.BlogGran Turismo 7 introduces a paid reward system with update 1.69.  PlayFront",
       "published": "Wed, 22 Apr 2026 05:05:43 GMT",
       "publisher": "GTPlanet",
       "tags": {
@@ -6232,36 +5914,16 @@
     },
     {
       "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "More Bungie Devs Are Working On \u2018Marathon\u2019 Than \u2018Destiny 2\u2019 Now - Forbes",
-      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYzZyMnc5MlRwTEdjMG1NUkE3LUQ0ZXhZZDloZ0R1SzFiY1ROU1lsT3hqUTdBSVFJS08zMG5keXk3R0NGUUozbTV2MDRRX01ad2pqYnRIemhGdV9fTmlmUzVFX01OZlVRWEw0Qnp4aEh6eVBqTXF3eXVTUDZ5X3IwUHBINlQ3VXlENnN6UDhocTR2eVgwaHBSdVNxb2hLQ0gtMUp4emRkd0MyT0J2MjE4?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "More Bungie Devs Are Working On \u2018Marathon\u2019 Than \u2018Destiny 2\u2019 Now  Forbes",
-      "published": "Wed, 22 Apr 2026 14:50:43 GMT",
-      "publisher": "Forbes",
-      "tags": {
-        "players": [
-          "Altman"
-        ],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
       "topic": "SCIENCE",
-      "title": "Lyrid meteor shower 2026: how to see the peak tonight\u2014 from the US and UK - The Times",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQRFNxSFB4MURfU2k1anVlb3RIbnAwUkdfM0lyQjFWbGFXS25WeVAtb1lSaG5obV9WVUdMXzlqOUFPdWtHX1lvTmlBMmN6QUNvOFpudEpfcmRIRHhSaUtCV2lrbkN1OE5Ta2ZVbWpIYUVDM0J2b2w3ZHdYYVFyaWVoT1B6aHNVdFJobzM3U2o1MkNaWTQ2ZktsaFZvX2ZHRDkzbW5kZWx4RkNBaThZ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Lyrid meteor shower 2026: how to see the peak tonight\u2014 from the US and UK  The TimesDon't miss the Lyrid meteor shower 2026 peak tonight! Viewing times, location and tips  SpaceLook up, Iowa. Northern lights, Lyrid meteors may light up the sky  The Des Moines RegisterLook up for Lyrid meteors Tuesday night  WRALThe Lyrid meteor shower opens the season. Here\u2019s how to watch  CNN",
-      "published": "Wed, 22 Apr 2026 12:21:00 GMT",
-      "publisher": "The Times",
+      "title": "Spectacular photos of the 2026 Lyrid meteor shower captured from Earth and space - Space",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPNUlpM19fMU9FZV9pSFBIdUN2N2N3UElHN3JxYzl1U2NueWVnVDlORUtJZ2JFSVd0a2I4a3phb3R0MlZCUUxRckdMYTRqSGtfVEhjdHM1LVBTRWp6Mzk0c09neHN1cGUwQjhZOEE5UFg5eGx0RERMamtZdExzZHR3aFNRRktEZExfTFp6MU5SaW1WVjVlNG5HaGNtWDJYdE9RdHdrNGJtVnZmYlFRVG0wTXVuLVFMRktQWmRkckp4eFFaZU9oSWRN?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Spectacular photos of the 2026 Lyrid meteor shower captured from Earth and space  SpaceDon't miss the Lyrid meteor shower 2026 peak tonight! Viewing times, location and tips  SpaceLook up, Iowa. Northern lights, Lyrid meteors may light up the sky  The Des Moines RegisterLyrids peak over Florida Panhandle tonight. Where to watch  Pensacola News JournalThe Lyrid meteor shower opens the season. Here\u2019s how to watch  CNN",
+      "published": "Wed, 22 Apr 2026 11:43:00 GMT",
+      "publisher": "Space",
       "tags": {
         "players": [],
         "theaters": [
-          "Europe"
+          "Domestic_US"
         ],
         "incentives": [],
         "relevance": 1,
@@ -6275,9 +5937,29 @@
       "topic": "SCIENCE",
       "title": "Haunting NASA Photo Shows Artemis II Heat Shield in the Ocean - PetaPixel",
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxObmlNZDlBaUpBQ1dlZmIzYXVDbEozWnNCbmRFaEF4VU41MWo5ZnlTUHdOZ2E4T0NYOHhWTmZQdEd0TmNqN3AxT2RpUVctSHEzbjZ3TnZOV3J6S1NsUWhpOGI2ZDFpejIyc2ltRng4Q2h0ZWxyeHZpbzJPR3pTWGIyZFNONTJObG0wajI5MVJqVnUxMU9XbHhhOFV5UQ?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Haunting NASA Photo Shows Artemis II Heat Shield in the Ocean  PetaPixelNASA Artemis II Human Research Data Methodology Challenge  NASA (.gov)NASA\u2019s plans for living in space should prioritize immunology and infectious disease  statnews.comWhat Discoveries Might Be Hiding in the Artemis 2 Images and Data?  GizmodoIt wasn't just the weakened heart: after 10 days in deep space, the astronauts of the Artemis II mission returned with their spines expanded by 5 to 7 centimeters, atrophied muscles, ba",
+      "content": "Haunting NASA Photo Shows Artemis II Heat Shield in the Ocean  PetaPixelNASA\u2019s plans for living in space should prioritize immunology and infectious disease  statnews.comNASA on Track for Future Missions with Initial Artemis II Assessments  NASA (.gov)NASA's Orion Spacecraft Has A Problem It Will Need To Solve Before Artemis III  bgr.comNASA reckons the Artemis II heat shield performed like a champ  theregister.com",
       "published": "Wed, 22 Apr 2026 12:10:34 GMT",
       "publisher": "PetaPixel",
+      "tags": {
+        "players": [
+          "China"
+        ],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 1,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "SCIENCE",
+      "title": "Plants can sense the sound of rain, new study finds - Phys.org",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5SR25keFh4RDBoeEV3anpWbmpTOExha1NOZGc0eTVGdHF6RzdQNGY1WFZaOVgtcC1KVTlEcllJVXNMaDI5enVPUDNGRDVKVm81dTExOFFqcUNTYk91Mk8xcWNqRTBnOEdMejBmVXFR?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Plants can sense the sound of rain, new study finds  Phys.orgView Full Coverage on Google News",
+      "published": "Wed, 22 Apr 2026 09:00:03 GMT",
+      "publisher": "Phys.org",
       "tags": {
         "players": [
           "China"
@@ -6315,7 +5997,7 @@
       "topic": "SCIENCE",
       "title": "NASA\u2019s Hubble Reveals Stunning New View of Trifid Nebula\u2019s Star-Birth Process - The Daily Galaxy",
       "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOMXMzcTMxVUZ4OUxfLUtjVTM3ak9jRVJydXhPMGJqZ3BxcmtLcGFvNDc4cWpJa3IxanBDWGNNdVNVNGltUUhMUVRLOGRtbnV4MnNTeENaY1VhS2JaUmxNakFLWk55eUZBQUFJNV9qYmhzNGUtdDlzTUNJT0xCcW5HTw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "NASA\u2019s Hubble Reveals Stunning New View of Trifid Nebula\u2019s Star-Birth Process  The Daily GalaxyNASA\u2019s Hubble Dazzles With Young Stars in Trifid Nebula  NASA Science (.gov)NASA just dropped a stunning new Hubble image of a \u2018Cosmic Sea Lemon\u2019 5,000 light-years away  Scientific AmericanHubble turns 36 with a dazzling Trifid Nebula portrait  European Space AgencyHubble\u2019s 36th Birthday Image Shows Trifid Nebula  Sci.News",
+      "content": "NASA\u2019s Hubble Reveals Stunning New View of Trifid Nebula\u2019s Star-Birth Process  The Daily GalaxyNASA\u2019s Hubble Dazzles With Young Stars in Trifid Nebula  NASA Science (.gov)Hubble shares stunning cosmic nursery on 36th birthday  YahooNASA just dropped a stunning new Hubble image of a \u2018Cosmic Sea Lemon\u2019 5,000 light-years away  Scientific AmericanHubble turns 36 with a dazzling Trifid Nebula portrait  European Space Agency",
       "published": "Tue, 21 Apr 2026 13:15:00 GMT",
       "publisher": "The Daily Galaxy",
       "tags": {
@@ -6355,7 +6037,7 @@
       "topic": "SCIENCE",
       "title": "NASA shuts off another Voyager 1 instrument as humanity's most distant spacecraft prepares for risky 'Big Bang' maneuver to save power - Live Science",
       "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxNblc4dWpId1ZJQ1Q2X21zay1rdzd6VXl1QzdtY011bUZROTB2MU9LRWxyWlQ0NUhITU9NU1VGbTRYVFpOS0RhV2F1RDFsM0ZqaDBtcEI2RUxkUGVWNWZETFlYMW9uZFJiWnVsOVhXemhuaDlCTWJlYVl4NWVIWEdQZnBCaUNNd0VycEQ2SjNxaWphVTBvOTQ2czg5Rm1oZ2ZHX0pBSHdYaXIwNy13Yi0xZzFsZkQxcTZHbEJXMzdtVlJ1Q1YxTDVVamIzR3o5djlCMHBBZW9ldUN5eEt3V3NQOHk3TEw3c3JQR1AzRnJ1dUU4ZU5uVklRQWFSd0lKX2VSc0dYMmVadGpvRWQ2Z0E0Qw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "NASA shuts off another Voyager 1 instrument as humanity's most distant spacecraft prepares for risky 'Big Bang' maneuver to save power  Live ScienceNASA Shuts Off Instrument on Voyager 1 to Keep Spacecraft Operating  NASA Science (.gov)Nasa\u2019s interstellar space probe Voyager 1 is losing power  YahooNASA shuts down instrument on Voyager 1 probe to manage power  USA TodayNasa shuts down Voyager 1 instrument in effort to extend life of probe  The Times",
+      "content": "NASA shuts off another Voyager 1 instrument as humanity's most distant spacecraft prepares for risky 'Big Bang' maneuver to save power  Live ScienceNASA Shuts Off Instrument on Voyager 1 to Keep Spacecraft Operating  NASA Science (.gov)Nasa\u2019s interstellar space probe Voyager 1 is losing power  YahooNASA\u2019s Voyager 1 spacecraft loses another instrument to save power  Scientific AmericanNASA shuts down instrument on Voyager 1 probe to manage power  USA Today",
       "published": "Tue, 21 Apr 2026 18:40:30 GMT",
       "publisher": "Live Science",
       "tags": {
@@ -6411,22 +6093,21 @@
       "windows": []
     },
     {
-      "source": "gnews",
-      "topic": "SCIENCE",
-      "title": "NASA Invites Media to SpaceX\u2019s 34th Resupply Launch to Space Station - NASA (.gov)",
-      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQbnQ1aXZDaExnem8wdHlESU1BYWdyVDZMVTk4cDhrYmRiSmhoeW9hYVg2d2RHTW1TUU91ekp2NDA2d2swUG5ScnJhc1VPc3o5NTU2Sm1QRDdwRjljNkg5N1ZyMTF4MTRyN29jeldUbGZiaXFtOWRuTmY1dVVPY0tacVF3VzNwZ05QSFZJSHFOYkVLX0RJZGZCaXpmakdvOXNRSzh4aA?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "NASA Invites Media to SpaceX\u2019s 34th Resupply Launch to Space Station  NASA (.gov)SpaceX\u2019s 34th Resupply Mission to launch to International Space Station soon\u2014here's all you need to know  starlust.org",
-      "published": "Mon, 20 Apr 2026 18:02:54 GMT",
-      "publisher": "NASA (.gov)",
+      "source": "rss",
+      "feed": "Al Jazeera",
+      "title": "Ukraine restarts Russian oil to Europe, unblocking 90-billion-euro EU loan",
+      "url": "https://www.aljazeera.com/news/2026/4/22/ukraine-restarts-russian-oil-flows-to-europe-unblocking-90bn-eu-loan?traffic_source=rss",
+      "content": "Resumption of oil deliveries enables Hungary to lift veto, with EU&#039;s 27 members now on track to formally approve loan.",
+      "published": "Wed, 22 Apr 2026 16:12:38 +0000",
       "tags": {
-        "players": [
-          "Musk"
+        "players": [],
+        "theaters": [
+          "Europe"
         ],
-        "theaters": [],
         "incentives": [],
         "relevance": 1,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -6451,20 +6132,20 @@
     },
     {
       "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "New York exhibit casts \u2018Trumpism\u2019 as a modern faith",
-      "url": "https://www.aljazeera.com/video/newsfeed/2026/4/22/new-york-exhibit-casts-trumpism-as-a-modern-faith?traffic_source=rss",
-      "content": "A New York gallery has transformed into a chapel-style installation exploring \u2018Trumpism\u2019 as a modern American belief.",
-      "published": "Wed, 22 Apr 2026 13:31:09 +0000",
+      "feed": "Ars Technica",
+      "title": "Google unveils two new TPUs designed for the \"agentic era\"",
+      "url": "https://arstechnica.com/ai/2026/04/google-unveils-two-new-tpus-designed-for-the-agentic-era/",
+      "content": "Google's new generation of Tensor AI chips is actually two chips, one for inference and one for training.",
+      "published": "Wed, 22 Apr 2026 17:10:32 +0000",
       "tags": {
-        "players": [
-          "Trump_Admin"
-        ],
+        "players": [],
         "theaters": [],
-        "incentives": [],
+        "incentives": [
+          "Compute_Control"
+        ],
         "relevance": 1,
         "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -6526,12 +6207,48 @@
       "windows": []
     },
     {
+      "source": "tavily",
+      "query": "Anthropic Mythos Glasswing dangerous capability gated 2026",
+      "title": "AIwire - Covering Scientific & Technical AI",
+      "url": "https://www.hpcwire.com/aiwire/2026/04/09/anthropic-unveils-project-glasswing-as-claude-mythos-targets-software-vulnerabilities/",
+      "content": "### TCI Media: Home of the Wire Publications\n\nHeader Logo 1\nHeader Logo 2\nHeader Logo 3\nLogo\n\n## Off the Wire Press Releases\n\n### April 16, 2026\n\n### April 15, 2026\n\n### April 14, 2026\n\n### April 13, 2026\n\n### April 10, 2026\n\n## Anthropic Unveils \u2018Project Glasswing\u2019 as Claude Mythos Targets Software Vulnerabilities\n\nApril 9, 2026 \u2014 Anthropic has announced Project Glasswing, a new initiative that brings together Amazon Web Services, Anthropic, Apple, Broadcom, Cisco, CrowdStrike, Google, JPMorgan",
+      "published": "2026-04-09",
+      "score": 0.68723184,
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "tavily",
+        "owner_note": "Tavily AI \u2014 aggregates web, inherits all web biases"
+      },
+      "windows": []
+    },
+    {
       "source": "gnews",
       "title": "THE WEEK OF APRIL 20, 2026 - AIP.ORG",
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFAzSEtNSUJuSHR0MHFtY0ppRFVNZHp5blJ3dkNoWW5FZGxicHpabml5amdweFlyX09CTzlEZkE0aWxSUjliemp0WmR2Y1JBVS16WnFZemx1ZlBRRWxOYkE?oc=5&hl=en-US&gl=US&ceid=US:en",
       "content": "THE WEEK OF APRIL 20, 2026  AIP.ORG",
       "published": "Mon, 20 Apr 2026 18:09:26 GMT",
       "publisher": "AIP.ORG",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "WORLD",
+      "title": "Pope calls for justice and closing income gap in Equatorial Guinea Mass with presidential family - AP News",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQeFdlemExZE9OV3diQW5XM2xSRFZIM04tXzhiRUVoU1pjN2FnWXN1S2p5cXBjSnh5aVlNeVhteC1faEg3U3RDWHhqcUtWOTFJVVdGQnlXZnJBSjJKZGtfVGhXTk1Qc1lKV3BkQ2xXcnN1TzJuMVJPUFg4OFdJLXdtSnRDZWMwVU1fU0U2b2lnck9XYjZEYnc?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Pope calls for justice and closing income gap in Equatorial Guinea Mass with presidential family  AP NewsPope Leo Is Skipping Some of Africa\u2019s Biggest Catholic Nations  The New York TimesPope Leo welcomed by cheering faithful at Mass in Mongomo  YahooPope Leo criticises Equatorial Guinea prisons as he winds up Africa tour  BBCDay Nine in Africa: From Angola to Equatorial Guinea  Vatican News",
+      "published": "Wed, 22 Apr 2026 13:51:00 GMT",
+      "publisher": "AP News",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6565,7 +6282,7 @@
       "topic": "WORLD",
       "title": "Pope Leo: 'Pope Francis was a devoted shepherd who touched so many hearts' - Vatican News",
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxORUFBcDlzUUFCUndyYUFJTnFLbGl5QzdOZmNWd2ZXU29OTGRMNFJXX24xYjlyWnc5Nnd5RjhrSlJ1WG0wTTZ5WUM5elljeTZoVEdZX251RkZUSks3NF9pd0NacU1fRjVtejlaSk02U1dnMHVnNFpLZFV4dFB2ZERPOEFVdUZYQXl3X1d6cS1LWF9jbXV1NnhqS0N2UmU4eG5RT3RHVFdMZjFNS2dEeDNKRi1rd0FJTk1R?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Pope Leo: 'Pope Francis was a devoted shepherd who touched so many hearts'  Vatican NewsOne year later, nurse remembers Pope Francis\u2019 last journey with love and gratitude  OSV NewsStarting Seven: April 21, 2026  The PillarArthur Brooks: What\u2019s a Good Catholic to Do?  The Free PressPope Francis revealed: His final days, intimate friends and a legacy to keep  National Catholic Reporter",
+      "content": "Pope Leo: 'Pope Francis was a devoted shepherd who touched so many hearts'  Vatican NewsOne year later, nurse remembers Pope Francis\u2019 last journey with love and gratitude  OSV NewsMass at Basilica of St. Mary Major marks first anniversary of Pope Francis' death  National Catholic ReporterStarting Seven: April 21, 2026  The PillarArthur Brooks: What\u2019s a Good Catholic to Do?  The Free Press",
       "published": "Tue, 21 Apr 2026 16:40:42 GMT",
       "publisher": "Vatican News",
       "tags": {
@@ -6581,11 +6298,47 @@
     {
       "source": "gnews",
       "topic": "BUSINESS",
-      "title": "Life sciences lab real estate is clawing back from disaster. Here\u2019s what that means for investors - CNBC",
-      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1LNjA5RmtqYnRiYVZwSDNkbWg1QndZeDE2YTRGQW5haWY4bl9rZWFKRlNGSEMzRmFvOFdzTU8zZHNmeDBGeDNjSjFqeGJOOWNZanQ0bnp2M1JmSG1TVklxOGVnUFR3ZHFCOUlDV3dwQkw1OFVJV0dyc1lzNEZoTm8?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Life sciences lab real estate is clawing back from disaster. Here\u2019s what that means for investors  CNBCBiotech's Outlook Brightens, But Lab Landlords Face Deepening Vacancies, Falling Rents  BisnowDenver-Boulder Life Sciences Vacancy Climbs in Q1 2026  Mile High CREDenver-Boulder Lab Glut Grows As Tenants Hold Out For Turnkey Space  HoodlineVacancies for San Diego life science office space remain near record highs  San Diego Union-Tribune",
-      "published": "Wed, 22 Apr 2026 13:51:10 GMT",
-      "publisher": "CNBC",
+      "title": "36 S&P 500 Stocks Blew Away Tim Cook's Apple With Less Fanfare - Investor's Business Daily",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQTGNuOHdlbk9DVVNfdDFvRXN5c0hlalhaZkcycm0wVVRQNGlWRGV4aHBIVmNjVnhDRXhjNnhmTVJIaTIwNzZoTGYtaVdLdklyNjVUNEtRQWpYNlJjNDdwTzRZU3VwOU0tZHdoQ1ExMVZheWJaalgzOW1aekNFUWFfMzVZSk1kdEJpR0lBUWZGb0dtSFVJeUNWNXBOZkNmZjlJcDg0cm1FeFAxb3M?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "36 S&P 500 Stocks Blew Away Tim Cook's Apple With Less Fanfare  Investor's Business DailyApple Is Boring Now  The AtlanticI rated Tim Cook a 'loser' in 2013. He proved me \u2014 and Silicon Valley \u2014 wrong.  Business InsiderHere\u2019s to the stable ones: In praise of Tim Cook  EngadgetThis is what critics of Apple and Tim Cook get dead wrong  MarketWatch",
+      "published": "Wed, 22 Apr 2026 12:00:00 GMT",
+      "publisher": "Investor's Business Daily",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "8 Cool New Audio Gadgets To Upgrade Your Music Setup - bgr.com",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB0ME9yMm9UNzRGZXJwRTAxQno0VkdiMTJXMGRnM3loYmttWU9rSTVOZ1dnZFRVUENWaDdlWERMMFV6XzRhTktpZFNVUDJXNExka3c3QXpwSDBSYmp4SmsxSXpYVVpNdDAySktYOXJ2bS1yTVU5eWdWZDJtRQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "8 Cool New Audio Gadgets To Upgrade Your Music Setup  bgr.com",
+      "published": "Wed, 22 Apr 2026 14:02:00 GMT",
+      "publisher": "bgr.com",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "Nothing Warp removal was to \u2018fine-tune,\u2019 but its return requires sideloading - 9to5Google",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBnN3JZdHloZkFxTDNHakhOaGQ1ZjA1VGo2S1BNWkphNmloLW5YQTRDUXVvbEV4ZzNwN05IanE4ckk3dU1xcUFreTVHd1dKUlRQRUk4aWRaVlduWlpZZF8wS1QzQ2hDaExFWkVqelJMcGFGVlFG?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Nothing Warp removal was to \u2018fine-tune,\u2019 but its return requires sideloading  9to5GoogleNothing's AirDrop rival is back from the dead, and I gave it a shot: Is this the ultimate file transfer app you'll ever need?  PhoneArenaNothing makes it easy to share files between any Android phone and a Mac  The VergeNothing's \"AirDrop\" app returns after a short absence \u2013 but there's a catch  t3.comNothing Warp Lets You Send Files From Android to PC Without a Cable or a Workaround: How To Install and Setup",
+      "published": "Tue, 21 Apr 2026 14:40:00 GMT",
+      "publisher": "9to5Google",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6601,9 +6354,27 @@
       "topic": "TECHNOLOGY",
       "title": "AMD's Ryzen 9 9950X3D2 Dual Edition tested: Gratuitous overkill with a price to match - theregister.com",
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9wTUR6aTkyeEZTOVg3MkRkYl9sQ1lRbUt6WEFpX2FMampTTlNqSkhmempNdmUzOVZhNjdDZ0dUUFNBYzA0Z2phSjd2NEFYMFJTWndMZHR3cVJtZkRNQmFJaHJvdDJibldaVFNaVWZuWWZJUTA0?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "AMD's Ryzen 9 9950X3D2 Dual Edition tested: Gratuitous overkill with a price to match  theregister.comAMD Launches the Ryzen 9 9950X3D2 Dual Edition Processor  TechPowerUpAMD Ryzen 9 9950X3D2 Dual Edition review: Tons of cache for tons of dollars  Ars TechnicaAMD Stock Jumps on the Launch of the Ryzen 9 9950X3D2 Dual Edition  TipRanksThe Alienware Area-51 Is Getting AMD's New Most Powerful Processors Later This Week  IGN",
+      "content": "AMD's Ryzen 9 9950X3D2 Dual Edition tested: Gratuitous overkill with a price to match  theregister.comThe Reviews Are In: AMD's Ryzen 9950X3D2 Is the Fastest for Gaming, But Not by Much  extremetech.comAMD Ryzen 9 9950X3D2 Dual Edition review: Tons of cache for tons of dollars  Ars TechnicaAlienware Area-51 gaming desktop now available with AMD\u2019s flagship Ryzen 9 9950X3D2 Dual Edition \u2014 top CPU config starts at $4,449.99 with RTX 5070 and 32GB DDR5  Tom's HardwareThe Alienware Area-51 Is Getting",
       "published": "Tue, 21 Apr 2026 13:00:00 GMT",
       "publisher": "theregister.com",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "TECHNOLOGY",
+      "title": "ISS astronauts are getting new laptops - The Verge",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQdHFNaEpLZGN6NzBmM21ubzRCRlFFVG1Nd0FreFl3MmRGWEF4Z29rOVI2SWdPWVg0QVgtckFmVHJCMzhjbW4yZm9GSmZpM2J5cUo0c3BHV3VMWFlRb1VyMFBPSlgwemZZSTFqRUFNZUNuQ1pIdTBySEtTekhYeExuMFgzY3ZVXzZVbi1r?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "ISS astronauts are getting new laptops  The Verge",
+      "published": "Tue, 21 Apr 2026 20:12:02 GMT",
+      "publisher": "The Verge",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6637,7 +6408,7 @@
       "topic": "TECHNOLOGY",
       "title": "Zoom across Armageddon with new Space Marine Detachments - Warhammer Community",
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPaUFFV2lmTjctUTlQZUdEUDFOQ2xieUZTdFBfejhFRW42RU01N0hwZ2JXbXZ3Y2ctbV83WndVTHdvdUR2UXd5RzRkUFlMUEFPcHIybWZxcGt5ejdLMkNLM1gzdXRuNTFGNlRCVnQ4TkRCWkpsY01STF94ZEQ1Vm9CeWhwNDFSVWpPYjZDU1E2dmN3aXJpWUhnOEd4VXg2MjdEVWpvYzBZX2I1Z0FlaXZNYWdVQXBIQ3hr?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Zoom across Armageddon with new Space Marine Detachments  Warhammer CommunityWarhammer 40K: Astra Militarum Armageddon Detachments  Bell of Lost SoulsUnleash the Astra Militarum motor pool with new Detachments from Armageddon  Warhammer CommunityAstra Militarum rules revealed \u2013 Commissar Graves and new vehicles  Warhammer CommunityWarhammer 40K: Astra Militarum Commissar Graves & New Vehicle Rules Reveal  Bell of Lost Souls",
+      "content": "Zoom across Armageddon with new Space Marine Detachments  Warhammer CommunityWarhammer 40K: Space Marine Armageddon Detachments Revealed \u2013 Send In The Tanks  Bell of Lost SoulsUnleash the Astra Militarum motor pool with new Detachments from Armageddon  Warhammer CommunityAstra Militarum rules revealed \u2013 Commissar Graves and new vehicles  Warhammer CommunityWarhammer 40K: Astra Militarum Armageddon Detachments  Bell of Lost Souls",
       "published": "Wed, 22 Apr 2026 13:57:25 GMT",
       "publisher": "Warhammer Community",
       "tags": {
@@ -6653,11 +6424,11 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "Ecco The Dolphin: Complete Announced, Includes Remasters & A Brand New Game - Nintendo Life",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNZlA3QnFMdGw3ckRnaDhpZmlva3RURVItS0lMRW9NUkhOVzBXZ2xicTA4SXhiSmE4ZFNFVklJNTRZaElxTFBjbXRiMWF3aFkyby1ET2JxbG4zVkdPYm1FRmtPUTFTNDF4ckItUnJzeXhQdVhuRmF6N2RIVDZDQmtlb0Q2cU5MLTVhY08xQlpMZWQwTFFHWV8zUFFGUzlGNEl3TGRVUnE5azU5RUU3c2k2NHlObnpoNk9C?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Ecco The Dolphin: Complete Announced, Includes Remasters & A Brand New Game  Nintendo LifeEcco the Dolphin Returns in Retro Collection Featuring a Brand New Game, But Will It Be on PS5?  Push SquareEcco the Dolphin: Complete collection revealed  My Nintendo NewsEcco the Dolphin remaster heading to Switch (UPDATE)  GoNintendoEcco the Dolphin Complete announced, containing the first two games and a new \u2018contemporary\u2019 game  Video Games Chronicle",
-      "published": "Wed, 22 Apr 2026 14:45:00 GMT",
-      "publisher": "Nintendo Life",
+      "title": "Lille\u2019s Top Decks - Riftbound | League of Legends Trading Card Game",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPZHdPQndrX0I0OWY4SlJqd3JFaVlxcnV3cC05b0N1eVY0MDdBQUxGN2RZckQxZEt4alduTEZBNW1yMGxkalNHUFAxNkYxU2YwOUhVWEdoQThvNS1TOVhOd0pzamVmUWhMRGdKaUlwYndmMXBHYmZCR2w2SGxtNGtZZGIyUUdxWU0?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Lille\u2019s Top Decks  Riftbound | League of Legends Trading Card Game",
+      "published": "Wed, 22 Apr 2026 16:00:00 GMT",
+      "publisher": "Riftbound | League of Legends Trading Card Game",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6671,11 +6442,11 @@
     {
       "source": "gnews",
       "topic": "TECHNOLOGY",
-      "title": "Miyamoto wants to adhere to Peach's backstory in The Super Mario Galaxy Movie in future games - Nintendo Everything",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNcVg1eWEwTE8yUjJOV2RwUUNkZHE0QUVEVkdFUlk4ZF84TENvdmVvVWNMdmJqMnAzSXlXd1E1STFpazE3ajU1dHV4RU5aUnhYdnl6aHRNUEpIWUlwcUo5SDdqZV9NM1B5MVhLMDNLcDczZ1M1RnhWWWlHUjF1VndIbFRPdG9pd3JYZWRiYXR5MzVBTUV2dXIzSnBncW43aGYtSlFXYVM0QzIwa1FMcGFHeHZWSWFCN19wTkNfNEFobnVnZw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Miyamoto wants to adhere to Peach's backstory in The Super Mario Galaxy Movie in future games  Nintendo EverythingSounds Like Nintendo's Super Mario Galaxy Movie Backstory for Princess Peach is Now Video Game Canon, Too  IGNMiyamoto hints that Peach and Rosalina's story in The Super Mario Galaxy Movie will be reflected in future games  GoNintendoMiyamoto says he wants Peach\u2019s origin story in The Super Mario Galaxy Movie to remain canon in future games  Video Games ChronicleSorry Shippers, Peach ",
-      "published": "Wed, 22 Apr 2026 12:55:29 GMT",
-      "publisher": "Nintendo Everything",
+      "title": "A Powerful New \u2018QR Code\u2019 Untangles Math\u2019s Knottiest Knots - Quanta Magazine",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNc1lxcEpYRTRQRzR1MUkwTU1NR1AwNlpna2VqUVZqRVlMUGROMHhzUDMzc1RIMkJ0SHl3aDhMM3RUMG1xWXc5NTIyNDlwZzZVWFJ4NGx5cVJucEUxWjZqZmV5bDNMQXJ6SnVxMjV2ZUFYOTF4SGMwMFZYdm5RaElHRVlGS3FNY2VRMlNmenFSQUptbk95RE9qbk9Ebw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "A Powerful New \u2018QR Code\u2019 Untangles Math\u2019s Knottiest Knots  Quanta Magazine",
+      "published": "Wed, 22 Apr 2026 14:50:53 GMT",
+      "publisher": "Quanta Magazine",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6688,12 +6459,30 @@
     },
     {
       "source": "gnews",
-      "topic": "TECHNOLOGY",
-      "title": "Marathon Was One Of March\u2019s Best-Selling Games But That Probably Won\u2019t Stop The Obsession Over Steam Charts - Kotaku",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5jTi00ajhBdnNtc21ueFJYbldnSUU2WUlneEw2Z2JJcmtOcWM3NXZRNTYwNUVfN0ZBM09tTDkwczhZRDV5SXNZek54NUxmcWd5Q2tjR0VNb3EtV3BwTFZ5c0NjeGlwdTlMOU5GcWxJYUdWeG51V1FGakE5Z1c?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Marathon Was One Of March\u2019s Best-Selling Games But That Probably Won\u2019t Stop The Obsession Over Steam Charts  KotakuUS hardware sales rose 69% in March 2026 following strong Switch 2 performance | US Monthly Charts  GamesIndustry.bizSwitch 2 Outsells PS5 in the US in March 2026, MLB: The Show 26 Debuts in 1st  VGChartz\u2018Pokopia\u2019 Flurry Helps Nintendo\u2019s Switch 2 Top US Sales in March  Bloomberg.comThese New Releases Gave Game Spending A Much-Needed Boost In March  GameSpot",
-      "published": "Wed, 22 Apr 2026 13:01:05 GMT",
-      "publisher": "Kotaku",
+      "topic": "SCIENCE",
+      "title": "Woman who unlocked the secrets of the stars honoured - BBC",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5sSkVocGJOS0pXbE5Zc0M3blZOM2QwQzJBMV9rLWhCQ2wwaDZFN2Myc01JbVpDbV9GMnEwZkxxaWZRWmZ3aXVIcEpxeDFGRFpKX1E1TU9JUUNDUQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Woman who unlocked the secrets of the stars honoured  BBC",
+      "published": "Wed, 22 Apr 2026 05:11:12 GMT",
+      "publisher": "BBC",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "gnews",
+      "topic": "SCIENCE",
+      "title": "What\u2019s the deal with spacesuits for the Moon? Will they be ready in time? - Ars Technica",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQYTFkRHBiZHAtM0dMODJRLUowT1BOdzdKTkptQnIwaHU4X3ZjcTJCTXY0YzBaUExVVFZDOFhFeXlybkU1MF9CMkNFRmJQWld1N3dBd2owOUtVazV5ejdHZkx2aTZCRmhrTDM3MVhldHpYUE5wb1RQblhGeWNwenFqZl9kLUdsOThBR28yQUoyU1JXZ0xEMFk5WnJnck1rZEU2U1NYbUhFVFNTdXF4blE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "What\u2019s the deal with spacesuits for the Moon? Will they be ready in time?  Ars TechnicaNASA IG Raises More Questions About Readiness for Human Lunar Landings  Space Policy OnlineNASA\u2019s 2028 moon landing may be delayed because of lack of space suits, watchdog report warns  Scientific AmericanArtemis spacesuit development risks further delays  SpaceNewsNASA still confident that Artemis astronauts will land on the moon in 2028 despite spacesuit delays  Space",
+      "published": "Tue, 21 Apr 2026 14:24:09 GMT",
+      "publisher": "Ars Technica",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6725,47 +6514,11 @@
     {
       "source": "gnews",
       "topic": "SCIENCE",
-      "title": "Which Types of Civilizations Collapse and Which Can Endure? - Universe Today",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQRW9iYjZmMjFtUzhlT2FmV3pIT3kzVE1xRWhVNVR1dTdCdTlVeTJnQkpVRWRNUFRBZHBHdk5ac2VhazJSbTB4Z1liYU1hR0w3ZWUtMHRDWWZKbW1Nd3N2SUZmQmZVVV9xejJyZjZUTWJHbUVWRWdvT2RBZjZDUjJNZzdpQ2p0Vl94NmZhOFRiUDJodll0TUlUQW12UElldw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Which Types of Civilizations Collapse and Which Can Endure?  Universe Today",
-      "published": "Tue, 21 Apr 2026 15:49:00 GMT",
-      "publisher": "Universe Today",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "SCIENCE",
-      "title": "The Nancy Grace Roman Space Telescope, NASA's next great observatory, is finally complete - Space",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNS1ZWajV3NjRkTkwyS2dzVnp0dDVDSVBzd19XR3F4blhwcU9USEJMWUx1b2FkT2dpRWJHWUZaNk8tRXJsVzRrSFcwaEFXRU1xRjcxd2lVQ1dfUXBOUHBxVUVRQmZQMUd0aTZUeWloOFozUE1kaGh6b0EzdTdXbmt0WjlfNWlHRWJQMkZ5MDRLSG5kMFBBMnBmdnBlY0xJV1RnLVZCSktRN2tXZGhYMmdhbnAtQ0d1OERoMHJnc2c1MER6bmFB?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "The Nancy Grace Roman Space Telescope, NASA's next great observatory, is finally complete  SpaceNASA Unveils Powerful Space Telescope Ahead of September Launch  Bloomberg.comNASA's new space telescope will reveal the 'dark universe'  MashableNASA sets early September launch date for Roman Space Telescope  SpaceNewsNASA Goddard unveils new space telescope set to launch in September  Yahoo",
-      "published": "Tue, 21 Apr 2026 23:31:22 GMT",
-      "publisher": "Space",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "SCIENCE",
-      "title": "Curiosity Found Strange 'Dragon Scale' Rocks on Mars, And Scientists Are Excited - Yahoo",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOWm5JUWwxcHljZlYtaTMxN2U1emJrSG5mYnF0ejNzQmM4UG1weVVyY1BwOFVfMndpRjdENVZmZ3FoQzhGYzhkbC1yQ0RURlNrTnM5QXpQUjBoS1BHTlFYblgzSTRhR0xqcElBaGtQMmlwVm9XNGlaZnducXZINUR6Um9rVUpjSnNGSmhqSFZIX2s?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Curiosity Found Strange 'Dragon Scale' Rocks on Mars, And Scientists Are Excited  YahooView Full Coverage on Google News",
-      "published": "Tue, 21 Apr 2026 12:00:44 GMT",
-      "publisher": "Yahoo",
+      "title": "NASA Unveils Powerful Space Telescope Ahead of September Launch - Bloomberg.com",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOdW5rTnJSRDl4RDBzUFhGMWJkUjl1R1NKSnJNQ0JkWjJtVmtKWVUtbENpZ19vOHBJbUNuT005UjVDcE5zcEd1RVBDVGxGOHU2c0RHNmZQSklNdjVVTmxtR05vTlh1MXFCR19zTTVrQnE4eEFuT1RFV19PSUhDV21vcktDTHQtYS1wUDFHOEx2eHpnLXZVblFZbmtpZ3RqNy1hdklNSVJlZWpRY3hBQmlFWTBmOGw?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "NASA Unveils Powerful Space Telescope Ahead of September Launch  Bloomberg.comThe Nancy Grace Roman Space Telescope, NASA's next great observatory, is finally complete  SpaceSet for launch in September, NASA\u2019s Roman Space Telescope will unveil the dark universe as never before  Scientific AmericanNASA sets early September launch date for Roman Space Telescope  SpaceNewsNASA's new space telescope will reveal the 'dark universe'  Mashable",
+      "published": "Tue, 21 Apr 2026 21:21:13 GMT",
+      "publisher": "Bloomberg.com",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6781,7 +6534,7 @@
       "topic": "SCIENCE",
       "title": "NASA rolls out Artemis 3 SLS rocket's huge core stage to gear up for 2027 launch (photo) - Space",
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPSTNoQXBjdElmQUlITzEzVHlOVXZ0NGhIVkNBclFBYlhSRFdNdGlNR280aDVySzJuVk9ya3RRYVJRRGRsdmhaQ2xZb2FmZ2RoVGhBM1BKUGYzeG5IUjZycUh1S1o0VVhaRnhHazJJcFNwUkFpTmVhdGtrNGN5OHk5TTNfeUhGOHU5MEFsV3JxS0loczJwWVMxRzdNaDNRaEQyTGlSbjBMZzd0c0JSZUZXcmNOMGdhQWFjUGdPRHl3ZUpzS21jUWdVTS1MYU5Rdw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "NASA rolls out Artemis 3 SLS rocket's huge core stage to gear up for 2027 launch (photo)  SpacePhoto du jour: Artemis III rollout  AxiosNew Orleans-built rocket heads to Kennedy Space Center for Artemis III mission  wwltv.comNASA Invites Media to Rollout Event for Artemis III Moon Rocket Stage  NASA (.gov)In race to prep for Artemis III, rocket\u2019s core stage on way to Kennedy Space Center  Yahoo",
+      "content": "NASA rolls out Artemis 3 SLS rocket's huge core stage to gear up for 2027 launch (photo)  SpaceNASA Rolls Out Artemis III Moon Rocket Core Stage  NASA (.gov)New Orleans-built rocket heads to Kennedy Space Center for Artemis III mission  wwltv.comPhoto du jour: Artemis III rollout  AxiosIn race to prep for Artemis III, rocket\u2019s core stage on way to Kennedy Space Center  Yahoo",
       "published": "Tue, 21 Apr 2026 15:00:00 GMT",
       "publisher": "Space",
       "tags": {
@@ -6797,28 +6550,10 @@
     {
       "source": "gnews",
       "topic": "SCIENCE",
-      "title": "Guess What This Creepy Underwater Thing Is That Was Photographed by US Navy Divers for NASA - Yahoo",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPQVd2MXZ0ZDlsRkpmeEpwNEpmNEJfbmhhSU41a0hOLXNEdjl4cXVpYVJ4b0drUlVYRzFBVHh5N0FiMUNCZTNCVUJrS2l4bTRUWUxvUENuSHV1RXIxTnZTWkE1dnpQR0s5UVNQVGJtbWREOVFreGZXeWVIOWhVckE2Zzl3VFhGYTk2cU9yV2lxTzI5TmVzUmdIdw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "Guess What This Creepy Underwater Thing Is That Was Photographed by US Navy Divers for NASA  YahooView Full Coverage on Google News",
-      "published": "Tue, 21 Apr 2026 15:20:52 GMT",
-      "publisher": "Yahoo",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "gnews",
-        "owner_note": "Google News \u2014 Google controls ranking and visibility"
-      },
-      "windows": []
-    },
-    {
-      "source": "gnews",
-      "topic": "SCIENCE",
-      "title": "What\u2019s the deal with spacesuits for the Moon? Will they be ready in time? - Ars Technica",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQYTFkRHBiZHAtM0dMODJRLUowT1BOdzdKTkptQnIwaHU4X3ZjcTJCTXY0YzBaUExVVFZDOFhFeXlybkU1MF9CMkNFRmJQWld1N3dBd2owOUtVazV5ejdHZkx2aTZCRmhrTDM3MVhldHpYUE5wb1RQblhGeWNwenFqZl9kLUdsOThBR28yQUoyU1JXZ0xEMFk5WnJnck1rZEU2U1NYbUhFVFNTdXF4blE?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "What\u2019s the deal with spacesuits for the Moon? Will they be ready in time?  Ars TechnicaNASA still confident that Artemis astronauts will land on the moon in 2028 despite spacesuit delays  SpaceNASA IG Raises More Questions About Readiness for Human Lunar Landings  Space Policy OnlineNASA\u2019s 2028 moon landing may be delayed because of lack of space suits, watchdog report warns  Scientific AmericanArtemis spacesuit development risks further delays  SpaceNews",
-      "published": "Tue, 21 Apr 2026 14:24:09 GMT",
+      "title": "Physicists think they\u2019ve solved the muon mystery - Ars Technica",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQUnRZNG9QTnRkWThtM0VjcFh3UkZlZmxtV0tXTmxodE1za3J1emR6UVNPbE1XWWFpZXVzMEpEeGJUaERadVhDdnZaVVI5eS1UeHFJaWVFVFZmUmZsUGh4eVNERVVTUnhWZm9qd1BQeWNWeGJqZzhBbVBVb0l3NnBleGJha0o1ZGpWeXNiXzlzRVd5QQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "Physicists think they\u2019ve solved the muon mystery  Ars TechnicaPhysicists Solve Riddle That Has Puzzled Scientists for Decades | Newswise  NewswiseThe Muon anomaly: New breakthrough changes the picture  Tech ExploristParticle Once Believed to Break Physics Actually Followed the Rules All Along  Bioengineer.orgPhysicists Crack Decades-Old Scientific Mystery  Bioengineer.org",
+      "published": "Wed, 22 Apr 2026 15:40:02 GMT",
       "publisher": "Ars Technica",
       "tags": {
         "players": [],
@@ -6833,11 +6568,11 @@
     {
       "source": "gnews",
       "topic": "SCIENCE",
-      "title": "How Bruce the half-beak kea weaponised his disability to become the alpha bird - The Conversation",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOeUU3UmdUYXF4anYtT3NtVUMzSGg4cjVaWDJnRWc1UXR4NUZnaU9FNWt4VS1QTEV3eG9Vd0EwR2Q0N2RON015d0g3QXlDZ0dna0ZiYkduZE5YZWpKdllocGRRZDh4OGgzMFkySzREVllMLW9BVmdhSnJiTWJKLWEycUNUYXowdE9CNzJvdVVJZ0Rjbl9NY21YRE55bnFoME9HY29nODFSTmNUVkdMRDJ6ZnJRYw?oc=5&hl=en-US&gl=US&ceid=US:en",
-      "content": "How Bruce the half-beak kea weaponised his disability to become the alpha bird  The ConversationHow Bruce the Parrot Landed Atop the Pecking Order, Without a Beak  The New York TimesBruce is missing his upper beak, but it has not stopped him from dominance  Popular ScienceMeet Bruce, the parrot with a broken beak that he wields as a weapon  Scientific AmericanWatch Bruce the parrot defeat his rivals with only half a beak  National Geographic",
-      "published": "Mon, 20 Apr 2026 18:39:15 GMT",
-      "publisher": "The Conversation",
+      "title": "The surprising origin of 4 features that superglue kids \u2014 and adults \u2014 to screens - NPR",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQX24tU1R1bVB1aW9OeHNPb3hqbU1kWFFLdEhkdFZXOHJrb3lwZnAyS0FqM0dpeGxyQUdOOWROZ0RyMUJyZ25YQjVUZ3Y4Q1dKNXVkUGlBOFNiaUEzQmpmSmdNR01VQ2Q3UGVVaDV4YlJsbHlZOWN1bHhMbnhVMDdtVmxuUm55QzZRNmdCN19aZXp3RDZHMEZCZ19ocVlMMzdoYS1iUlpFUQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The surprising origin of 4 features that superglue kids \u2014 and adults \u2014 to screens  NPR",
+      "published": "Tue, 21 Apr 2026 09:00:00 GMT",
+      "publisher": "NPR",
       "tags": {
         "players": [],
         "theaters": [],
@@ -6885,6 +6620,58 @@
       "windows": []
     },
     {
+      "source": "gnews",
+      "topic": "SCIENCE",
+      "title": "The fascinating reason why rain smells the way that it does - Boing Boing",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOYTI1ZTFGcHBiUEQ3Q0ZQSDlpM0l4dVF2WFl3TnlQRjVJTl9LX3kyZGp3bExpNzJqUmVHam1VVFlyeUJFUjQ3OEtCUnpSVkp2Wkl3TUN6UzhrazQxLXhXMnQ2cHJJQnpDbjhQTXFaM3ZUNldiLTV3dmM0eE00UWpBcWZ1ekxjY2pVYmJEVHUwTEVWRzV1ek54dHdwU01wUFnSAaQBQVVfeXFMTlY0M19TbUZMenoxdkVTaUJSb2pjQlBkOUtuUUZCNFZUVGU1YVNoMWplbDVNTV9UN01hN2xfOWJqTFVWOVdoME82UXpkVHljV3M1WnVuU0JIMUx6UFg4U2JTeDlCNW5WMFBrUk5BdVhvb3dKMlN5ZVpfcFlkdk5OOW1GSVoxVEpUclQ1R1RtU3lQclBpeHYxMmlIUWd3SFFsc1ZtaWE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "content": "The fascinating reason why rain smells the way that it does  Boing Boing",
+      "published": "Wed, 22 Apr 2026 14:06:36 GMT",
+      "publisher": "Boing Boing",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "gnews",
+        "owner_note": "Google News \u2014 Google controls ranking and visibility"
+      },
+      "windows": []
+    },
+    {
+      "source": "rss",
+      "feed": "Al Jazeera",
+      "title": "Chelsea sack Rosenior after only three months at Premier League club",
+      "url": "https://www.aljazeera.com/sports/2026/4/22/chelsea-sack-rosenior-after-only-3-months-at-premier-league-club?traffic_source=rss",
+      "content": "Chelsea only appointed Liam Rosenior in January, but the FIFA Club World Cup holders have lost their last five games.",
+      "published": "Wed, 22 Apr 2026 16:45:17 +0000",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+      },
+      "windows": []
+    },
+    {
+      "source": "rss",
+      "feed": "Al Jazeera",
+      "title": "LIVE: Burnley vs Manchester City \u2013 Premier League",
+      "url": "https://www.aljazeera.com/sports/liveblog/2026/4/22/live-burnley-vs-manchester-city-premier-league?traffic_source=rss",
+      "content": "Follow our live build-up, with full team news coverage, ahead of our text commentary stream as City target EPL top spot.",
+      "published": "Wed, 22 Apr 2026 16:00:24 +0000",
+      "tags": {
+        "players": [],
+        "theaters": [],
+        "incentives": [],
+        "relevance": 0,
+        "source_owner": "rss",
+        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+      },
+      "windows": []
+    },
+    {
       "source": "rss",
       "feed": "Al Jazeera",
       "title": "Nepal\u2019s home minister resigns, second cabinet exit in one month",
@@ -6920,35 +6707,35 @@
     },
     {
       "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "Will Iraq\u2019s Shia bloc overcome obstacles to pick the next PM?",
-      "url": "https://www.aljazeera.com/news/2026/4/22/will-iraqs-shia-bloc-overcome-obstacles-to-pick-the-next-pm?traffic_source=rss",
-      "content": "The Shia-led Coordination Framework must nominate a prime minister by Sunday, as required by the constitution.",
-      "published": "Wed, 22 Apr 2026 13:42:12 +0000",
+      "feed": "Ars Technica",
+      "title": "Physicists think they've solved the muon mystery",
+      "url": "https://arstechnica.com/science/2026/04/physicists-think-theyve-solved-the-muon-mystery/",
+      "content": "Results dash hopes for a fifth force but provide very precise proof of Standard Model and QFT.",
+      "published": "Wed, 22 Apr 2026 15:40:02 +0000",
       "tags": {
         "players": [],
         "theaters": [],
         "incentives": [],
         "relevance": 0,
         "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
       },
       "windows": []
     },
     {
       "source": "rss",
-      "feed": "Al Jazeera",
-      "title": "Arsenal have grown, but they still have not learned how to dominate",
-      "url": "https://www.aljazeera.com/opinions/2026/4/22/arsenal-have-grown-but-they-still-have-not-learned-how-to-dominate?traffic_source=rss",
-      "content": "Arsenal\u2019s title challenge is again being undermined by dropped points in decisive moments.",
-      "published": "Wed, 22 Apr 2026 13:31:30 +0000",
+      "feed": "Ars Technica",
+      "title": "New court ruling blocks many of the government's anti-renewable policies",
+      "url": "https://arstechnica.com/tech-policy/2026/04/new-court-ruling-blocks-many-of-the-governments-anti-renewable-policies/",
+      "content": "Added layers of review singling out renewable energy have little legal basis.",
+      "published": "Wed, 22 Apr 2026 15:09:28 +0000",
       "tags": {
         "players": [],
         "theaters": [],
         "incentives": [],
         "relevance": 0,
         "source_owner": "rss",
-        "owner_note": "RSS (Al Jazeera) \u2014 editorial selection bias"
+        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
       },
       "windows": []
     },
@@ -7027,57 +6814,6 @@
       "url": "https://arstechnica.com/ai/2026/04/meta-will-use-employee-tracking-software-to-help-train-ai-agents-report/",
       "content": "Move highlights the difficulty of finding high-quality interactive training data.",
       "published": "Tue, 21 Apr 2026 19:30:52 +0000",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "rss",
-        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Ars Technica",
-      "title": "Framework Laptop 13 Pro is a major overhaul for the modular, upgradeable laptop",
-      "url": "https://arstechnica.com/gadgets/2026/04/framework-laptop-13-pro-is-the-first-major-revision-to-the-original-framework-laptop/",
-      "content": "Laptop includes Core Ultra Series 3 CPUs, a bigger battery, and a touchscreen.",
-      "published": "Tue, 21 Apr 2026 18:15:15 +0000",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "rss",
-        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Ars Technica",
-      "title": "Framework Laptop 16 upgrades make it look less like an unfinished prototype",
-      "url": "https://arstechnica.com/gadgets/2026/04/framework-laptop-16-upgrades-make-it-look-less-like-an-unfinished-prototype/",
-      "content": "A lower-end Ryzen AI 340 CPU option will also bring the price down, for now.",
-      "published": "Tue, 21 Apr 2026 18:15:03 +0000",
-      "tags": {
-        "players": [],
-        "theaters": [],
-        "incentives": [],
-        "relevance": 0,
-        "source_owner": "rss",
-        "owner_note": "RSS (Ars Technica) \u2014 editorial selection bias"
-      },
-      "windows": []
-    },
-    {
-      "source": "rss",
-      "feed": "Ars Technica",
-      "title": "Internal emails show how Amazon raises prices across the Internet, lawsuit says",
-      "url": "https://arstechnica.com/tech-policy/2026/04/internal-emails-show-how-amazon-raises-prices-across-the-internet-lawsuit-says/",
-      "content": "\u201cIt\u2019s working!\u201c: Amazon emails with vendors show pattern of disappearing deals.",
-      "published": "Tue, 21 Apr 2026 18:06:06 +0000",
       "tags": {
         "players": [],
         "theaters": [],
