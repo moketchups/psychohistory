@@ -71,11 +71,18 @@ _load_env_files()
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
 X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "")
+GOOGLE_CSE_API_KEY = os.environ.get("GOOGLE_CSE_API_KEY", "")
+GOOGLE_CSE_ID = os.environ.get("GOOGLE_CSE_ID", "")
 
-# ── Tavily free-tier budget controls ─────────────────────────────────────────
-# Free tier = 1,000 credits/mo. Rotating 3 queries per run × ~230 runs/mo
-# = ~690 credits/mo, leaving ~310 credit buffer for manual runs + debugging.
+# ── Search API free-tier budget controls ─────────────────────────────────────
+# Tavily free: 1,000 credits/mo. Rotating 3 queries per run × ~230 runs/mo
+# = ~690 credits/mo per source, leaves ~310 credit buffer per source.
 # Each query is re-fired roughly every 9 hours via hour-based rotation.
+# Brave free: 2,000 queries/mo, 1 req/sec rate limit.
+# Google CSE free: 100/day = ~3,000/mo, 10 req/sec rate limit.
+# All three fire the SAME rotation batch each run, so signal is comparable
+# across engines on the same query; URL-based dedup runs before tagging.
 TAVILY_ROTATION_BATCH_SIZE = 3
 TAVILY_CACHE_PATH = os.environ.get("TAVILY_CACHE_PATH", "/tmp/tavily_cache.json")
 TAVILY_CACHE_TTL_SECONDS = 2 * 60 * 60  # 2 hours
@@ -401,6 +408,165 @@ def fetch_tavily(queries, max_per_query=5, max_age_days=14, use_rotation=True):
     if dropped_old or dropped_undated:
         print(f"  Tavily: dropped {dropped_old} stale + {dropped_undated} undated results (kept {len(results)})")
     return results
+
+
+def fetch_brave(queries, max_per_query=5, max_age_days=14):
+    """Brave Search API — free tier 2,000 queries/mo, 1 req/sec.
+    Fires the rotated batch so it mirrors Tavily's coverage."""
+    if not BRAVE_API_KEY:
+        print("  BRAVE_API_KEY not set, skipping Brave")
+        return []
+    import time as _time
+    active = _rotate_tavily_queries(queries, TAVILY_ROTATION_BATCH_SIZE)
+    print(f"  Brave rotation: firing {len(active)}/{len(queries)} queries this run")
+    cutoff = (datetime.now() - timedelta(days=max_age_days)).date()
+    results = []
+    dropped = 0
+    api_calls = 0
+    for q in active:
+        try:
+            qs = urllib.parse.urlencode({
+                "q": q,
+                "count": max_per_query,
+                "freshness": "pw",
+            })
+            req = urllib.request.Request(
+                f"https://api.search.brave.com/res/v1/web/search?{qs}",
+                headers={
+                    "Accept": "application/json",
+                    "X-Subscription-Token": BRAVE_API_KEY,
+                },
+            )
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            api_calls += 1
+            web = data.get("web", {}).get("results", [])
+            for r in web:
+                title = r.get("title", "").strip()
+                url = r.get("url", "").strip()
+                if not title or not url:
+                    continue
+                pub = r.get("page_age", "") or _extract_date_from_url(url)
+                ev_date = None
+                if pub:
+                    for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%SZ"):
+                        try:
+                            ev_date = datetime.strptime(pub[:19] if "T" in pub else pub[:10], fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                if ev_date is None:
+                    dropped += 1
+                    continue
+                if ev_date < cutoff:
+                    dropped += 1
+                    continue
+                results.append({
+                    "source": "brave",
+                    "query": q,
+                    "title": title,
+                    "url": url,
+                    "content": r.get("description", "")[:500],
+                    "published": ev_date.isoformat(),
+                    "score": 0,
+                })
+            _time.sleep(1.1)  # honor 1 req/sec rate limit
+        except Exception as e:
+            print(f"  Brave error for '{q[:40]}': {e}")
+    print(f"  Brave: {api_calls} API calls, dropped {dropped} stale/undated (kept {len(results)})")
+    return results
+
+
+def fetch_google_cse(queries, max_per_query=5, max_age_days=14):
+    """Google Custom Search Engine — free tier 100/day (~3,000/mo), 10 req/sec.
+    Requires GOOGLE_CSE_API_KEY + GOOGLE_CSE_ID (a Programmable Search Engine ID)."""
+    if not GOOGLE_CSE_API_KEY or not GOOGLE_CSE_ID:
+        print("  GOOGLE_CSE_API_KEY / GOOGLE_CSE_ID not set, skipping Google CSE")
+        return []
+    active = _rotate_tavily_queries(queries, TAVILY_ROTATION_BATCH_SIZE)
+    print(f"  Google CSE rotation: firing {len(active)}/{len(queries)} queries this run")
+    cutoff = (datetime.now() - timedelta(days=max_age_days)).date()
+    results = []
+    dropped = 0
+    api_calls = 0
+    for q in active:
+        try:
+            qs = urllib.parse.urlencode({
+                "key": GOOGLE_CSE_API_KEY,
+                "cx": GOOGLE_CSE_ID,
+                "q": q,
+                "num": min(max_per_query, 10),
+                "dateRestrict": f"d{max_age_days}",
+                "sort": "date",
+            })
+            req = urllib.request.Request(f"https://www.googleapis.com/customsearch/v1?{qs}")
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            api_calls += 1
+            for r in data.get("items", []):
+                title = r.get("title", "").strip()
+                url = r.get("link", "").strip()
+                if not title or not url:
+                    continue
+                meta_date = ""
+                for tag in r.get("pagemap", {}).get("metatags", [{}]):
+                    meta_date = (tag.get("article:published_time") or
+                                 tag.get("og:updated_time") or
+                                 tag.get("pubdate") or "")
+                    if meta_date:
+                        break
+                pub = meta_date or _extract_date_from_url(url)
+                ev_date = None
+                if pub:
+                    for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%SZ"):
+                        try:
+                            ev_date = datetime.strptime(pub[:19] if "T" in pub else pub[:10], fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                if ev_date is None:
+                    dropped += 1
+                    continue
+                if ev_date < cutoff:
+                    dropped += 1
+                    continue
+                results.append({
+                    "source": "google_cse",
+                    "query": q,
+                    "title": title,
+                    "url": url,
+                    "content": r.get("snippet", "")[:500],
+                    "published": ev_date.isoformat(),
+                    "score": 0,
+                })
+        except Exception as e:
+            print(f"  Google CSE error for '{q[:40]}': {e}")
+    print(f"  Google CSE: {api_calls} API calls, dropped {dropped} stale/undated (kept {len(results)})")
+    return results
+
+
+def dedupe_by_url(events):
+    """URL-based dedup. Keeps first-seen instance, preserves source diversity
+    in the summary log. When the same URL appears from multiple engines,
+    Tavily version wins (richer metadata / relevance score)."""
+    by_url = {}
+    source_overlaps = {}
+    for e in events:
+        url = e.get("url", "").strip().rstrip("/")
+        if not url:
+            continue
+        if url not in by_url:
+            by_url[url] = e
+        else:
+            # Prefer Tavily when we see a duplicate URL from another engine
+            if e.get("source") == "tavily" and by_url[url].get("source") != "tavily":
+                by_url[url] = e
+            key = f"{by_url[url]['source']}+{e['source']}"
+            source_overlaps[key] = source_overlaps.get(key, 0) + 1
+    if source_overlaps:
+        overlaps = ", ".join(f"{k}={v}" for k, v in source_overlaps.items())
+        print(f"  URL dedup: {len(events) - len(by_url)} duplicates removed ({overlaps})")
+    return list(by_url.values())
 
 
 def fetch_gnews(topics=None, max_results=20):
@@ -1078,6 +1244,12 @@ def tag_event(event):
     if source == "tavily":
         tags["source_owner"] = "tavily"
         tags["owner_note"] = "Tavily AI — aggregates web, inherits all web biases"
+    elif source == "brave":
+        tags["source_owner"] = "brave"
+        tags["owner_note"] = "Brave Search — independent index, alt-web + decentralized bias"
+    elif source == "google_cse":
+        tags["source_owner"] = "google_cse"
+        tags["owner_note"] = "Google Custom Search — mainstream index, Google ranking bias"
     elif source == "gnews":
         tags["source_owner"] = "gnews"
         tags["owner_note"] = "Google News — Google controls ranking and visibility"
@@ -1117,8 +1289,20 @@ def run_pipeline():
     # ── Layer 2: Managed data collection ─────────────────────────────────
     print("[1/14] Tavily deep web search...")
     tavily_results = fetch_tavily(TAVILY_QUERIES, max_per_query=3)
-    all_events.extend(tavily_results)
     print(f"  -> {len(tavily_results)} results")
+
+    print("[1b/14] Brave search (redundant source)...")
+    brave_results = fetch_brave(TAVILY_QUERIES, max_per_query=3)
+    print(f"  -> {len(brave_results)} results")
+
+    print("[1c/14] Google CSE search (redundant source)...")
+    google_cse_results = fetch_google_cse(TAVILY_QUERIES, max_per_query=3)
+    print(f"  -> {len(google_cse_results)} results")
+
+    # Merge + URL-dedup across all three search engines
+    search_results = dedupe_by_url(tavily_results + brave_results + google_cse_results)
+    print(f"  Merged search layer: {len(search_results)} unique URLs")
+    all_events.extend(search_results)
 
     print("[2/14] GNews headlines...")
     gnews_results = fetch_gnews()
@@ -1236,6 +1420,8 @@ def run_pipeline():
             "total_events": len(deduped),
             "sources": {
                 "tavily": len(tavily_results),
+                "brave": len(brave_results),
+                "google_cse": len(google_cse_results),
                 "gnews": len(gnews_results),
                 "rss": len(rss_results),
             },
