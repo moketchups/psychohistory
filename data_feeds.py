@@ -72,6 +72,14 @@ TAVILY_KEY = os.environ.get("TAVILY_API_KEY", "")
 X_BEARER_TOKEN = os.environ.get("X_BEARER_TOKEN", "")
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
 
+# ── Tavily free-tier budget controls ─────────────────────────────────────────
+# Free tier = 1,000 credits/mo. Rotating 3 queries per run × ~230 runs/mo
+# = ~690 credits/mo, leaving ~310 credit buffer for manual runs + debugging.
+# Each query is re-fired roughly every 9 hours via hour-based rotation.
+TAVILY_ROTATION_BATCH_SIZE = 3
+TAVILY_CACHE_PATH = os.environ.get("TAVILY_CACHE_PATH", "/tmp/tavily_cache.json")
+TAVILY_CACHE_TTL_SECONDS = 2 * 60 * 60  # 2 hours
+
 # ── Pressure Windows ─────────────────────────────────────────────────────────
 PRESSURE_WINDOWS = [
     {
@@ -287,23 +295,79 @@ def _extract_date_from_url(url):
     return ""
 
 
-def fetch_tavily(queries, max_per_query=5, max_age_days=14):
+def _rotate_tavily_queries(queries, batch_size):
+    """Pick a deterministic batch of queries keyed by UTC hour.
+    Ensures every query is fired roughly every (len(queries) / batch_size) hours.
+    """
+    from datetime import datetime
+    if batch_size <= 0 or batch_size >= len(queries):
+        return queries
+    hour = datetime.utcnow().hour + datetime.utcnow().day * 24
+    num_batches = (len(queries) + batch_size - 1) // batch_size
+    batch_idx = hour % num_batches
+    start = batch_idx * batch_size
+    return queries[start:start + batch_size]
+
+
+def _load_tavily_cache():
+    import json, time
+    try:
+        with open(TAVILY_CACHE_PATH, "r") as f:
+            cache = json.load(f)
+        now = time.time()
+        return {q: v for q, v in cache.items() if now - v.get("ts", 0) < TAVILY_CACHE_TTL_SECONDS}
+    except Exception:
+        return {}
+
+
+def _save_tavily_cache(cache):
+    import json
+    try:
+        with open(TAVILY_CACHE_PATH, "w") as f:
+            json.dump(cache, f)
+    except Exception as e:
+        print(f"  Tavily cache write skipped: {e}")
+
+
+def fetch_tavily(queries, max_per_query=5, max_age_days=14, use_rotation=True):
     """Search Tavily for prediction-relevant current events.
     Drops results older than max_age_days based on Tavily's published_date OR URL date.
-    Drops results with no parseable date."""
+    Drops results with no parseable date.
+
+    Rotation: if use_rotation=True, only fires a subset of queries per run
+    (deterministic by UTC hour). Budget-gated for Tavily free tier.
+    Cache: 2hr file-based cache per query; helps manual/dev reruns hit cache."""
     if not TAVILY_KEY:
         print("  TAVILY_API_KEY not set, skipping Tavily")
         return []
     from tavily import TavilyClient
     from datetime import datetime, timedelta
+    import time
+
+    if use_rotation:
+        active_queries = _rotate_tavily_queries(queries, TAVILY_ROTATION_BATCH_SIZE)
+        print(f"  Tavily rotation: firing {len(active_queries)}/{len(queries)} queries this run")
+    else:
+        active_queries = queries
+
+    cache = _load_tavily_cache()
     client = TavilyClient(api_key=TAVILY_KEY)
     cutoff = (datetime.now() - timedelta(days=max_age_days)).date()
     results = []
     dropped_old = 0
     dropped_undated = 0
-    for q in queries:
+    cache_hits = 0
+    api_calls = 0
+    for q in active_queries:
         try:
-            resp = client.search(q, max_results=max_per_query, search_depth="advanced")
+            cached = cache.get(q)
+            if cached:
+                cache_hits += 1
+                resp = {"results": cached["results"]}
+            else:
+                resp = client.search(q, max_results=max_per_query, search_depth="advanced")
+                api_calls += 1
+                cache[q] = {"ts": time.time(), "results": resp.get("results", [])}
             for r in resp.get("results", []):
                 pub = r.get("published_date", "") or _extract_date_from_url(r.get("url", ""))
                 # Try to parse the date
@@ -332,6 +396,8 @@ def fetch_tavily(queries, max_per_query=5, max_age_days=14):
                 })
         except Exception as e:
             print(f"  Tavily error for '{q[:40]}': {e}")
+    _save_tavily_cache(cache)
+    print(f"  Tavily: {api_calls} API calls, {cache_hits} cache hits")
     if dropped_old or dropped_undated:
         print(f"  Tavily: dropped {dropped_old} stale + {dropped_undated} undated results (kept {len(results)})")
     return results
