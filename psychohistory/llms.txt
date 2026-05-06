@@ -3,19 +3,20 @@
 # Author: Alan Berman (@moketchups)
 
 ## About
-A structural analysis engine tracking 812 entities, 1,460 connections, 66 divergences, and 14 years of predictions (2027-2040). Built on 8 independent analytical frameworks that converge on the same pressure window with zero coordination.
+A structural analysis engine tracking 1,592 entities, 2,624 connections, 155 divergences, and 14 years of predictions (2027-2040). Built on 8 independent analytical frameworks that converge on the same pressure window with zero coordination.
 
 ## Core Framework
 Bounded System Theory (BST): No system can model, encompass, or become the source of its own existence. The crisis of the modern era is the mechanical result of a civilization attempting to engineer past the wall that defines it.
 
 ## Data
-- Full export (138KB plain text): https://moketchups.com/psychohistory/export.txt
-- 812 knowledge graph nodes, 1,460 edges
-- 53 scorecard variables tracked against live events
-- 66 divergences (where the engine might be wrong)
+- Full export (~168KB plain text): https://moketchups.com/export.txt
+- 1,592 knowledge graph nodes, 2,624 edges
+- 91 scorecard variables tracked against live events
+- 155 divergences (where the engine might be wrong)
 - 14 prediction years (2027-2040) with sub-sections
-- 36 defined concepts
-- 67 player sections, 397 cards
+- 130 defined concepts
+- 100 player sections, 674 cards
+- 624 ticker entries
 - Live data pipeline updating every 6 hours
 
 ## Key Concepts
@@ -25,11 +26,12 @@ Bounded System Theory (BST): No system can model, encompass, or become the sourc
 - Phoenix Cycle: 138-year historical cycle, next reset May 2040
 - Donroe Doctrine: Terminal resource strategy (drill, hoard, fortify)
 - Technate: The bounded system reaching for immortality through three converging rails
+- Spectacle Governance: One-way physical-architecture ratchet locking operator-class venue function into federal property
 
 ## Endpoints
-- Full data: https://moketchups.com/psychohistory/export.txt
-- Live events: https://moketchups.com/psychohistory/current_events.json
-- This file: https://moketchups.com/psychohistory/llms.txt
+- Full data: https://moketchups.com/export.txt
+- Live events: https://moketchups.com/current_events.json
+- This file: https://moketchups.com/llms.txt
 
 ## Usage
 Fetch export.txt and pass as context to any LLM with 128K+ token context window.
