@@ -96,7 +96,7 @@ def build_export():
     header = f"""PSYCHOHISTORY PREDICTION ENGINE — FULL PLAIN TEXT EXPORT (SKELETON)
 ========================================================
 Site: https://moketchups.com
-8 independent analytical frameworks. {nodes_str}. 14-year trajectory (2026-2040).
+8 independent analytical frameworks. {nodes_str}. 15-year trajectory (2026-2040).
 
 This is the SKELETON export — index summaries + page overviews.
 For the FULL per-row analytical content (every scorecard row + divergence body
