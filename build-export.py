@@ -19,7 +19,7 @@ V2_DATA = os.path.join(os.path.dirname(SITE_DIR), "psychohistory-v2", "data")
 SECTIONS = [
     ("index", "HOME — WHAT IS THIS"),
     ("framework", "FRAMEWORK — HOW THE ENGINE WORKS"),
-    ("predictions", "PREDICTIONS — 14-YEAR TRAJECTORY (2027-2040)"),
+    ("predictions", "PREDICTIONS — 15-YEAR TRAJECTORY (2026-2040)"),
     ("players", "PLAYERS — THE PEOPLE AND INSTITUTIONS"),
     ("scorecard", "SCORECARD — IS THE ENGINE RIGHT?"),
     ("divergences", "DIVERGENCES — WHERE THE ENGINE MIGHT BE WRONG"),
@@ -302,7 +302,7 @@ def build_llms(skeleton_kb=None, full_kb=None):
 # Author: Alan Berman (@moketchups)
 
 ## About
-A structural analysis engine tracking {counts['nodes']:,} entities, {counts['edges']:,} connections, {counts['divergences']} divergences, and 14 years of predictions (2027-2040). Built on 8 independent analytical frameworks that converge on the same pressure window with zero coordination.
+A structural analysis engine tracking {counts['nodes']:,} entities, {counts['edges']:,} connections, {counts['divergences']} divergences, and 15 years of predictions (2026-2040). Built on 8 independent analytical frameworks read through a time-lens (not an oracle); pressure is spread across the 2032-2040 window with no single crowned year.
 
 ## Core Framework
 Bounded System Theory (BST): No system can model, encompass, or become the source of its own existence. The crisis of the modern era is the mechanical result of a civilization attempting to engineer past the wall that defines it.
@@ -313,7 +313,7 @@ Bounded System Theory (BST): No system can model, encompass, or become the sourc
 - {counts['nodes']:,} knowledge graph nodes, {counts['edges']:,} edges
 - {counts['scorecard']} scorecard variables tracked against live events
 - {counts['divergences']} divergences (where the engine might be wrong)
-- {counts['predictions']} prediction years (2027-2040) with sub-sections
+- {counts['predictions']} prediction years (2026-2040) with sub-sections
 - {counts['concepts']} defined concepts
 - {counts['players']} player sections, {counts['cards']:,} cards
 - {counts['ticker']:,} ticker entries
