@@ -28,6 +28,21 @@ SECTIONS = [
 ]
 
 
+def _patch_stale_counts(text, c):
+    """Replace old-render inline counts in the skeleton with live engine counts."""
+    import re as _re
+    n, e = c['nodes'], c['edges']
+    text = _re.sub(r"[\d,]+ nodes \u00b7 [\d,]+ edges", f"{n:,} nodes \u00b7 {e:,} edges", text)
+    text = _re.sub(r"[\d,]+ nodes \xb7 [\d,]+ edges", f"{n:,} nodes \xb7 {e:,} edges", text)
+    text = _re.sub(r"Graph\d{4}", f"Graph{n}", text)
+    text = _re.sub(r"PlayersConcepts(\d+)", f"PlayersConcepts{c['concepts']}", text)
+    text = _re.sub(r"[\d,]+ NODES\u00b7[\d,]+ EDGES", f"{n:,} NODES\u00b7{e:,} EDGES", text)
+    text = _re.sub(r"\d+ TOPICS", f"{c['scorecard']} TOPICS", text)
+    text = _re.sub(r"[\d,]+ NODES ?\u00b7 ?[\d,]+ EDGES", f"{n} NODES \u00b7 {e} EDGES", text)
+    text = _re.sub(r"\d+ scorecard \u00b7 \d+ divergences", f"{c['scorecard']} scorecard \u00b7 {c['divergences']} divergences", text)
+    return text
+
+
 def engine_counts():
     """Read live counts from V2 data files; return dict or None on failure."""
     try:
@@ -122,6 +137,9 @@ For the FULL per-row analytical content (every scorecard row + divergence body
         parts.append(f"\n\n{'=' * 72}\n{title}\n{'=' * 72}\n\n{text}\n")
 
     output = '\n'.join(parts)
+    _c = engine_counts()
+    if _c:
+        output = _patch_stale_counts(output, _c)
 
     outpath = os.path.join(SITE_DIR, "export.txt")
     with open(outpath, 'w', encoding='utf-8') as f:
